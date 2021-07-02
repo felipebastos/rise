@@ -5,14 +5,14 @@ from .models import Player, Alliance, PlayerStatus
 
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ['nick', 'game_id', 'rank', 'status']
-    search_fields = ['game_id', 'nick']
+    search_fields = ['nick', 'game_id']
 
     # define filter columns list, then a filter widget will be shown at right side of Department list page.
     list_filter = ['rank', 'status']
     # define which field will be pre populated.
     prepopulated_fields = {'game_id': ('game_id',)}
     # define model data list ordering.
-    ordering = ('game_id','nick', 'status')
+    ordering = ('nick', 'game_id', 'status')
 
 
 class PlayerStatusAdmin(admin.ModelAdmin):
