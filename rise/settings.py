@@ -26,6 +26,7 @@ SECRET_KEY = '18535b9c12403996e3dc25d1c974ea21'
 DEBUG = False
 
 ALLOWED_HOSTS = ["k32.pythonanywhere.com"]
+#ALLOWED_HOSTS = []
 
 
 # Application definition

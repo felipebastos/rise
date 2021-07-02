@@ -4,11 +4,11 @@ from django.contrib import admin
 from .models import Player, Alliance, PlayerStatus
 
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ['nick', 'game_id', 'rank', 'status']
+    list_display = ['nick', 'game_id', 'specialty', 'status']
     search_fields = ['nick', 'game_id']
 
     # define filter columns list, then a filter widget will be shown at right side of Department list page.
-    list_filter = ['rank', 'status']
+    list_filter = ['rank', 'status', 'specialty']
     # define which field will be pre populated.
     prepopulated_fields = {'game_id': ('game_id',)}
     # define model data list ordering.

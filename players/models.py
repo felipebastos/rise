@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import date
 
+from django.forms import widgets
+
 # Create your models here.
 player_status = (
     ('ATIVO', 'Ativo'),
@@ -18,6 +20,14 @@ player_rank = (
     ('SA', 'SA')
 )
 
+player_spec = (
+    ('arq', 'Arquearia'),
+    ('cav', 'Cavalaria'),
+    ('lid', 'Liderança'),
+    ('inf', 'Infantaria'),
+    ('end', 'Especialidade não definida')
+)
+
 
 class Alliance(models.Model):
     nome = models.CharField(max_length=100)
@@ -28,13 +38,16 @@ class Alliance(models.Model):
 
 
 class Player(models.Model):
-    game_id = models.CharField(max_length=8)
+    game_id = models.CharField(max_length=8, unique=True)
     nick = models.CharField(max_length=100)
     rank = models.CharField(max_length=2, choices=player_rank, default='R1')
+    specialty = models.CharField(
+        max_length=30, choices=player_spec, default='end')
     status = models.CharField(
         max_length=100, default='ATIVO', choices=player_status)
-    observacao = models.CharField(max_length=500, blank=True, null=True)
-    alliance = models.ForeignKey(Alliance, on_delete=models.CASCADE, default=None, null=True)
+    observacao = models.TextField(max_length=500, blank=True, null=True)
+    alliance = models.ForeignKey(
+        Alliance, on_delete=models.CASCADE, default=None, null=True)
 
     def __str__(self):
         return f'{self.nick}'
