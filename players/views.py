@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
-from .models import Player, PlayerStatus
+from .models import Player, PlayerStatus, Alliance
 
 import csv
 
@@ -21,10 +21,12 @@ def index(request, game_id):
 def populate(request):
     with open('/home/k32/rise/dados.csv') as f:
         reader = csv.reader(f)
+        ally = Alliance.objects.filter(tag='AoD')[0]
         for row in reader:
             obj_player, created_player = Player.objects.get_or_create(
                 game_id=row[0],
                 nick=row[1],
+                alliance=ally
                 )
             poder = row[2]
             if row[2] == '':
