@@ -47,3 +47,17 @@ def populate(request):
                 deaths = death
                 )
     return HttpResponse('Sucesso! (acho)')
+
+def alliance(request, ally_tag):
+    ally = Alliance.objects.filter(tag=ally_tag)[0]
+
+    if ally:
+        membros = Player.objects.filter(alliance=ally).exclude(status='SA')
+        context = {
+            'membros': membros,
+            'ally': ally,
+            'total': len(membros)
+        }
+        return render(request, 'players/alianca.html', context)
+    else:
+        return Http404('Aliança não está nos registros.')

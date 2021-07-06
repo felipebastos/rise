@@ -1,11 +1,10 @@
 from django.db import models
 from datetime import date
 
-from django.forms import widgets
-
 # Create your models here.
 player_status = (
-    ('ATIVO', 'Ativo'),
+    ('PLAYER', 'Player'),
+    ('FARM', 'Farm'),
     ('INATIVO', 'Inativo'),
     ('MIGROU', 'Migrou'),
     ('VIGIAR', 'Vigiar'),
