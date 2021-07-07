@@ -20,6 +20,7 @@ from django.urls import include, path
 urlpatterns = [
     path('players/', include('players.urls')),
     path('admin/', admin.site.urls),
+    path('bank/', include('bank.urls')),
 ]
 
 admin.site.site_header  =  "K32 Admin"  

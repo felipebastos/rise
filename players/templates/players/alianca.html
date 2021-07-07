@@ -13,9 +13,16 @@
     <title>Aliança</title>
 </head>
 <body>
+    {% load l10n %}
+    {% load i18n %}
     <div class="jumbotron text-center">
         <h1>{{ally.tag}} - {{ally.nome}}</h1>
         <p>{{total}} membros</p>
+        {% language 'pt-br' %}
+        <p>{{power}} de poder total.</p>
+        <p>{{kills}} killpoints da aliança.</p>
+        <p>{{death}} mortes totais na aliança.</p>
+        {% endlanguage %}
     </div>
     <div class="container container-fluid">
         <table class="table table-striped">
@@ -30,7 +37,7 @@
             <tbody>
             {% for membro in membros %}
             <tr>
-                <td>{{membro.game_id}}</td>
+                <td><a href="/players/{{membro.game_id}}">{{membro.game_id}}</a></td>
                 <td>{{membro.nick}}</td>
                 <td>{{membro.specialty}}</td>
                 <td>{{membro.observacao}}</td>

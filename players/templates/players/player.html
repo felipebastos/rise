@@ -11,9 +11,11 @@
 
 </head>
 <body>
+    {% load l10n %}
+    {% load i18n %}
     <div class="jumbotron text-center">
         <h1>{{player.game_id}} - {{player.nick}} <span class="badge badge-secondary">{{player.status}}</span></h1>
-        <h2>{{player.alliance.tag}} - {{player.specialty}}</h2>
+        <h2><a href="/players/alliance/{{player.alliance.tag}}">{{player.alliance.tag}}</a> - {{player.specialty}}</h2>
         <p><b>Observações:</b> {{player.observacao}}</p>
     </div>
     <div class="container container-fluid">
@@ -27,6 +29,7 @@
             </tr>
             </thead>
             <tbody>
+            {% language 'pt-br' %}
             {% for item in status %}
             <tr>
                 <td>{{item.data}}</td>
@@ -35,6 +38,7 @@
                 <td>{{item.deaths}}</td>
             </tr>
             {% endfor %}
+            {% endlanguage %}
             </tbody>
         </table>
     </div>
