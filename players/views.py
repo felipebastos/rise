@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.db.models import Sum
+from django.contrib.auth.decorators import login_required
+
 from .models import Player, PlayerStatus, Alliance
 
 import csv
 
 # Create your views here.
-
+@login_required
 def index(request, game_id):
     try:
         player = Player.objects.get(game_id=game_id)
@@ -19,7 +21,9 @@ def index(request, game_id):
         raise Http404("Player não encontrado.")
     return render(request, 'players/player.html', context)
 
+@login_required
 def populate(request):
+    pass
     with open('/home/k32/rise/dados.csv') as f:
         reader = csv.reader(f)
         ally = Alliance.objects.filter(tag='AoD')[0]
@@ -49,6 +53,7 @@ def populate(request):
                 )
     return HttpResponse('Sucesso! (acho)')
 
+@login_required
 def alliance(request, ally_tag):
     ally = Alliance.objects.filter(tag=ally_tag)[0]
 

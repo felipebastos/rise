@@ -1,11 +1,21 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 from .models import Donation, Semana
 from players.models import Player, Alliance
 
 
 # Create your views here.
+@login_required
+def index(request):
+    semanas = Semana.objects.all()
+    context = {
+        'semanas': semanas
+    }
+
+    return render(request, 'bank/index.html', context=context)
+
+@login_required
 def create_week(request, tag):
     ally = Alliance.objects.filter(tag=tag)[0]
 
@@ -20,4 +30,27 @@ def create_week(request, tag):
         doacao_programada.semana = semana
         doacao_programada.save()
     
-    return HttpResponse(f'Programação para {ally} criada.')
+    return redirect('/bank/')
+
+@login_required
+def week(request, weekid):
+    semana = Semana.objects.get(id=weekid)
+
+    doadores = Donation.objects.filter(semana=semana).order_by('player__game_id')
+
+    context = {
+        'semana': semana,
+        'doadores': doadores,
+    }
+
+    return render(request, 'bank/week.html', context=context)
+
+@login_required
+def donated(request, donationid):
+    doador = Donation.objects.get(id=donationid)
+
+    doador.donated = not doador.donated
+
+    doador.save()
+
+    return redirect(f'/bank/week/{doador.semana.id}')

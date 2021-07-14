@@ -1,0 +1,16 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Bancos{% endblock %}
+{% block content %}
+    <h1>Criar semanas de trabalho</h1>
+    <h2>Cuidado, ainda estou implementando, se clicar várias vezes, vai criar várias.</h2>
+    <div>
+        <a class="btn btn-success" href="/bank/createweek/GoD">Criar nova semana de doações da GoD</a>
+    </div>
+    <h1>Semanas de trabalho da GoD</h1>
+    <div class="semanas">
+        <!-- for semana in semanas... link pra membros / botão pra fechar a semana -->
+        {% for semana in semanas %}
+        <a class="btn btn-info" href="/bank/week/{{semana.id}}">{{semana.segunda}}</a>
+        {% endfor %}
+    </div>
+{% endblock %}
