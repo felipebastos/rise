@@ -1,29 +1,31 @@
 {% extends 'rise/base.html' %}
 {% block title %}- Semana de Doações{% endblock %}
 {% block content %}
-<h1>Semana de {{semana.segunda}}</h1>
-<table class="table table-stripped table-hover">
-    <thead>
-        <th>ID do Jogador</th>
-        <th>Player</th>
-        <th>Doou?</th>
-        <th>Mudar status</th>
-    </thead>
-    <tbody>
-        {% for doador in doadores %}
-        <tr>
-            <td>{{doador.player.game_id}}</td>
-            <td>{{doador}}</td>
-            <td>
-                {% if doador.donated %}
-                Doou
-                {% else %}
-                DEVENDO
-                {% endif %}
-            </td>
-            <td><a href="/bank/donated/{{doador.id}}">Registrar doação</a></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="container container-fluid">
+    <h1>Semana de {{semana.segunda}}</h1>
+    <table class="table table-stripped table-hover">
+        <thead>
+            <th>ID do Jogador</th>
+            <th>Player</th>
+            <th>Doou?</th>
+            <th>Mudar status</th>
+        </thead>
+        <tbody>
+            {% for doador in doadores %}
+            <tr>
+                <td>{{doador.player.game_id}}</td>
+                <td>{{doador}}</td>
+                <td>
+                    {% if doador.donated %}
+                    Doou
+                    {% else %}
+                    DEVENDO
+                    {% endif %}
+                </td>
+                <td><a href="/bank/donated/{{doador.id}}">Registrar doação</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

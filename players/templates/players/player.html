@@ -1,24 +1,44 @@
 {% extends 'rise/base.html' %}
 {% block title %}- Detalhes do Jogador{% endblock %}
 {% block content %}
-    {% load l10n %}
-    {% load i18n %}
-    <div class="jumbotron text-center">
-        <h1>{{player.game_id}} - {{player.nick}} <span class="badge badge-secondary">{{player.status}}</span></h1>
-        <h2><a href="/players/alliance/{{player.alliance.tag}}">{{player.alliance.tag}}</a> - {{player.specialty}}</h2>
-        <p><b>Observações:</b> {{player.observacao}}</p>
+{% load l10n %}
+{% load i18n %}
+<div class="jumbotron text-center">
+    <h1>{{player.game_id}} - {{player.nick}} <span class="badge badge-secondary">{{player.status}}</span></h1>
+    <h2><a href="/players/alliance/{{player.alliance.tag}}">{{player.alliance.tag}}</a> - {{spec}}</h2>
+    <p><b>Observações:</b> {{player.observacao}}</p>
+    <br>
+    <div class="row">
+        <div class="col"><b>Alterado em:</b> {{player.alterado_em}} <b>por</b> {{player.alterado_por}}</div>
+        <div class="col"><a href="/players/edit/{{player.game_id}}" class="btn btn-warning">Editar perfil</a></div>
     </div>
-    <div class="container container-fluid">
-        <table class="table table-striped">
-            <thead>
+</div>
+<div class="container-fluid">
+    <form action="/players/addstatus/{{player.game_id}}/" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-1"><b>Novos dados:</b></div>
+            <div class="col-3"><input class="form-control" type="text" name="poder" placeholder="poder sem pontos"
+                    required></div>
+            <div class="col-4"><input class="form-control" type="text" name="killpoints"
+                    placeholder="killpoints sem pontos" required></div>
+            <div class="col-3"><input class="form-control" type="text" name="mortes" placeholder="mortes sem pontos"
+                    required></div>
+            <div class="col-1"><button class="btn btn-info" type="submit">Adicionar</button></div>
+        </div>
+    </form>
+</div>
+<div class="container container-fluid">
+    <table class="table table-striped">
+        <thead>
             <tr>
                 <th>Data da informação</th>
                 <th>Poder</th>
                 <th>Killpoints</th>
                 <th>Mortes</th>
             </tr>
-            </thead>
-            <tbody>
+        </thead>
+        <tbody>
             {% language 'pt-br' %}
             {% for item in status %}
             <tr>
@@ -29,7 +49,7 @@
             </tr>
             {% endfor %}
             {% endlanguage %}
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
+</div>
 {% endblock %}

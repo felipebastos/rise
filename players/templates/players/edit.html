@@ -1,0 +1,72 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Edição do Jogador{% endblock %}
+{% block content %}
+<div class="container container-fluid">
+    <form action="/players/edit/{{player.game_id}}/" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="game_id">ID</label>
+            <input class="form-control" type="text" name="game_id" id="game_id" value="{{player.game_id}}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="nick">Nick</label>
+            <input class="form-control" type="text" name="nick" id="nick" value="{{player.nick}}">
+        </div>
+        <div class="form-group">
+            <label for="ally">Aliança</label>
+            <select class="form-control" name="ally" id="ally">
+                {% for ally in alliances %}
+                    {% if ally.tag == player.alliance.tag %}
+                    <option value="{{ally.tag}}" selected>{{ally.nome}}</option>
+                    {% else %}
+                    <option value="{{ally.tag}}">{{ally.nome}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="status">Situação do jogador</label>
+            <select class="form-control" name="status" id="status">
+                {% for val, text in status_list %}
+                    {% if val == player.status %}
+                    <option value="{{val}}" selected>{{text}}</option>
+                    {% else %}
+                    <option value="{{val}}">{{text}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="rank">Ranking do jogador</label>
+            <select class="form-control" name="rank" id="rank">
+                {% for val, text in ranks_list %}
+                    {% if val == player.rank %}
+                    <option value="{{val}}" selected>{{text}}</option>
+                    {% else %}
+                    <option value="{{val}}">{{text}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="specialty">Especialidade do jogador</label>
+            <select class="form-control" name="specialty" id="specialty">
+                {% for val, text in specialty_list %}
+                    {% if val == player.specialty %}
+                    <option value="{{val}}" selected>{{text}}</option>
+                    {% else %}
+                    <option value="{{val}}">{{text}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="observacao">Observações</label>
+            <textarea class="form-control" name="observacao" id="observacao" cols="50"
+            rows="10">{{player.observacao}}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success">Salvar</button> <a href="/players/{{player.game_id}}" class="btn btn-danger">Voltar ao perfil</a>
+    </form>
+</div>
+{% endblock %}
