@@ -1,8 +1,18 @@
 {% extends 'rise/base.html' %}
 {% block title %}- Home{% endblock %}
 {% block content %}
+<div class="container-fluid">
     <h1>Gestão de doações</h1>
     <a class="btn btn-primary" href="/bank/">Doações</a>
     <br>
     <footer>Você pode acessar os players a partir da listagem das alianças.</footer>
+</div>
+<div class="container-fluid">
+    <h1>Encontre um jogador</h1>
+    <form class="form-inline" action="/players/find/" method="post">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="text" placeholder="ID do jogador" name="id" required>
+        <button class="btn btn-success" type="submit">Procurar</button>
+    </form>
+</div>
 {% endblock %}

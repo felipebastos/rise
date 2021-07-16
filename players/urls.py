@@ -8,4 +8,5 @@ urlpatterns = [
     path('alliance/<str:ally_tag>/', views.alliance, name='alliance'),
     path('edit/<game_id>/', views.edit_player, name='edit_player'),
     path('addstatus/<game_id>/', views.add_status, name='add_status'),
+    path('find/', views.findplayer, name='findplayer'),
 ]

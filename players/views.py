@@ -3,7 +3,6 @@ from datetime import date
 
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, Http404
-from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 
 from .models import Player, PlayerStatus, Alliance, player_status, player_rank, player_spec
@@ -64,6 +63,13 @@ def edit_player(request, game_id):
     }
     return render(request, 'players/edit.html', context=context)
 
+@login_required
+def findplayer(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        return redirect(f'/players/{id}')
+    else:
+        raise Http404('Só sirvo para buscas do formulário.')
 
 @login_required
 def add_status(request, game_id):
@@ -79,7 +85,7 @@ def add_status(request, game_id):
 
         return redirect(f'/players/{game_id}')
     except:
-        return redirect(f'/players/{game_id}')
+        raise Http404('Player não existe.')
 
 
 @login_required
@@ -142,4 +148,4 @@ def alliance(request, ally_tag):
             }
             return render(request, 'players/alianca.html', context)
     except:
-        return HttpResponse('Aliança não está nos registros.')
+        raise Http404('Aliança não está nos registros.')

@@ -1,7 +1,7 @@
 {% extends 'rise/base.html' %}
 {% block title %}- Edição do Jogador{% endblock %}
 {% block content %}
-<div class="container container-fluid">
+<div class="container-fluid">
     <form action="/players/edit/{{player.game_id}}/" method="post">
         {% csrf_token %}
         <div class="form-group">
