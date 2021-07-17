@@ -63,6 +63,55 @@ def edit_player(request, game_id):
     }
     return render(request, 'players/edit.html', context=context)
 
+
+@login_required
+def listspecs(request, spec):
+    players = Player.objects.filter(
+        specialty=spec).order_by('alliance')
+
+    specialty = None
+    for i, (code, verbose) in enumerate(player_spec):
+        if code == spec:
+            specialty = verbose
+
+    context = {
+        'players': players,
+        'spec': specialty,
+        'total': len(players),
+    }
+
+    return render(request, 'players/spec.html', context=context)
+
+
+@login_required
+def review_players(request, ally_tag):
+    if request.method == 'GET':
+        try:
+            ally = Alliance.objects.filter(tag=ally_tag).first()
+
+            if ally:
+                membros = Player.objects.filter(alliance=ally)
+
+                context = {
+                    'membros': membros,
+                    'ally': ally,
+                    'total': len(membros),
+                }
+                return render(request, 'players/review.html', context)
+        except:
+            raise Http404('Aliança não está nos registros.')
+    else:
+        membros = Player.objects.filter(alliance__tag=ally_tag)
+        semalianca = Alliance.objects.filter(tag='PSA').first()
+        for membro in membros:
+            if membro.game_id in request.POST:
+                membro.alliance = semalianca
+                membro.alterado_por = request.user
+                membro.alterado_em = date.today()
+                membro.save()
+        return redirect(f'/players/review/{ally_tag}/')
+
+
 @login_required
 def findplayer(request):
     if request.method == 'POST':
@@ -70,6 +119,7 @@ def findplayer(request):
         return redirect(f'/players/{id}')
     else:
         raise Http404('Só sirvo para buscas do formulário.')
+
 
 @login_required
 def add_status(request, game_id):

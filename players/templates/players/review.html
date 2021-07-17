@@ -1,0 +1,20 @@
+{% extends 'rise/base.html' %}
+{% block title %}Revisão da {{ally.tag}}{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Revisão de Membros da {{ally.tag}}</h1>
+    <h3>Compare a lista com a lista do jogo e vá desselecionando os que estão na aliança.</h3>
+    <form action="/players/review/{{ally.tag}}/" method="post">
+        {% csrf_token %}
+        {% for membro in membros %}
+        <div class="form-check">
+            <label class="form-check-label" for="{{membro.game_id}}">
+                <input class="form-check-input" type="checkbox" name="{{membro.game_id}}" id="{{membro.game_id}}"
+                    value="remover" checked>{{membro.nick}}
+            </label>
+        </div>
+        {% endfor %}
+        <button class="btn btn-info" type="submit">Atualizar</button>
+    </form>
+</div>
+{% endblock %}

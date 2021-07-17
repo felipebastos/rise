@@ -1,0 +1,26 @@
+{% extends 'rise/base.html' %}
+{% block title %}Listagem de {{spec}}{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Lista de {{spec}}</h1>
+    <h3>O reino tem um total de {{total}} em {{spec}}</h3>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nick</th>
+                <th>Aliança</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in players %}
+            <tr>
+                <td><a href="/players/{{player.game_id}}">{{player.game_id}}</a></td>
+                <td>{{player.nick}}</td>
+                <td>{{player.alliance.tag}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

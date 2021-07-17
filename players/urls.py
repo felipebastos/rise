@@ -9,4 +9,6 @@ urlpatterns = [
     path('edit/<game_id>/', views.edit_player, name='edit_player'),
     path('addstatus/<game_id>/', views.add_status, name='add_status'),
     path('find/', views.findplayer, name='findplayer'),
+    path('listspec/<spec>/', views.listspecs, name='listspec'),
+    path('review/<ally_tag>/', views.review_players, name='reviewplayers'),
 ]
