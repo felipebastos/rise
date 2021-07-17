@@ -11,4 +11,5 @@ urlpatterns = [
     path('find/', views.findplayer, name='findplayer'),
     path('listspec/<spec>/', views.listspecs, name='listspec'),
     path('review/<ally_tag>/', views.review_players, name='reviewplayers'),
+    path('top300/', views.top300, name='top300'),
 ]

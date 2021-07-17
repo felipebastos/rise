@@ -15,6 +15,7 @@ def index(request):
 
     return render(request, 'bank/index.html', context=context)
 
+
 @login_required
 def create_week(request, tag):
     ally = Alliance.objects.filter(tag=tag)[0]
@@ -29,14 +30,16 @@ def create_week(request, tag):
         doacao_programada.player = jogador
         doacao_programada.semana = semana
         doacao_programada.save()
-    
+
     return redirect('/bank/')
+
 
 @login_required
 def week(request, weekid):
     semana = Semana.objects.get(id=weekid)
 
-    doadores = Donation.objects.filter(semana=semana).order_by('player__game_id')
+    doadores = Donation.objects.filter(
+        semana=semana).order_by('player__game_id')
 
     context = {
         'semana': semana,
@@ -44,6 +47,7 @@ def week(request, weekid):
     }
 
     return render(request, 'bank/week.html', context=context)
+
 
 @login_required
 def donated(request, donationid):
@@ -54,3 +58,11 @@ def donated(request, donationid):
     doador.save()
 
     return redirect(f'/bank/week/{doador.semana.id}')
+
+
+@login_required
+def donations_report(request):
+    context = {
+        'devedores': Donation.objects.filter(donated=False).order_by('player')
+    }
+    return render(request, 'bank/report.html', context=context)

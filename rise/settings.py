@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ["k32.pythonanywhere.com"]
 INSTALLED_APPS = [
     'players.apps.PlayersConfig',
     'bank.apps.BankConfig',
+    'kvk.apps.KvkConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

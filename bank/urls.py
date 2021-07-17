@@ -7,4 +7,5 @@ urlpatterns = [
     path('createweek/<tag>/', views.create_week, name='create_week'),
     path('week/<weekid>/', views.week, name='week'),
     path('donated/<donationid>/', views.donated, name='donated'),
+    path('report/', views.donations_report, name='report'),
 ]

@@ -199,3 +199,18 @@ def alliance(request, ally_tag):
             return render(request, 'players/alianca.html', context)
     except:
         raise Http404('Aliança não está nos registros.')
+
+
+@login_required
+def top300(request):
+    #jogadores = PlayerStatus.objects.all().exclude(player__alliance__tag='MIGR').order_by('-power')[:300]
+    jogadores = []
+    noreino = Player.objects.exclude(alliance__tag='MIGR')
+    for jogador in noreino:
+        status = PlayerStatus.objects.filter(player=jogador).order_by('-data').first()
+        jogadores.append(status)
+    jogadores.sort(key=lambda x: x.power if(x is not None) else 0, reverse=True)
+    context = {
+        'jogadores': jogadores[:300]
+    }
+    return render(request, 'players/top300.html', context=context)
