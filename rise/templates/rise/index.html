@@ -11,7 +11,7 @@
     <h1>Encontre um jogador</h1>
     <form class="form-inline" action="/players/find/" method="post">
         {% csrf_token %}
-        <input class="form-control mr-sm-2" type="text" placeholder="ID do jogador" name="id" required>
+        <input class="form-control mr-sm-2" type="text" required min="0" pattern="^[0-9]*$" placeholder="ID do jogador" name="id" required>
         <button class="btn btn-success" type="submit">Procurar</button>
     </form>
 </div>

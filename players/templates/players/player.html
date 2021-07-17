@@ -13,22 +13,22 @@
         <div class="col"><a href="/players/edit/{{player.game_id}}" class="btn btn-warning">Editar perfil</a></div>
     </div>
 </div>
-<div class="container-fluid">
+<div class="container">
     <form action="/players/addstatus/{{player.game_id}}/" method="post">
         {% csrf_token %}
         <div class="row">
-            <div class="col-1"><b>Novos dados:</b></div>
-            <div class="col-3"><input class="form-control" type="text" name="poder" placeholder="poder sem pontos"
-                    required></div>
-            <div class="col-4"><input class="form-control" type="text" name="killpoints"
-                    placeholder="killpoints sem pontos" required></div>
-            <div class="col-3"><input class="form-control" type="text" name="mortes" placeholder="mortes sem pontos"
-                    required></div>
-            <div class="col-1"><button class="btn btn-info" type="submit">Adicionar</button></div>
+            <div class="col"><input class="form-control" type="text" name="poder" placeholder="poder sem pontos"
+                    required min="0"  pattern="^[0-9]*$"></div>
+            <div class="col"><input class="form-control" type="text" name="killpoints"
+                    placeholder="killpoints sem pontos" required min="0" pattern="^[0-9]*$"></div>
+            <div class="col"><input class="form-control" type="text" name="mortes" placeholder="mortes sem pontos"
+                    required min="0" pattern="^[0-9]*$"></div>
+            <div class="col"><button class="btn btn-info" type="submit">Adicionar</button></div>
         </div>
     </form>
 </div>
-<div class="container-fluid">
+<br>
+<div class="container">
     <table class="table table-striped">
         <thead>
             <tr>
