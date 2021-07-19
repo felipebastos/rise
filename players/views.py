@@ -10,7 +10,6 @@ from .models import Player, PlayerStatus, Alliance, player_status, player_rank, 
 # Create your views here.
 
 
-@login_required
 def index(request, game_id):
     try:
         player = Player.objects.get(game_id=game_id)
@@ -64,7 +63,6 @@ def edit_player(request, game_id):
     return render(request, 'players/edit.html', context=context)
 
 
-@login_required
 def listspecs(request, spec):
     players = Player.objects.filter(
         specialty=spec).order_by('alliance')
@@ -112,7 +110,6 @@ def review_players(request, ally_tag):
         return redirect(f'/players/review/{ally_tag}/')
 
 
-@login_required
 def findplayer(request):
     if request.method == 'POST':
         id = request.POST['id']
@@ -171,7 +168,6 @@ def populate(request):
     return HttpResponse('Sucesso! (acho)')
 
 
-@login_required
 def alliance(request, ally_tag):
     try:
         ally = Alliance.objects.filter(tag=ally_tag).first()
@@ -201,15 +197,16 @@ def alliance(request, ally_tag):
         raise Http404('Aliança não está nos registros.')
 
 
-@login_required
 def top300(request):
     #jogadores = PlayerStatus.objects.all().exclude(player__alliance__tag='MIGR').order_by('-power')[:300]
     jogadores = []
     noreino = Player.objects.exclude(alliance__tag='MIGR')
     for jogador in noreino:
-        status = PlayerStatus.objects.filter(player=jogador).order_by('-data').first()
+        status = PlayerStatus.objects.filter(
+            player=jogador).order_by('-data').first()
         jogadores.append(status)
-    jogadores.sort(key=lambda x: x.power if(x is not None) else 0, reverse=True)
+    jogadores.sort(key=lambda x: x.power if(
+        x is not None) else 0, reverse=True)
     context = {
         'jogadores': jogadores[:300]
     }

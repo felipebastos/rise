@@ -6,13 +6,18 @@
 <div class="jumbotron text-center">
     <h1>{{player.game_id}} - {{player.nick}} <span class="badge badge-secondary">{{player.status}}</span></h1>
     <h2><a href="/players/alliance/{{player.alliance.tag}}">{{player.alliance.tag}}</a> - {{spec}}</h2>
+    {% if user.is_authenticated %}
     <p><b>Observações:</b> {{player.observacao}}</p>
+    {% endif %}
     <br>
     <div class="row">
         <div class="col"><b>Alterado em:</b> {{player.alterado_em}} <b>por</b> {{player.alterado_por}}</div>
+        {% if user.is_authenticated %}
         <div class="col"><a href="/players/edit/{{player.game_id}}" class="btn btn-warning">Editar perfil</a></div>
+        {% endif %}
     </div>
 </div>
+{% if user.is_authenticated %}
 <div class="container">
     <form action="/players/addstatus/{{player.game_id}}/" method="post">
         {% csrf_token %}
@@ -28,6 +33,7 @@
     </form>
 </div>
 <br>
+{% endif %}
 <div class="container">
     <table class="table table-striped">
         <thead>
