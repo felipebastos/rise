@@ -137,16 +137,20 @@ def add_status(request, game_id):
 
 @login_required
 def populate(request):
-    pass
+    return Http404('Não mexa aqui')
     with open('/home/k32/rise/dados.csv') as f:
         reader = csv.reader(f)
-        ally = Alliance.objects.filter(tag='AoD')[0]
         for row in reader:
-            obj_player, created_player = Player.objects.get_or_create(
-                game_id=row[0],
-                nick=row[1],
-                alliance=ally
-            )
+            jogador = Player.objects.filter(game_id=row[0]).first()
+
+            if jogador is None:
+                jogador = Player()
+                jogador.game_id = row[0]
+                jogador.nick = row[1]
+                bod = Alliance.objects.filter(tag='BoD').first()
+                jogador.alliance = bod
+                jogador.save()
+
             poder = row[2]
             if row[2] == '':
                 poder = 0
@@ -160,7 +164,7 @@ def populate(request):
                 death = 0
 
             obj_status, created_status = PlayerStatus.objects.get_or_create(
-                player=obj_player,
+                player=jogador,
                 power=poder,
                 killpoints=kills,
                 deaths=death
@@ -197,6 +201,7 @@ def alliance(request, ally_tag):
         raise Http404('Aliança não está nos registros.')
 
 
+@login_required
 def top300(request):
     #jogadores = PlayerStatus.objects.all().exclude(player__alliance__tag='MIGR').order_by('-power')[:300]
     jogadores = []
@@ -207,7 +212,11 @@ def top300(request):
         jogadores.append(status)
     jogadores.sort(key=lambda x: x.power if(
         x is not None) else 0, reverse=True)
+    poderTotal = 0
+    for jogador in jogadores[:300]:
+        poderTotal = poderTotal + jogador.power
     context = {
-        'jogadores': jogadores[:300]
+        'jogadores': jogadores[:300],
+        'poder': poderTotal,
     }
     return render(request, 'players/top300.html', context=context)
