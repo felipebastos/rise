@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import date
+from datetime import date, timedelta
 
 from players.models import Player
 
@@ -8,8 +8,18 @@ class Semana(models.Model):
     segunda = models.DateField('Segunda', default=date.today)
     encerrada = models.BooleanField('Trabalhos concluídos', default=False)
 
+    def inicio(self):
+        dia_da_semana = self.segunda.weekday()+1
+        diferenca = timedelta(days=(8-dia_da_semana))
+        segunda_seguinte = self.segunda + diferenca
+        return segunda_seguinte
+
+    def final(self):
+        return self.inicio() + timedelta(days=6)
+
+
     def __str__(self):
-        return f'Semana iniciada em {self.segunda}'
+        return f'Semana de {self.inicio()} a {self.final()}'
 
 class Donation(models.Model):
     data_da_doacao = models.DateField('Data da doação', default=date.today)

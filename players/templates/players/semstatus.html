@@ -1,0 +1,29 @@
+{% extends 'rise/base.html' %}
+{% block title %}Sem status da {{ally.tag}}{% endblock %}
+{% block content %}
+<div class="container">
+    <p>Atualize o jogador para a aliança apropriada ou adicione um status válido no perfil.</p>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nick</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in players %}
+            <tr>
+                <td><a href="/players/{{player.game_id}}">{{player.game_id}}</a></td>
+                <td>{{player.nick}}</td>
+                {% if user.is_authenticated %}
+                <td><a href="/players/edit/{{membro.game_id}}/" class="btn btn-warning"><i
+                            class="fas fa-user-edit"></i></a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

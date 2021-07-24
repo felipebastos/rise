@@ -2,13 +2,13 @@
 {% block title %}- Semana de Doações{% endblock %}
 {% block content %}
 <div class="container">
-    <h1>Semana de {{semana.segunda}}</h1>
+    <h1>Semana de {{semana.inicio}} a {{semana.final}}</h1>
     <table class="table table-stripped table-hover">
         <thead>
             <th>ID do Jogador</th>
             <th>Player</th>
             <th>Doou?</th>
-            <th>Mudar status</th>
+            <th>Ações</th>
         </thead>
         <tbody>
             {% for doador in doadores %}
@@ -22,7 +22,11 @@
                     DEVENDO
                     {% endif %}
                 </td>
-                <td><a href="/bank/donated/{{doador.id}}">Registrar doação</a></td>
+                {% if not doador.donated %}
+                <td><a class="btn btn-success" href="/bank/donated/{{doador.id}}"><i class="fas fa-plus"></i> Registrar doação</a></td>
+                {% else %}
+                <td><a class="btn btn-danger" href="/bank/donated/{{doador.id}}"><i class="fas fa-minus"></i> Remover doação</a></td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

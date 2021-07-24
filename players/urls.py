@@ -12,4 +12,6 @@ urlpatterns = [
     path('listspec/<spec>/', views.listspecs, name='listspec'),
     path('review/<ally_tag>/', views.review_players, name='reviewplayers'),
     path('top300/', views.top300, name='top300'),
+    path('nostatus/<ally_tag>/', views.falta_status, name='falta_status'),
+    path('old/<ally_tag>/', views.antigos, name='antigos'),
 ]

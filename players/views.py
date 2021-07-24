@@ -220,3 +220,40 @@ def top300(request):
         'poder': poderTotal,
     }
     return render(request, 'players/top300.html', context=context)
+
+
+@login_required
+def falta_status(request, ally_tag):
+    status = PlayerStatus.objects.all()
+    id_quem_tem = []
+    for cada in status:
+        if cada.power != 0:
+            id_quem_tem.append(cada.player.id)
+    ally = Alliance.objects.filter(tag=ally_tag).first()
+    jogadores_sem_status = Player.objects.filter(
+        alliance=ally).exclude(id__in=id_quem_tem)
+
+    context = {
+        'players': jogadores_sem_status,
+    }
+
+    return render(request, 'players/semstatus.html', context=context)
+
+@login_required
+def antigos(request, ally_tag):
+    status = PlayerStatus.objects.all()
+    hoje = date.today()
+    id_quem_tem = []
+    for cada in status:
+        diff = hoje - cada.data
+        if diff.days < 15:
+            id_quem_tem.append(cada.player.id)
+    ally = Alliance.objects.filter(tag=ally_tag).first()
+    jogadores_sem_status = Player.objects.filter(
+        alliance=ally).exclude(id__in=id_quem_tem)
+
+    context = {
+        'players': jogadores_sem_status,
+    }
+
+    return render(request, 'players/antigos.html', context=context)

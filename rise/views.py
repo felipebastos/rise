@@ -13,10 +13,11 @@ def index(request):
     god_atrasados = 0
     god_nulos = 0
     for player in players_god:
-        status = PlayerStatus.objects.filter(player=player).order_by('-data').first()
+        status = PlayerStatus.objects.filter(
+            player=player).order_by('-data').first()
         if status:
             delta = hoje - status.data
-            if delta.days >15:
+            if delta.days > 15:
                 god_atrasados = god_atrasados + 1
             if status.power == 0:
                 god_nulos = god_nulos + 1
@@ -26,10 +27,11 @@ def index(request):
     bod_atrasados = 0
     bod_nulos = 0
     for player in players_bod:
-        status = PlayerStatus.objects.filter(player=player).order_by('-data').first()
+        status = PlayerStatus.objects.filter(
+            player=player).order_by('-data').first()
         if status:
             delta = hoje - status.data
-            if delta.days >15:
+            if delta.days > 15:
                 bod_atrasados = bod_atrasados + 1
             if status.power == 0:
                 bod_nulos = bod_nulos + 1

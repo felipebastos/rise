@@ -2,49 +2,56 @@
 {% block title %}- MGE{% endblock %}
 {% block content %}
 <div class="container">
-    <h1>MGE que inicia em {{mge.semana}}</h1>
-    <h2>Inscrição</h2>
-    <div class="row">
-        {% if user.is_authenticated and not insc_encerradas %}
-        <div class="col">
-            <h3>Inscrever</h3>
-            <form action="/mge/inscrever/{{mge.id}}/" method="post">
-                {% csrf_token %}
-                <input type="text" name="player_id" id="player_id" placeholder="ID do jogador" pattern="^[0-9]*$"
-                    required>
-                <button type="submit" class="btn btn-info">Inscrever</button>
-            </form>
-        </div>
-        {% endif %}
-        <div class="col">
-            <h3>Inscritos</h3>
-            <table class='table table-striped'>
-                <thead>
-                    <tr>
-                        <th>Nick</th>
-                        {% if user.is_authenticated and not insc_encerradas %}
-                        <th>Funções</th>
-                        {% endif %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for inscrito in inscritos %}
-                    <tr>
-                        <td>{{inscrito.player.nick}}</td>
-                        {% if user.is_authenticated and not rank_fechado %}
-                        <td><a href="/mge/addtorank/{{mge.id}}/{{inscrito.player.game_id}}/"
-                                class="btn btn-info">Adicionar ao
-                                rank</a><a href="/mge/desinscrever/{{mge.id}}/{{inscrito.player.game_id}}/"
-                                class="btn btn-warning">Cancelar</a></td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    <h1 class="text-center">MGE que inicia em {{mge.semana}}</h1>
+    <h2 class="text-center">Inscrição <i class="fas fa-file-signature"></i></h2>
+
+    {% if user.is_authenticated and not insc_encerradas %}
+    <div class="container">
+        <h3>Inscrever</h3>
+        <form action="/mge/inscrever/{{mge.id}}/" method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <input class="form-control" type="text" name="player_id" id="player_id" placeholder="ID do jogador"
+                    pattern="^[0-9]*$" required>
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-info">Inscrever</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    <div class="container">
+        <h3>Inscritos</h3>
+        <table class='table table-striped'>
+            <thead>
+                <tr>
+                    <th>Nick</th>
+                    <th>Abates no KvK</th>
+                    <th>Mortes no KvK</th>
+                    {% if user.is_authenticated and not insc_encerradas %}
+                    <th>Ações</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for inscrito in inscritos %}
+                <tr>
+                    <td>{{inscrito.player.nick}}</td>
+                    <td><i>em construção</i></td>
+                    <td><i>em construção</i></td>
+                    {% if user.is_authenticated and not rank_fechado %}
+                    <td><a href="/mge/addtorank/{{mge.id}}/{{inscrito.player.game_id}}/" class="btn btn-info">Adicionar
+                            ao
+                            rank</a><a href="/mge/desinscrever/{{mge.id}}/{{inscrito.player.game_id}}/"
+                            class="btn btn-warning">Cancelar</a></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <hr>
-    <h2>Ranking</h2>
+    <h2 class="text-center">Ranking <i class="fas fa-trophy"></i></h2>
     <table class="table table-striped table-hover">
         <thead>
             <tr>
@@ -69,14 +76,14 @@
         </tbody>
     </table>
     <hr>
-    <h2>Punidos</h2>
+    <h2 class="text-center">Punidos <i class="fas fa-user-alt-slash"></i></h2>
     <table class="table table-hover table-striped">
         <thead>
             <tr>
                 <td>ID</td>
                 <td>Nick</td>
                 {% if user.is_authenticated %}
-                <td>Funções</td>
+                <td>Ações</td>
                 {% endif %}
             </tr>
         </thead>
@@ -85,7 +92,8 @@
             <tr>
                 <td>{{punido.player.game_id}}</td>
                 <td>{{punido.player.nick}}</td>
-                <td><a href="/mge/despunir/{{mge.id}}/{{punido.player.game_id}}/" class="btn btn-warning">Remover</a></td>
+                <td><a href="/mge/despunir/{{mge.id}}/{{punido.player.game_id}}/" class="btn btn-warning">Remover</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

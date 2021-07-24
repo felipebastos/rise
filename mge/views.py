@@ -10,7 +10,6 @@ from .models import Mge, Punido, Ranking, Inscrito
 
 def index(request):
     mges = Mge.objects.all()
-    print(mges)
     context = {
         'mges': mges,
     }

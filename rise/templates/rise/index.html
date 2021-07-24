@@ -5,9 +5,8 @@
     <div class="row">
         <div class="col">
             <h1>Gestão de doações</h1>
-            <a class="btn btn-primary" href="/bank/">Doações</a>
+            <a class="btn btn-primary" href="/bank/"><i class="fas fa-piggy-bank"></i> Doações</a>
             <br>
-            <footer>Você pode acessar os players a partir da listagem das alianças.</footer>
         </div>
         <div class="col">
             <h1>Encontre um jogador</h1>
@@ -15,7 +14,7 @@
                 {% csrf_token %}
                 <input class="form-control mr-sm-2" type="text" required min="0" pattern="^[0-9]*$"
                     placeholder="ID do jogador" name="id" required>
-                <button class="btn btn-success" type="submit">Procurar</button>
+                <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
             </form>
         </div>
     </div>
@@ -24,15 +23,15 @@
         <div class="col">
             <h1>Alertas da GoD</h1>
             <ul>
-                <li>A GoD tem {{god_antigos}} registros mais antigos do que quinze dias.</li>
-                <li>A GoD tem {{god_nulos}} registros sem anotação de status ou com poder zero.</li>
+                <li>A GoD tem <a href="/players/old/GoD/">{{god_antigos}}</a> registros mais antigos do que quinze dias.</li>
+                <li>A GoD tem <a href="/players/nostatus/GoD/">{{god_nulos}}</a> registros sem anotação de status ou com poder zero.</li>
             </ul>
         </div>
         <div class="col">
             <h1>Alertas da BoD</h1>
             <ul>
-                <li>A BoD tem {{bod_antigos}} registros mais antigos do que quinze dias.</li>
-                <li>A BoD tem {{bod_nulos}} registros sem anotação de status ou com poder zero.</li>
+                <li>A BoD tem <a href="/players/old/BoD/">{{bod_antigos}}</a> registros mais antigos do que quinze dias.</li>
+                <li>A BoD tem <a href="/players/nostatus/BoD/">{{bod_nulos}}</a> registros sem anotação de status ou com poder zero.</li>
             </ul>
         </div>
     </div>

@@ -12,7 +12,7 @@
     <p>{{death}} mortes totais na aliança.</p>
     {% endlanguage %}
     {% if user.is_authenticated %}
-    <a href="/players/review/{{ally.tag}}" class="btn btn-warning">Revisar membros</a>
+    <a href="/players/review/{{ally.tag}}" class="btn btn-warning"><i class="fas fa-users"></i> Revisar membros</a>
     {% endif %}
 </div>
 <div class="container-fluid">
@@ -22,7 +22,7 @@
                 <th>ID</th>
                 <th>Nick</th>
                 {% if user.is_authenticated %}
-                <th>Atalhos</th>
+                <th>Ações</th>
                 {% endif %}
             </tr>
         </thead>
@@ -32,7 +32,7 @@
                 <td><a href="/players/{{membro.game_id}}">{{membro.game_id}}</a></td>
                 <td>{{membro.nick}}</td>
                 {% if user.is_authenticated %}
-                <td><a href="/players/edit/{{membro.game_id}}/" class="btn btn-warning">Editar</a>
+                <td><a href="/players/edit/{{membro.game_id}}/" class="btn btn-warning"><i class="fas fa-user-edit"></i></a>
                     <a href="/mge/punir/{{membro.game_id}}/" class="btn btn-danger">Punir MGE</a>
                 </td>
                 {% endif %}
