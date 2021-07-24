@@ -1,0 +1,16 @@
+{% extends 'rise/base.html' %}
+{% block title %}- MGE{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+    <h1>Gestão de MGE</h1>
+    <a href="/mge/startnew/" class="btn btn-success">Iniciar novo MGE</a>
+</div>
+{% endif %}
+<div class="container">
+    <h1>MGE's por dia de início</h1>
+    {% for mge in mges %}
+    <a href="/mge/editar/{{mge.id}}/" class="btn btn-info">Domingo {{mge.semana}}</a>
+    {% endfor %}
+</div>
+{% endblock %}

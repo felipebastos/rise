@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'players.apps.PlayersConfig',
     'bank.apps.BankConfig',
     'kvk.apps.KvkConfig',
+    'mge.apps.MgeConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -28,6 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('bank/', include('bank.urls')),
     path('kvk/', include('kvk.urls')),
+    path('mge/', include('mge.urls')),
 ]
 
 admin.site.site_header  =  "K32 Admin"  

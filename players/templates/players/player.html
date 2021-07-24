@@ -13,7 +13,9 @@
     <div class="row">
         <div class="col"><b>Alterado em:</b> {{player.alterado_em}} <b>por</b> {{player.alterado_por}}</div>
         {% if user.is_authenticated %}
-        <div class="col"><a href="/players/edit/{{player.game_id}}" class="btn btn-warning">Editar perfil</a></div>
+        <div class="col"><a href="/players/edit/{{player.game_id}}" class="btn btn-warning">Editar perfil</a>
+            <a href="/mge/punir/{{player.game_id}}/" class="btn btn-danger">Punir MGE</a>
+        </div>
         {% endif %}
     </div>
 </div>
@@ -23,7 +25,7 @@
         {% csrf_token %}
         <div class="row">
             <div class="col"><input class="form-control" type="text" name="poder" placeholder="poder sem pontos"
-                    required min="0"  pattern="^[0-9]*$"></div>
+                    required min="0" pattern="^[0-9]*$"></div>
             <div class="col"><input class="form-control" type="text" name="killpoints"
                     placeholder="killpoints sem pontos" required min="0" pattern="^[0-9]*$"></div>
             <div class="col"><input class="form-control" type="text" name="mortes" placeholder="mortes sem pontos"

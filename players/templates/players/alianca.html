@@ -1,23 +1,23 @@
 {% extends 'rise/base.html' %}
 {% block title %}- Aliança{% endblock %}
 {% block content %}
-    {% load l10n %}
-    {% load i18n %}
-    <div class="jumbotron text-center">
-        <h1>{{ally.tag}} - {{ally.nome}}</h1>
-        <p>{{total}} membros</p>
-        {% language 'pt-br' %}
-        <p>{{power}} de poder total.</p>
-        <p>{{kills}} killpoints da aliança.</p>
-        <p>{{death}} mortes totais na aliança.</p>
-        {% endlanguage %}
-        {% if user.is_authenticated %}
-        <a href="/players/review/{{ally.tag}}" class="btn btn-warning">Revisar membros</a>
-        {% endif %}
-    </div>
-    <div class="container-fluid">
-        <table class="table table-striped">
-            <thead>
+{% load l10n %}
+{% load i18n %}
+<div class="jumbotron text-center">
+    <h1>{{ally.tag}} - {{ally.nome}}</h1>
+    <p>{{total}} membros</p>
+    {% language 'pt-br' %}
+    <p>{{power}} de poder total.</p>
+    <p>{{kills}} killpoints da aliança.</p>
+    <p>{{death}} mortes totais na aliança.</p>
+    {% endlanguage %}
+    {% if user.is_authenticated %}
+    <a href="/players/review/{{ally.tag}}" class="btn btn-warning">Revisar membros</a>
+    {% endif %}
+</div>
+<div class="container-fluid">
+    <table class="table table-striped">
+        <thead>
             <tr>
                 <th>ID</th>
                 <th>Nick</th>
@@ -25,18 +25,20 @@
                 <th>Atalhos</th>
                 {% endif %}
             </tr>
-            </thead>
-            <tbody>
+        </thead>
+        <tbody>
             {% for membro in membros %}
             <tr>
                 <td><a href="/players/{{membro.game_id}}">{{membro.game_id}}</a></td>
                 <td>{{membro.nick}}</td>
                 {% if user.is_authenticated %}
-                <td><a href="/players/edit/{{membro.game_id}}" class="btn btn-warning">Editar</a></td>
+                <td><a href="/players/edit/{{membro.game_id}}/" class="btn btn-warning">Editar</a>
+                    <a href="/mge/punir/{{membro.game_id}}/" class="btn btn-danger">Punir MGE</a>
+                </td>
                 {% endif %}
             </tr>
             {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
+</div>
 {% endblock %}
