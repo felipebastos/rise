@@ -6,6 +6,7 @@ from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 
 from .models import Player, PlayerStatus, Alliance, player_status, player_rank, player_spec
+from kvk.models import Kvk
 
 # Create your views here.
 
@@ -19,10 +20,12 @@ def index(request, game_id):
         for i, (res, verbose) in enumerate(player_spec):
             if player.specialty == res:
                 spec = verbose
+        temKvk = Kvk.objects.order_by('-inicio').first()
         context = {
             'player': player,
             'status': status,
-            'spec': spec
+            'spec': spec,
+            'showkvk': temKvk.ativo,
         }
     except Player.DoesNotExist:
         raise Http404("Player não encontrado.")
@@ -130,7 +133,21 @@ def add_status(request, game_id):
         novo_status.deaths = request.POST['mortes']
         novo_status.save()
 
-        return redirect(f'/players/{game_id}')
+        kvk = Kvk.objects.order_by('-inicio').first()
+        print(kvk)
+        if kvk and kvk.ativo:
+            honra = request.POST['honra']
+            print(honra)
+            zerado = 0
+            try:
+                if request.POST['zerado']:
+                    zerado = 1
+            except:
+                zerado = 0
+            print(zerado)
+            return redirect(f'/kvk/update/{kvk.id}/{game_id}/{honra}/{zerado}/')
+
+        return redirect(f'/players/{game_id}/')
     except:
         raise Http404('Player não existe.')
 

@@ -1,0 +1,38 @@
+{% extends 'rise/base.html' %}
+{% block title %}- KvK{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Kvk iniciado em {{kvk.inicio}}</h1>
+    {% if kvk.ativo %}
+    <a class="btn btn-warning" href="/kvk/close/{{kvk.id}}/">Fechar registros</a>
+    {% else %}
+    <a class="btn btn-success" href="/kvk/close/{{kvk.id}}/">Abrir registros</a>
+    {% endif %}
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nick</th>
+                <th>Aliança</th>
+                <th>Poder inicial</th>
+                <th>Honra</th>
+                <th>Killpoints no KvK</th>
+                <th>Mortes no KvK</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for desempenho in desempenhos %}
+            <tr>
+                <td><a href="/players/{{desempenho.player.game_id}}/">{{desempenho.player.game_id}}</a></td>
+                <td>{{desempenho.player.nick}}{% if desempenho.zerado %} <i style="color:orangered;" class="fas fa-fire-alt"></i>{% endif %}</td>
+                <td>{{desempenho.player.alliance.tag}}</td>
+                <td>{{desempenho.primeiro_status.power}}</td>
+                <td>{{desempenho.honra}}</td>
+                <td>{{desempenho.kills}}</td>
+                <td>{{desempenho.deaths}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

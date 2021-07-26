@@ -12,9 +12,13 @@
             <h1>Encontre um jogador</h1>
             <form class="form-inline" action="/players/find/" method="post">
                 {% csrf_token %}
-                <input class="form-control mr-sm-2" type="text" required min="0" pattern="^[0-9]*$"
-                    placeholder="ID do jogador" name="id" required>
-                <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+                <div class="input-group">
+                    <input class="form-control" type="text" required min="0" pattern="^[0-9]*$"
+                        placeholder="ID do jogador" name="id" required>
+                    <div class="input-group-append">
+                        <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -23,15 +27,19 @@
         <div class="col">
             <h1>Alertas da GoD</h1>
             <ul>
-                <li>A GoD tem <a href="/players/old/GoD/">{{god_antigos}}</a> registros mais antigos do que quinze dias.</li>
-                <li>A GoD tem <a href="/players/nostatus/GoD/">{{god_nulos}}</a> registros sem anotação de status ou com poder zero.</li>
+                <li>A GoD tem <a href="/players/old/GoD/">{{god_antigos}}</a> registros mais antigos do que quinze dias.
+                </li>
+                <li>A GoD tem <a href="/players/nostatus/GoD/">{{god_nulos}}</a> registros sem anotação de status ou com
+                    poder zero.</li>
             </ul>
         </div>
         <div class="col">
             <h1>Alertas da BoD</h1>
             <ul>
-                <li>A BoD tem <a href="/players/old/BoD/">{{bod_antigos}}</a> registros mais antigos do que quinze dias.</li>
-                <li>A BoD tem <a href="/players/nostatus/BoD/">{{bod_nulos}}</a> registros sem anotação de status ou com poder zero.</li>
+                <li>A BoD tem <a href="/players/old/BoD/">{{bod_antigos}}</a> registros mais antigos do que quinze dias.
+                </li>
+                <li>A BoD tem <a href="/players/nostatus/BoD/">{{bod_nulos}}</a> registros sem anotação de status ou com
+                    poder zero.</li>
             </ul>
         </div>
     </div>

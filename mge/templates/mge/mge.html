@@ -37,8 +37,8 @@
                 {% for inscrito in inscritos %}
                 <tr>
                     <td>{{inscrito.player.nick}}</td>
-                    <td><i>em construção</i></td>
-                    <td><i>em construção</i></td>
+                    <td>{{inscrito.kills}}</td>
+                    <td>{{inscrito.deaths}}</td>
                     {% if user.is_authenticated and not rank_fechado %}
                     <td><a href="/mge/addtorank/{{mge.id}}/{{inscrito.player.game_id}}/" class="btn btn-info">Adicionar
                             ao

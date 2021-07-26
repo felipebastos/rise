@@ -2,6 +2,21 @@
 {% block title %}- KvK{% endblock %}
 {% block content %}
 <div class="container">
-    <h1>Em construção</h1>
+    <h1>Gestão</h1>
+    <form action="/kvk/createkvk/" method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            <input type="date" name="inicio" id="inicio" class="form-control" required>
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-success">Criar</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="container">
+    <h1>KvK's</h1>
+    {% for kvk in kvks %}
+    <a href="/kvk/edit/{{kvk.id}}/" class="btn btn-info">{{kvk.inicio}}</a>
+    {% endfor %}
 </div>
 {% endblock %}

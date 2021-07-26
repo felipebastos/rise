@@ -51,7 +51,8 @@ class Player(models.Model):
         Alliance, on_delete=models.CASCADE, default=None, null=True)
 
     alterado_em = models.DateField('Alterado em', default=date.today)
-    alterado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    alterado_por = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return f'{self.nick}'
