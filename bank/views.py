@@ -20,12 +20,13 @@ def index(request):
 
 
 @login_required
-def create_week(request, tag):
+def create_week(request, tag, resource):
     ally = Alliance.objects.filter(tag=tag)[0]
 
     jogadores = Player.objects.all().exclude(rank='SA').filter(alliance=ally)
 
     semana = Semana()
+    semana.recurso = resource
     semana.save()
 
     for jogador in jogadores:

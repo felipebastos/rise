@@ -16,7 +16,7 @@
         <tbody>
             {% for divida in devedores %}
             <tr>
-                <td>{{divida.semana.segunda}}</td>
+                <td>{{divida.semana.segunda}} - {{divida.semana.recurso_da_semana}}</td>
                 <td><a href="/player/{{divida.player.game_id}}/">{{divida.player.game_id}}</a></td>
                 <td>{{divida.player.nick}}</td>
             </tr>

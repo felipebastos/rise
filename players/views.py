@@ -21,11 +21,14 @@ def index(request, game_id):
             if player.specialty == res:
                 spec = verbose
         temKvk = Kvk.objects.order_by('-inicio').first()
+        exibirkvk = False
+        if temKvk and temKvk.ativo:
+            exibirkvk = True
         context = {
             'player': player,
             'status': status,
             'spec': spec,
-            'showkvk': temKvk.ativo,
+            'showkvk': exibirkvk,
         }
     except Player.DoesNotExist:
         raise Http404("Player não encontrado.")

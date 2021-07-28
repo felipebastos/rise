@@ -4,9 +4,18 @@ from datetime import date, timedelta
 from players.models import Player
 
 # Create your models here.
+resources = (
+    ('COM', 'Comida'),
+    ('MAD', 'Madeira'),
+    ('PED', 'Pedra'),
+    ('OUR', 'Ouro'),
+)
+
 class Semana(models.Model):
     segunda = models.DateField('Segunda', default=date.today)
     encerrada = models.BooleanField('Trabalhos concluídos', default=False)
+
+    recurso = models.CharField('Material', max_length=15, choices=resources, default='COM')
 
     def inicio(self):
         dia_da_semana = self.segunda.weekday()+1
@@ -17,9 +26,13 @@ class Semana(models.Model):
     def final(self):
         return self.inicio() + timedelta(days=6)
 
+    def recurso_da_semana(self):
+        for (cod, val) in resources:
+            if cod == self.recurso:
+                return val
 
     def __str__(self):
-        return f'Semana de {self.inicio()} a {self.final()}'
+        return f'Semana de {self.inicio()} a {self.final()} - {self.recurso_da_semana}'
 
 class Donation(models.Model):
     data_da_doacao = models.DateField('Data da doação', default=date.today)
