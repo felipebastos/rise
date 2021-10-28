@@ -24,9 +24,9 @@
                     {% endif %}
                 </td>
                 {% if not doador.donated %}
-                <td><a class="btn btn-success" href="/bank/donated/{{doador.id}}"><i class="fas fa-plus"></i> Registrar doação</a></td>
+                <td><a class="btn btn-success" href="/bank/donated/{{doador.getid}}"><i class="fas fa-plus"></i> Registrar doação</a></td>
                 {% else %}
-                <td><a class="btn btn-danger" href="/bank/donated/{{doador.id}}"><i class="fas fa-minus"></i> Remover doação</a></td>
+                <td><a class="btn btn-danger" href="/bank/donated/{{doador.getid}}"><i class="fas fa-minus"></i> Remover doação</a></td>
                 {% endif %}
             </tr>
             {% endfor %}

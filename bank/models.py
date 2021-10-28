@@ -32,7 +32,7 @@ class Semana(models.Model):
                 return val
 
     def __str__(self):
-        return f'Semana de {self.inicio()} a {self.final()} - {self.recurso_da_semana}'
+        return f'Semana de {self.inicio()} a {self.final()} - {self.recurso_da_semana()}'
 
 class Donation(models.Model):
     data_da_doacao = models.DateField('Data da doação', default=date.today)
@@ -40,6 +40,9 @@ class Donation(models.Model):
     donated = models.BooleanField('Doação realizada', default=False)
 
     semana = models.ForeignKey(Semana, on_delete=models.CASCADE, default=None)
+
+    def getid(self):
+        return str(self.id)
 
     def __str__(self):
         return f'Doação de {self.player.alliance.tag} {self.player.nick}'
