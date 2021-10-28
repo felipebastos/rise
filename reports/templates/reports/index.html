@@ -1,0 +1,62 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Rankings{% endblock %}
+{% block content %}
+<div class="container">
+    <form class="form-inline" action="/reports/" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="mr-sm-2" for="inicio">Data de início</label>
+            <input class="form-control" type="date" name="inicio" id="inicio" required>
+        </div>
+        <div class="form-group">
+            <label class="mr-sm-2" for="fim">Data de fim</label>
+            <input class="form-control" type="date" name="fim" id="fim" required>
+        </div>
+        <div class="form-group">
+            <label class="mr-sm-2" for="universo">Ranking de:</label>
+            <select class="form-control" name="universo" id="universo">
+                <option value="K32">Reino</option>
+                {% for ally in alliances %}
+                <option value="{{ally.tag}}">{{ally.nome}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-check">
+            <label class="form-check-label mr-sm-2">
+                <input type="radio" class="form-check-input" name="ordem" value="kp">Kill Points
+            </label>
+        </div>
+        <div class="form-check">
+            <label class="form-check-label mr-sm-2">
+                <input type="radio" class="form-check-input" name="ordem" value="mo">Mortes
+            </label>
+        </div>
+        <input class="btn btn-info" type="submit" value="Procurar">
+    </form>
+    {% if rank %}
+    <hr>
+    <h1>{{titulo}}</h1>
+    <h2>{{inicio}} a {{fim}}</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Classificação</th>
+                <th>Nick</th>
+                <th>Kill Points</th>
+                <th>Mortes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in rank %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{player.player__nick}}</td>
+                <td>{{player.kp}}</td>
+                <td>{{player.dt}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+{% endblock %}

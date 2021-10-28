@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'bank.apps.BankConfig',
     'kvk.apps.KvkConfig',
     'mge.apps.MgeConfig',
+    'reports.apps.ReportsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
