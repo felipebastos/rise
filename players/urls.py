@@ -14,4 +14,6 @@ urlpatterns = [
     path('top300/', views.top300, name='top300'),
     path('nostatus/<ally_tag>/', views.falta_status, name='falta_status'),
     path('old/<ally_tag>/', views.antigos, name='antigos'),
+    path('statusedit/<status_id>/', views.editaStatus, name='edit_status'),
+    path('statusdelete/<status_id>/', views.delete_status, name='delete_status'),
 ]

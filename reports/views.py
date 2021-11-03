@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models.aggregates import Count, Max, Min
+from django.db.models.aggregates import Max, Min
 from django.shortcuts import render
 
 from datetime import date
 
-from players.models import Alliance, Player, PlayerStatus
+from players.models import Alliance, PlayerStatus
 
 # Create your views here.
 @login_required
@@ -44,3 +44,27 @@ def index(request):
             pass
     
     return render(request, 'reports/index.html', context=context)
+
+@login_required
+def top300(request):    
+    oReino = PlayerStatus.objects.exclude(player__alliance__tag='MIGR').exclude(player__status='INATIVO').order_by('-data')
+
+    oReinoUnico = {}
+    for status in oReino:
+        if status.player.game_id not in oReinoUnico.keys():
+            oReinoUnico[status.player.game_id] = status
+    
+    os300 = list(oReinoUnico.values())
+    os300.sort(key=lambda x: x.power if(
+        x is not None) else 0, reverse=True)
+    os300 = os300[:300]
+
+    poder = 0
+    for p in os300:
+        poder += p.power
+
+    context = {
+        'jogadores': os300,
+        'poder': poder
+    }
+    return render(request, 'reports/top300.html', context=context)

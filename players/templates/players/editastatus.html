@@ -1,0 +1,31 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Edição do Jogador{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h2>
+        Você está corrigindo o status de {{status.player.nick}}
+    </h2>
+    <form action="/players/statusedit/{{status.get_id}}/" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="poder">Poder</label>
+            <input class="form-control" type="text" name="power" id="poder" value="{{status.power}}" required min="0"
+                pattern="^[0-9]*$">
+        </div>
+        <div class="form-group">
+            <label for="killpoints">Killpoints</label>
+            <input class="form-control" type="text" name="killpoints" id="killpoints" value="{{status.killpoints}}"
+                required min="0" pattern="^[0-9]*$">
+        </div>
+        <div class="form-group">
+            <label for="deaths">Mortes</label>
+            <input class="form-control" type="text" name="deaths" id="deaths" value="{{status.deaths}}" required min="0"
+                pattern="^[0-9]*$">
+        </div>
+        <div>
+            <button class="btn btn-info" type="submit">Corrigir</button>
+            <a class="btn btn-warning" href="/players/{{status.player.game_id}}">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

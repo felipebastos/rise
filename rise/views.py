@@ -1,13 +1,15 @@
+from django.db.models.aggregates import Count, Max
+from django.db.models.expressions import Case, When
 from players.models import Alliance, PlayerStatus, Player
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from datetime import date, timedelta
+from datetime import datetime, timezone, timedelta
 
 
 def index(request):
-    hoje = date.today()
+    hoje = datetime.now(timezone(timedelta(hours=-3)))
 
     players_god = Player.objects.filter(alliance__tag='GoD')
     god_atrasados = 0

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 
 # Create your models here.
 player_status = (
@@ -63,10 +63,17 @@ class Player(models.Model):
 
 class PlayerStatus(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    data = models.DateField(default=date.today)
+    data = models.DateTimeField(auto_now_add=True)
     power = models.IntegerField(null=True)
     killpoints = models.IntegerField()
     deaths = models.IntegerField()
+
+    def editavel(self):
+        passou = datetime.now(timezone(-timedelta(hours=3))) - self.data
+        return True if passou < timedelta(hours=1) else False 
+
+    def get_id(self):
+        return str(self.id)
 
     def __str__(self):
         return f'{self.player.game_id} - {self.player.nick} - {self.data}'

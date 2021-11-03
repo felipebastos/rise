@@ -1,5 +1,5 @@
 import csv
-from datetime import date
+from datetime import date, datetime
 
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, Http404
@@ -16,6 +16,7 @@ def index(request, game_id):
         player = Player.objects.get(game_id=game_id)
         status = PlayerStatus.objects.filter(
             player__game_id=game_id).order_by('-data')
+        print(status[0])
         spec = None
         for i, (res, verbose) in enumerate(player_spec):
             if player.specialty == res:
@@ -69,6 +70,7 @@ def edit_player(request, game_id):
     return render(request, 'players/edit.html', context=context)
 
 
+@login_required
 def listspecs(request, spec):
     players = Player.objects.filter(
         specialty=spec).order_by('alliance')
@@ -192,6 +194,7 @@ def populate(request):
     return HttpResponse('Sucesso! (acho)')
 
 
+@login_required
 def alliance(request, ally_tag):
     try:
         ally = Alliance.objects.filter(tag=ally_tag).first()
@@ -259,6 +262,7 @@ def falta_status(request, ally_tag):
 
     return render(request, 'players/semstatus.html', context=context)
 
+
 @login_required
 def antigos(request, ally_tag):
     status = PlayerStatus.objects.all()
@@ -277,3 +281,32 @@ def antigos(request, ally_tag):
     }
 
     return render(request, 'players/antigos.html', context=context)
+
+
+@login_required
+def editaStatus(request, status_id):
+    if request.method == 'POST':
+        status = PlayerStatus.objects.all().filter(id=status_id).first()
+        if status.editavel():
+            status.power = request.POST['power']
+            status.killpoints = request.POST['killpoints']
+            status.deaths = request.POST['deaths']
+            status.data = datetime.now()
+            status.save()
+
+        return redirect(f'/players/{status.player.game_id}')
+
+    status = PlayerStatus.objects.all().filter(id=status_id).first()
+    context = {
+        'status': status
+    }
+    return render(request, 'players/editastatus.html', context=context)
+
+
+@login_required
+def delete_status(request, status_id):
+    status = PlayerStatus.objects.all().filter(id=status_id).first()
+    if status.editavel():
+        status.delete()
+
+    return redirect(f'/players/{status.player.game_id}')

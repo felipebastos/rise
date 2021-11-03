@@ -59,6 +59,7 @@
                 <th>Poder</th>
                 <th>Killpoints</th>
                 <th>Mortes</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -69,6 +70,12 @@
                 <td>{{item.power}}</td>
                 <td>{{item.killpoints}}</td>
                 <td>{{item.deaths}}</td>
+                <td>
+                    {% if item.editavel %}
+                    <a class="btn btn-warning" href="/players/statusedit/{{item.get_id}}">Editar</a>
+                    <a class="btn btn-danger" href="/players/statusdelete/{{item.get_id}}">Deletar</a>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
             {% endlanguage %}
