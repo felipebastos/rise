@@ -9,7 +9,7 @@ from players.models import Alliance, PlayerStatus
 # Create your views here.
 @login_required
 def index(request):
-    aliancas = Alliance.objects.all()
+    aliancas = Alliance.objects.all().filter(tag__in=['GoD', 'BoD', 'AoD'])
     context = {
         'alliances': aliancas
     }
@@ -32,7 +32,6 @@ def index(request):
                 ord = '-dt'
                 context['titulo'] = f'Ranking por Mortes de {universo}'
 
-            #print(f'Procurando para {universo} entre {inicio} e {fim}, ordenado por {ordem}')
             status = None
             if universo == 'K32':
                 status = PlayerStatus.objects.all().filter(data__gte=inicio).filter(data__lte=fim).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by(ord)
