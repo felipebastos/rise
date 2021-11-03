@@ -23,7 +23,7 @@ def index(request):
 def create_week(request, tag, resource):
     ally = Alliance.objects.filter(tag=tag)[0]
 
-    jogadores = Player.objects.all().exclude(rank='SA').filter(alliance=ally)
+    jogadores = Player.objects.all().filter(alliance=ally).exclude(rank='SA').exclude(status='FARM')
 
     semana = Semana()
     semana.recurso = resource
