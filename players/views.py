@@ -131,12 +131,18 @@ def add_status(request, game_id):
         poder = ''
         if '.' in request.POST['poder']:
             poder = request.POST['poder'].replace('.', '')
+        else:
+            poder = request.POST['poder']
         kp = ''
         if '.' in request.POST['killpoints']:
             kp = request.POST['killpoints'].replace('.', '')
+        else:
+            kp = request.POST['killpoints']
         deaths = ''
         if '.' in request.POST['mortes']:
             deaths = request.POST['mortes'].replace('.', '')
+        else:
+            deaths = request.POST['mortes']
         player = Player.objects.filter(game_id=game_id).first()
 
         novo_status = PlayerStatus()
@@ -147,22 +153,21 @@ def add_status(request, game_id):
         novo_status.save()
 
         kvk = Kvk.objects.order_by('-inicio').first()
-        print(kvk)
+        #print(kvk)
         if kvk and kvk.ativo:
             honra = request.POST['honra']
-            print(honra)
             zerado = 0
             try:
                 if request.POST['zerado']:
                     zerado = 1
             except:
                 zerado = 0
-            print(zerado)
+            #print(zerado)
             return redirect(f'/kvk/update/{kvk.id}/{game_id}/{honra}/{zerado}/')
         if 'origem' in request.POST:
             return redirect(request.POST['origem'])
         return redirect(f'/players/{game_id}/')
-    except:
+    except Exception as e:
         raise Http404('Player não existe.')
 
 
