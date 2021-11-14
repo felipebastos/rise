@@ -3,7 +3,10 @@
 {% block content %}
 <div class="container">
     <h1>Top 300 do K32</h1>
-    <h3>Segundo os registros, o poder para pareamento é {{poder}}</h3>
+    <h3 title="O poder do top 300 ativo, contando os banidos que não migraram e as farms fortes.">Segundo os registros, o poder para pareamento é {{poder}}</h3>
+    <h3 title="Todos os jogadores, mesmo fora do top 300, menos: banidos e farms">Já o poder de batalha do reino é de {{p_batalha}}</h3>
+    <h3>O poder de sacrifício é de {{p_sacrificio}}</h3>
+    <a class="btn btn-warning" href="/reports/rev/">Revisar top 300</a>
     <table class="table table-hover table-striped">
         <thead>
             <tr>

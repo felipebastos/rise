@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models.aggregates import Max, Min
 from django.shortcuts import render
 
-from datetime import date
+from datetime import date, datetime, timedelta
 
 from players.models import Alliance, PlayerStatus
 
@@ -53,10 +53,18 @@ def top300(request):
         if status.player.game_id not in oReinoUnico.keys():
             oReinoUnico[status.player.game_id] = status
     
-    os300 = list(oReinoUnico.values())
-    os300.sort(key=lambda x: x.power if(
+    todos = list(oReinoUnico.values())
+    todos.sort(key=lambda x: x.power if(
         x is not None) else 0, reverse=True)
-    os300 = os300[:300]
+    poder_de_batalha = 0
+    poder_de_sacrificio = 0
+    for p in todos:
+        if p.player.status not in ['FARM', 'BANIDO']:
+            poder_de_batalha += p.power
+        if p.player.status not in ['BANIDO']:
+            poder_de_sacrificio += p.power
+
+    os300 = todos[:300]
 
     poder = 0
     for p in os300:
@@ -64,6 +72,30 @@ def top300(request):
 
     context = {
         'jogadores': os300,
-        'poder': poder
+        'poder': poder,
+        'p_batalha': poder_de_batalha,
+        'p_sacrificio': poder_de_sacrificio,
     }
     return render(request, 'reports/top300.html', context=context)
+
+
+@login_required
+def top300rev(request):
+    oReino = PlayerStatus.objects.exclude(player__alliance__tag='MIGR').exclude(player__status='INATIVO').order_by('-data')
+
+    oReinoUnico = {}
+    for status in oReino:
+        if status.player.game_id not in oReinoUnico.keys():
+            oReinoUnico[status.player.game_id] = status
+    
+    todos = list(oReinoUnico.values())
+    todos.sort(key=lambda x: x.power if(
+        x is not None) else 0, reverse=True)
+
+    os300 = todos[:300]
+    
+    context = {
+        'jogadores': os300,
+    }
+
+    return render(request, 'reports/rev300.html', context=context)

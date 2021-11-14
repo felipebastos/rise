@@ -72,6 +72,10 @@ class PlayerStatus(models.Model):
         passou = datetime.now(timezone(-timedelta(hours=3))) - self.data
         return True if passou < timedelta(hours=1) else False 
 
+    def revisavel(self):
+        passou = datetime.now(timezone(-timedelta(hours=3))) - self.data
+        return False if passou < timedelta(days=2) else True
+
     def get_id(self):
         return str(self.id)
 

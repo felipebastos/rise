@@ -129,13 +129,22 @@ def findplayer(request):
 @login_required
 def add_status(request, game_id):
     try:
+        poder = ''
+        if '.' in request.POST['poder']:
+            poder = request.POST['poder'].replace('.', '')
+        kp = ''
+        if '.' in request.POST['killpoints']:
+            kp = request.POST['killpoints'].replace('.', '')
+        deaths = ''
+        if '.' in request.POST['mortes']:
+            deaths = request.POST['mortes'].replace('.', '')
         player = Player.objects.filter(game_id=game_id).first()
 
         novo_status = PlayerStatus()
         novo_status.player = player
-        novo_status.power = request.POST['poder']
-        novo_status.killpoints = request.POST['killpoints']
-        novo_status.deaths = request.POST['mortes']
+        novo_status.power = poder
+        novo_status.killpoints = kp
+        novo_status.deaths = deaths
         novo_status.save()
 
         kvk = Kvk.objects.order_by('-inicio').first()
