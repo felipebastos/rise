@@ -16,7 +16,6 @@ def index(request, game_id):
         player = Player.objects.get(game_id=game_id)
         status = PlayerStatus.objects.filter(
             player__game_id=game_id).order_by('-data')
-        print(status[0])
         spec = None
         for i, (res, verbose) in enumerate(player_spec):
             if player.specialty == res:
@@ -160,7 +159,8 @@ def add_status(request, game_id):
                 zerado = 0
             print(zerado)
             return redirect(f'/kvk/update/{kvk.id}/{game_id}/{honra}/{zerado}/')
-
+        if 'origem' in request.POST:
+            return redirect(request.POST['origem'])
         return redirect(f'/players/{game_id}/')
     except:
         raise Http404('Player não existe.')

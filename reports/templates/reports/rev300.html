@@ -18,6 +18,7 @@
         {% for jogador in jogadores %}
         <form action="/players/addstatus/{{jogador.player.game_id}}/" method="post">
             {% csrf_token %}
+            <input type="hidden" name="origem" value="/reports/rev/">
         <tr>
             <td>{{forloop.counter}}
                 {% if jogador.revisavel %}
