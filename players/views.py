@@ -2,10 +2,12 @@ import csv
 from datetime import date, datetime
 
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
 from .models import Player, PlayerStatus, Alliance, player_status, player_rank, player_spec
+from .forms import UploadFileForm
 from kvk.models import Kvk
 
 # Create your views here.
@@ -170,42 +172,99 @@ def add_status(request, game_id):
     except Exception as e:
         raise Http404('Player não existe.')
 
+@login_required
+def upload_csv(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            with open('dados.csv', 'wb') as destination:
+                for chunk in request.FILES['file'].chunks():
+                    destination.write(chunk)
+            return HttpResponseRedirect('/players/populate/')
+    else:
+        form = UploadFileForm()
+    return render(request, 'players/upload.html', {'form': form})
+
 
 @login_required
 def populate(request):
-    return Http404('Não mexa aqui')
-    with open('/home/k32/rise/dados.csv') as f:
+    with open('./dados.csv') as f:
         reader = csv.reader(f)
         for row in reader:
+            # jump header
+            if row[0] == 'Governor ID':
+                continue
+
             jogador = Player.objects.filter(game_id=row[0]).first()
 
             if jogador is None:
+                # create new player
                 jogador = Player()
                 jogador.game_id = row[0]
-                jogador.nick = row[1]
-                bod = Alliance.objects.filter(tag='BoD').first()
-                jogador.alliance = bod
+                jogador.nick = row[2]
+                psa = Alliance.objects.filter(tag='PSA').first()
+                jogador.alliance = psa
+                jogador.save()
+            else:
+                # update some data
+                jogador.nick = row[2]
+                ally = Alliance.objects.filter(tag=row[4][0:3]).first()
+                if ally is not None:
+                    jogador.alliance = ally
+                else:
+                    psa = Alliance.objects.filter(tag='PSA').first()
+                    jogador.alliance = psa
                 jogador.save()
 
-            poder = row[2]
-            if row[2] == '':
+            poder = row[3]
+            if row[3] == '':
                 poder = 0
 
-            kills = row[3]
-            if row[3] == '':
-                kills = 0
+            # Colunas de 5 a 9
+            kills = []
+            kills_t1 = row[5]
+            if row[5] == '':
+                kill_t1 = 0
+            kills.append(kills_t1)
+            kills_t2 = row[6]
+            if row[6] == '':
+                kill_t2 = 0
+            kills.append(kills_t2)
+            kills_t3 = row[7]
+            if row[7] == '':
+                kill_t3 = 0
+            kills.append(kills_t3)
+            kills_t4 = row[8]
+            if row[8] == '':
+                kill_t4 = 0
+            kills.append(kills_t4)
+            kills_t5 = row[9]
+            if row[9] == '':
+                kills_t5 = 0
+            kills.append(kills_t5)
 
-            death = row[4]
+            killpoints = 0
+            coeficientes = [0.2, 2, 5, 10, 20]
+            for i in range(len(kills)):
+                if isinstance(kills[i], str):
+                    if '.' in kills[i]:
+                        kills[i] = kills[i].replace('.', '')
+                    kills[i] = int(kills[i])
+
+                killpoints = killpoints + kills[i]*coeficientes[i]
+            
+
+            death = row[10]
             if row[4] == '':
                 death = 0
 
             obj_status, created_status = PlayerStatus.objects.get_or_create(
                 player=jogador,
                 power=poder,
-                killpoints=kills,
+                killpoints=killpoints,
                 deaths=death
             )
-    return HttpResponse('Sucesso! (acho)')
+    return HttpResponseRedirect('/')
 
 
 @login_required
@@ -280,7 +339,7 @@ def falta_status(request, ally_tag):
 @login_required
 def antigos(request, ally_tag):
     status = PlayerStatus.objects.all()
-    hoje = date.today()
+    hoje = timezone.now()
     id_quem_tem = []
     for cada in status:
         diff = hoje - cada.data
@@ -305,7 +364,7 @@ def editaStatus(request, status_id):
             status.power = request.POST['power']
             status.killpoints = request.POST['killpoints']
             status.deaths = request.POST['deaths']
-            status.data = datetime.now()
+            status.data = timezone.now()
             status.save()
 
         return redirect(f'/players/{status.player.game_id}')

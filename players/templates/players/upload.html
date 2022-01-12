@@ -1,0 +1,11 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Detalhes do Jogador{% endblock %}
+{% block content %}
+{% load l10n %}
+{% load i18n %}
+<form action="/players/upload/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Enviar</button>
+</form>
+{% endblock %}
