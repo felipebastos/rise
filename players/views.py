@@ -413,29 +413,38 @@ def como_estou(request):
                 break
         faixa_inicio = 0
         faixa_fim = 10000000000
+        meta = 0
         if primeiro.power > 100000000:
             faixa_inicio = 100000000
+            meta = 3000000
         elif 90000000 < primeiro.power < 100000000:
             faixa_inicio = 90000000
             faixa_fim = 100000000
+            meta = 2200000
         elif 80000000 < primeiro.power < 90000000:
             faixa_inicio = 80000000
             faixa_fim = 90000000
+            meta = 1500000
         elif 70000000 < primeiro.power < 80000000:
             faixa_inicio = 70000000
             faixa_fim = 80000000
+            meta = 1100000
         elif 60000000 < primeiro.power < 70000000:
             faixa_inicio = 60000000
             faixa_fim = 70000000
+            meta = 700000
         elif 50000000 < primeiro.power < 60000000:
             faixa_inicio = 50000000
             faixa_fim = 60000000
+            meta = 600000
         elif 40000000 < primeiro.power < 50000000:
             faixa_inicio = 40000000
             faixa_fim = 50000000
+            meta = 500000
         else:
             faixa_inicio = 0
             faixa_fim = 40000000
+            meta = 500000
         
         faixa_original = PlayerStatus.objects.filter(data__year=primeiro.data.year,
                                                      data__month=primeiro.data.month,
@@ -484,6 +493,8 @@ def como_estou(request):
             'todosdt': todos_dt,
             'posdtfaixa': pos_dt_faixa,
             'comparadoa': players_faixa_original,
+            'metamortes': True if meta < ultimo.deaths - primeiro.deaths else False,
+            'meta': meta,
         }
         
         return render(request, 'players/emkvk.html', context=context)

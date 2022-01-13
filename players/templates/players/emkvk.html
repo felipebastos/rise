@@ -11,7 +11,7 @@
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item">{{killpoints}} killpoints</li>
-        <li class="list-group-item">{{deaths}} de suas tropas morreram</li>
+        <li class="list-group-item">{{deaths}} de suas tropas morreram {% if metamortes %} <span title="Sua meta era {{meta}}" class="fas fa-thumbs-up text-success"></span> {% else %} <span title="Sua meta é {{meta}}" class="fas fa-thumbs-down text-danger"></span> {% endif %}</li>
         <li class="list-group-item">{{perdeuganhou}} {{power}} em poder</li>
     </ul>
     <div class="card-body">
