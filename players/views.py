@@ -437,8 +437,19 @@ def como_estou(request):
             faixa_inicio = 0
             faixa_fim = 40000000
         
-        status_kp_similares = PlayerStatus.objects.all().filter(data__gte=kvk.inicio).filter(power__gte=faixa_inicio).filter(power__lte=faixa_fim).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-kp')
-        status_dt_similares = PlayerStatus.objects.all().filter(data__gte=kvk.inicio).filter(power__gte=faixa_inicio).filter(power__lte=faixa_fim).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-dt')
+        faixa_original = PlayerStatus.objects.filter(data__year=primeiro.data.year,
+                                                     data__month=primeiro.data.month,
+                                                     data__day=primeiro.data.day,
+                                                     power__gte=faixa_inicio,
+                                                     power__lte=faixa_fim
+                                                     ).order_by('data')
+        players_faixa_original = []
+        for stat in faixa_original:
+            if stat.player not in players_faixa_original:
+                players_faixa_original.append(stat.player)
+
+        status_kp_similares = PlayerStatus.objects.all().filter(player__in=players_faixa_original).filter(data__gte=kvk.inicio).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-kp')
+        status_dt_similares = PlayerStatus.objects.all().filter(player__in=players_faixa_original).filter(data__gte=kvk.inicio).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-dt')
 
         todos_kp = len(status_kp_similares)
         pos_kp_faixa = todos_kp
@@ -461,6 +472,7 @@ def como_estou(request):
             'kvk': kvk,
             'nick': ultimo.player.nick,
             'player_id': ultimo.player.game_id,
+            'atualizado': ultimo.data,
             'killpoints': ultimo.killpoints - primeiro.killpoints,
             'deaths': ultimo.deaths - primeiro.deaths,
             'power': (ultimo.power - primeiro.power)*-1,
@@ -471,6 +483,7 @@ def como_estou(request):
             'poskpfaixa': pos_kp_faixa,
             'todosdt': todos_dt,
             'posdtfaixa': pos_dt_faixa,
+            'comparadoa': players_faixa_original,
         }
         
         return render(request, 'players/emkvk.html', context=context)

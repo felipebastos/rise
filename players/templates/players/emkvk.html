@@ -5,9 +5,9 @@
 {% load i18n %}
 <div class="card">
     <div class="card-body">
-        <div class="card-title">{{nick}}</div>
-        <div class="card-subtitle  mb-2 text-muted">{{player_id}}</div>
+        <div class="card-title">{{nick}} <span class="badge badge-info">ID: {{player_id}}</span></div>
         <div class="card-text">Estes são os seus dados no kvk que começou em {{kvk.inicio}}</div>
+        <div class="card-text mb-4 text-muted">última atualização em {{atualizado}}</div>
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item">{{killpoints}} killpoints</li>
@@ -21,17 +21,36 @@
         <li class="list-group-item">{{poskp}}º em killpoints no reino.</li>
         <li class="list-group-item">{{posdt}}º em mortes no reino.</li>
         <li class="list-group-item">
-            Killpoints*
+            Em relação a Killpoints você está melhor que a porcentagem abaixo de jogadores na sua faixa de poder.
             <div class="progress">
-                <div class="progress-bar bg-success" role="progressbar" style="width: {% widthratio poskpfaixa todoskp 100 %}%;" aria-valuenow="{% widthratio poskpfaixa todoskp 100 %}" aria-valuemin="0" aria-valuemax="100">{% widthratio poskpfaixa todoskp 100 %}%</div>
+                <div class="progress-bar bg-success" role="progressbar" 
+                    style="width: {% widthratio poskpfaixa todoskp 100 %}%;"
+                    aria-valuenow="{% widthratio poskpfaixa todoskp 100 %}" aria-valuemin="0" aria-valuemax="100">
+                    {% widthratio poskpfaixa todoskp 100 %}%</div>
             </div>
         </li>
         <li class="list-group-item">
-            Mortes*
+            Em relação a Mortes você está melhor que a porcentagem abaixo de jogadores na sua faixa de poder.
             <div class="progress">
-                <div class="progress-bar bg-danger" role="progressbar" style="width: {% widthratio posdtfaixa todosdt 100 %}%;" aria-valuenow="{% widthratio posdtfaixa todoskp 100 %}" aria-valuemin="0" aria-valuemax="100">{% widthratio posdtfaixa todosdt 100 %}%</div>
+                <div class="progress-bar bg-danger" role="progressbar"
+                    style="width: {% widthratio posdtfaixa todosdt 100 %}%;"
+                    aria-valuenow="{% widthratio posdtfaixa todoskp 100 %}" aria-valuemin="0" aria-valuemax="100">
+                    {% widthratio posdtfaixa todosdt 100 %}%</div>
         </li>
     </ul>
-    <div class="card-footer">* comparado a jogadores que estão na mesma faixa de poder que você.</div>
+    <div class="card-body">
+        <div class="card-title">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#listacomparados" aria-expanded="false" aria-controls="listacomparados">
+                Veja com quem foi comparado
+              </button>
+        </div>
+        <div class="card-text collapse" id="listacomparados">
+            <ul class="list-group">
+                {% for player in comparadoa %}
+                <li class="list-group-item">{{forloop.counter}}. {{player.nick}}</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
 </div>
 {% endblock %}
