@@ -260,9 +260,9 @@ def populate(request):
 
             obj_status, created_status = PlayerStatus.objects.get_or_create(
                 player=jogador,
-                power=poder,
+                power=poder.replace('.', ''),
                 killpoints=killpoints,
-                deaths=death
+                deaths=death.replace('.', '')
             )
     return HttpResponseRedirect('/')
 
