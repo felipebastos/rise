@@ -43,5 +43,15 @@
             </ul>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <h1>Verifique seu desempenho no kvk atualmente aberto</h1>
+            <form action="/players/desempenho/" method="post">
+                {% csrf_token %}
+                <input class="form-control" id="game_id" name="game_id" type="text" placeholder="ID">
+                <input class="form-control btn btn-info" type="submit" value="Analisar">
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

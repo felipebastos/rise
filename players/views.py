@@ -1,10 +1,10 @@
 import csv
-from datetime import date, datetime
 
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.db.models.aggregates import Max, Min
 
 from .models import Player, PlayerStatus, Alliance, player_status, player_rank, player_spec
 from .forms import UploadFileForm
@@ -383,3 +383,96 @@ def delete_status(request, status_id):
         status.delete()
 
     return redirect(f'/players/{status.player.game_id}')
+
+
+def como_estou(request):
+    if request.method == 'POST':
+        kvk = Kvk.objects.filter(ativo=True).first()
+
+        id = request.POST['game_id']
+        o_player = Player.objects.filter(game_id=id).first()
+        status = PlayerStatus.objects.filter(player=o_player).filter(data__gte=kvk.inicio).order_by('data')
+
+        primeiro = status.first()
+        ultimo = status.last()
+
+        status_kp = PlayerStatus.objects.all().filter(data__gte=kvk.inicio).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-kp')
+        pos_kp = 1
+        for stat in status_kp:
+            if stat['player__nick'] != ultimo.player.nick:
+                pos_kp = pos_kp + 1
+            else:
+                break
+        
+        status_dt = PlayerStatus.objects.all().filter(data__gte=kvk.inicio).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-dt')
+        pos_dt = 1
+        for stat in status_dt:
+            if stat['player__nick'] != ultimo.player.nick:
+                pos_dt = pos_dt + 1
+            else:
+                break
+        faixa_inicio = 0
+        faixa_fim = 10000000000
+        if primeiro.power > 100000000:
+            faixa_inicio = 100000000
+        elif 90000000 < primeiro.power < 100000000:
+            faixa_inicio = 90000000
+            faixa_fim = 100000000
+        elif 80000000 < primeiro.power < 90000000:
+            faixa_inicio = 80000000
+            faixa_fim = 90000000
+        elif 70000000 < primeiro.power < 80000000:
+            faixa_inicio = 70000000
+            faixa_fim = 80000000
+        elif 60000000 < primeiro.power < 70000000:
+            faixa_inicio = 60000000
+            faixa_fim = 70000000
+        elif 50000000 < primeiro.power < 60000000:
+            faixa_inicio = 50000000
+            faixa_fim = 60000000
+        elif 40000000 < primeiro.power < 50000000:
+            faixa_inicio = 40000000
+            faixa_fim = 50000000
+        else:
+            faixa_inicio = 0
+            faixa_fim = 40000000
+        
+        status_kp_similares = PlayerStatus.objects.all().filter(data__gte=kvk.inicio).filter(power__gte=faixa_inicio).filter(power__lte=faixa_fim).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-kp')
+        status_dt_similares = PlayerStatus.objects.all().filter(data__gte=kvk.inicio).filter(power__gte=faixa_inicio).filter(power__lte=faixa_fim).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-dt')
+
+        todos_kp = len(status_kp_similares)
+        pos_kp_faixa = todos_kp
+        for stat in status_kp_similares:
+            if stat['player__nick'] != ultimo.player.nick:
+                pos_kp_faixa = pos_kp_faixa - 1
+            else:
+                break
+
+        todos_dt = len(status_dt_similares)
+        pos_dt_faixa = todos_dt
+        for stat in status_dt_similares:
+            if stat['player__nick'] != ultimo.player.nick:
+                pos_dt_faixa = pos_dt_faixa - 1
+            else:
+                break
+
+
+        context = {
+            'kvk': kvk,
+            'nick': ultimo.player.nick,
+            'player_id': ultimo.player.game_id,
+            'killpoints': ultimo.killpoints - primeiro.killpoints,
+            'deaths': ultimo.deaths - primeiro.deaths,
+            'power': (ultimo.power - primeiro.power)*-1,
+            'perdeuganhou': 'Ganhou' if ultimo.power > primeiro.power else 'Perdeu',
+            'poskp': pos_kp,
+            'posdt': pos_dt,
+            'todoskp': todos_kp,
+            'poskpfaixa': pos_kp_faixa,
+            'todosdt': todos_dt,
+            'posdtfaixa': pos_dt_faixa,
+        }
+        
+        return render(request, 'players/emkvk.html', context=context)
+    else:
+        return Http404()

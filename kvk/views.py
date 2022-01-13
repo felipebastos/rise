@@ -24,28 +24,18 @@ def new_kvk(request):
     novo.inicio = request.POST['inicio']
     novo.save()
 
-    players = Player.objects.all().filter(
-        alliance__tag__in=['GoD', 'BoD', 'AoD'])
-    for player in players:
-        status = PlayerStatus.objects.filter(
-            player=player).order_by('-data').first()
-        if status:
-            novo_desempenho = Desempenho()
-            novo_desempenho.kvk = novo
-            novo_desempenho.player = player
-            novo_desempenho.primeiro_status = status
-            novo_desempenho.ultimo_status = status
-            novo_desempenho.save()
     return redirect('/kvk/')
 
 
 @login_required
 def show_kvk(request, kvk_id):
     kvk = Kvk.objects.filter(id=kvk_id).first()
-    desempenhos = Desempenho.objects.filter(kvk=kvk).order_by('player__nick')
+    
+    pares = []
+
     context = {
         'kvk': kvk,
-        'desempenhos': desempenhos,
+        'desempenho': pares,
     }
     return render(request, 'kvk/kvk.html', context=context)
 

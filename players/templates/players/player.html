@@ -20,37 +20,6 @@
         {% endif %}
     </div>
 </div>
-{% if user.is_authenticated %}
-<div class="container">
-    <form action="/players/addstatus/{{player.game_id}}/" method="post">
-        {% csrf_token %}
-        <div class="row">
-            <div class="col"><input class="form-control" type="text" name="poder" placeholder="poder sem pontos"
-                    required min="0" pattern="^[0-9]*$"></div>
-            <div class="col"><input class="form-control" type="text" name="killpoints"
-                    placeholder="killpoints sem pontos" required min="0" pattern="^[0-9]*$"></div>
-            <div class="col"><input class="form-control" type="text" name="mortes" placeholder="mortes sem pontos"
-                    required min="0" pattern="^[0-9]*$"></div>
-            {% if not showkvk %}
-            <div class="col"><button class="btn btn-info" type="submit">Adicionar</button></div>
-            {% endif %}
-        </div>
-        {% if showkvk %}
-        <div class="row">
-            <div class="col"><input class="form-control" type="text" name="honra" placeholder="honra sem pontos"
-                    required min="0" pattern="^[0-9]*$"></div>
-            <div class="col">
-                <label for="zerado">Foi zerado?</label>
-                <input type="checkbox" name="zerado" id="zerado">
-            </div>
-
-            <div class="col"><button class="btn btn-info" type="submit">Adicionar</button></div>
-        </div>
-        {% endif %}
-    </form>
-</div>
-<br>
-{% endif %}
 <div class="container">
     <table class="table table-striped">
         <thead>

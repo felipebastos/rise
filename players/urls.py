@@ -17,4 +17,5 @@ urlpatterns = [
     path('old/<ally_tag>/', views.antigos, name='antigos'),
     path('statusedit/<status_id>/', views.editaStatus, name='edit_status'),
     path('statusdelete/<status_id>/', views.delete_status, name='delete_status'),
+    path('desempenho/', views.como_estou, name='como_estou'),
 ]

@@ -15,7 +15,6 @@
                 <th>Nick</th>
                 <th>Aliança</th>
                 <th>Poder inicial</th>
-                <th>Honra</th>
                 <th>Killpoints no KvK</th>
                 <th>Mortes no KvK</th>
             </tr>
@@ -23,13 +22,12 @@
         <tbody>
             {% for desempenho in desempenhos %}
             <tr>
-                <td><a href="/players/{{desempenho.player.game_id}}/">{{desempenho.player.game_id}}</a></td>
-                <td>{{desempenho.player.nick}}{% if desempenho.zerado %} <i style="color:orangered;" class="fas fa-fire-alt"></i>{% endif %}</td>
-                <td>{{desempenho.player.alliance.tag}}</td>
-                <td>{{desempenho.primeiro_status.power}}</td>
-                <td>{{desempenho.honra}}</td>
-                <td>{{desempenho.kills}}</td>
-                <td>{{desempenho.deaths}}</td>
+                <td><a href="/players/{{desempenho.primeiro.player.game_id}}/">{{desempenho.primeiro.player.game_id}}</a></td>
+                <td>{{desempenho.ultimo.player.nick}}</td>
+                <td>{{desempenho.ultimo.player.alliance.tag}}</td>
+                <td>{{desempenho.primeiro.power}}</td>
+                <td>{{desempenho.ultimo.killpoints - desempenho.primeiro.killpoints}}</td>
+                <td>{{desempenho.ultimo.deaths - desempenho.ultimo.deaths}}</td>
             </tr>
             {% endfor %}
         </tbody>
