@@ -208,7 +208,7 @@ def populate(request):
             else:
                 # update some data
                 jogador.nick = row[2]
-                ally = Alliance.objects.filter(tag=row[4][0:3]).first()
+                ally = Alliance.objects.filter(tag=row[4]).first()
                 if ally is not None:
                     jogador.alliance = ally
                 else:
