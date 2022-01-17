@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from datetime import date
 from players.models import Player
 from .models import Mge, Punido, Ranking, Inscrito
-from kvk.models import Kvk, Desempenho
+from kvk.models import Kvk
 
 # Create your views here.
 
@@ -30,11 +30,7 @@ def mgeedit(request, id):
     id_inscritos = []
     for inscrito in inscritos:
         id_inscritos.append(inscrito.player.id)
-    ultimo_kvk = Kvk.objects.filter(inicio__lte=mge.criado_em).filter(ativo=False).order_by('-inicio').first()
-    desempenho_inscritos = Desempenho.objects.filter(kvk=ultimo_kvk).filter(player__in=id_inscritos)
     
-    if ultimo_kvk is None:
-        desempenho_inscritos = inscritos
     rank = Ranking.objects.filter(mge=mge).order_by('inserido')
     punidos = Punido.objects.filter(mge=mge).order_by('inserido')
     insc_encerradas = False
@@ -46,7 +42,6 @@ def mgeedit(request, id):
         rank_fechado = True
     context = {
         'mge': mge,
-        'inscritos': desempenho_inscritos,
         'insc_encerradas': insc_encerradas,
         'rank': rank,
         'rank_fechado': rank_fechado,

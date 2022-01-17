@@ -92,8 +92,10 @@
             <tr>
                 <td>{{punido.player.game_id}}</td>
                 <td>{{punido.player.nick}}</td>
+                {% if user.is_authenticated %}
                 <td><a href="/mge/despunir/{{mge.id}}/{{punido.player.game_id}}/" class="btn btn-warning">Remover</a>
                 </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

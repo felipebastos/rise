@@ -35,9 +35,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">Início</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="/admin">Painel Administrativo</a>
                 </li>
+                {% endif %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                         Reino
@@ -46,8 +48,10 @@
                         <a href="/reports/300/" class="dropdown-item">Top 300</a>
                         <a class="dropdown-item" href="/kvk/">KvK</a>
                         <a href="/mge/" class="dropdown-item">MGE</a>
+                        {% if user.is_authenticated %}
                         <a href="/reports/" class="dropdown-item">Relatório</a>
                         <a href="/players/upload/" class="dropdown-item">Subir planilha</a>
+                        {% endif %}
                     </div>
                 </li>
                 <li class="nav-item dropdown">

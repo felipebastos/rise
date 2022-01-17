@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .models import Kvk, Desempenho
+from .models import Kvk, Zerado
 # Register your models here.
 
 admin.site.register(Kvk)
-admin.site.register(Desempenho)
+admin.site.register(Zerado)

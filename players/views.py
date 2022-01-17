@@ -6,9 +6,11 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models.aggregates import Max, Min
 
+from datetime import date
+
 from .models import Player, PlayerStatus, Alliance, player_status, player_rank, player_spec
 from .forms import UploadFileForm
-from kvk.models import Kvk
+from kvk.models import Kvk, Zerado
 
 # Create your views here.
 
@@ -58,7 +60,6 @@ def edit_player(request, game_id):
     player.rank = request.POST['rank']
     player.specialty = request.POST['specialty']
     player.alliance = Alliance.objects.filter(tag=request.POST['ally']).first()
-    player.alterado_em = date.today()
     player.alterado_por = request.user
     player.save()
     context = {
@@ -388,10 +389,16 @@ def delete_status(request, status_id):
 def como_estou(request):
     if request.method == 'POST':
         kvk = Kvk.objects.filter(ativo=True).first()
+        if not kvk:
+            kvk = Kvk.objects.all().order_by('-inicio').first()
 
         id = request.POST['game_id']
         o_player = Player.objects.filter(game_id=id).first()
         status = PlayerStatus.objects.filter(player=o_player).filter(data__gte=kvk.inicio).order_by('data')
+
+        zerado = False
+        if Zerado.objects.filter(kvk=kvk, player=o_player).first():
+            zerado = True
 
         primeiro = status.first()
         ultimo = status.last()
@@ -495,6 +502,7 @@ def como_estou(request):
             'comparadoa': players_faixa_original,
             'metamortes': True if meta < ultimo.deaths - primeiro.deaths else False,
             'meta': meta,
+            'zerado': zerado,
         }
         
         return render(request, 'players/emkvk.html', context=context)

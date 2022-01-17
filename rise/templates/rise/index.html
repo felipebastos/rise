@@ -2,6 +2,7 @@
 {% block title %}- Home{% endblock %}
 {% block content %}
 <div class="container">
+    {% if user.is_authenticated %}
     <div class="row">
         <div class="col">
             <h1>Gestão de doações</h1>
@@ -43,6 +44,7 @@
             </ul>
         </div>
     </div>
+    {% endif %}
     <div class="row">
         <div class="col">
             <h1>Verifique seu desempenho no kvk atualmente aberto</h1>

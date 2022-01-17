@@ -1,6 +1,7 @@
 {% extends 'rise/base.html' %}
 {% block title %}- KvK{% endblock %}
 {% block content %}
+{% if user.is_authenticated %}
 <div class="container">
     <h1>Gestão</h1>
     <form action="/kvk/createkvk/" method="post">
@@ -13,6 +14,7 @@
         </div>
     </form>
 </div>
+{% endif %}
 <div class="container">
     <h1>KvK's</h1>
     {% for kvk in kvks %}
