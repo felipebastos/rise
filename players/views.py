@@ -408,7 +408,7 @@ def como_estou(request):
         primeiro = status.first()
         ultimo = status.last()
 
-        status_kp = PlayerStatus.objects.exclude(player__in=zerados_lista).filter(data__gte=kvk.inicio).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-kp')
+        status_kp = PlayerStatus.objects.filter(data__gte=kvk.inicio).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-kp')
         pos_kp = 1
         for stat in status_kp:
             if stat['player__nick'] != ultimo.player.nick:
@@ -512,4 +512,4 @@ def como_estou(request):
         
         return render(request, 'players/emkvk.html', context=context)
     else:
-        return Http404()
+        return Http404(request)

@@ -42,7 +42,7 @@ def show_kvk(request, kvkid):
     if not final:
         final = timezone.now()
 
-    topkp = PlayerStatus.objects.all().exclude(player__in=zerados_lista).filter(data__gte=kvk.inicio).filter(data__lte=final).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-kp')[0:10]
+    topkp = PlayerStatus.objects.all().filter(data__gte=kvk.inicio).filter(data__lte=final).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-kp')[0:10]
     topdt = PlayerStatus.objects.all().exclude(player__in=zerados_lista).filter(data__gte=kvk.inicio).filter(data__lte=final).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-dt')[0:10]
 
     context = {

@@ -18,11 +18,11 @@
         <div class="card-title"><b>Quão bem você está?</b></div>
     </div>
     <ul class="list-group list-group-flush">
-        {% if not zerado %}
         <li class="list-group-item">{{poskp}}º em killpoints no reino.</li>
+        {% if not zerado %}
         <li class="list-group-item">{{posdt}}º em mortes no reino.</li>
         {% else %}
-        <li class="list-group-item"><span class="badge badge-danger"><span class="fas fa-fire-alt"></span> Zerado</span> - Não podemos lhe incluir nas comparações.</li>
+        <li class="list-group-item"><span class="badge badge-danger"><span class="fas fa-fire-alt"></span> Zerado</span> - Não podemos lhe incluir nas comparações de mortes.</li>
         {% endif %}
         <li class="list-group-item">
             Em relação a Killpoints você está melhor que a porcentagem abaixo de jogadores na sua faixa de poder.
