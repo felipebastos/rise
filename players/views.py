@@ -400,10 +400,15 @@ def como_estou(request):
         if Zerado.objects.filter(kvk=kvk, player=o_player).first():
             zerado = True
 
+        zerados = Zerado.objects.filter(kvk=kvk)
+        zerados_lista = []
+        for zerado_pra_lista in zerados:
+            zerados_lista.append(zerado_pra_lista.player)
+
         primeiro = status.first()
         ultimo = status.last()
 
-        status_kp = PlayerStatus.objects.all().filter(data__gte=kvk.inicio).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-kp')
+        status_kp = PlayerStatus.objects.exclude(player__in=zerados_lista).filter(data__gte=kvk.inicio).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-kp')
         pos_kp = 1
         for stat in status_kp:
             if stat['player__nick'] != ultimo.player.nick:
@@ -411,7 +416,7 @@ def como_estou(request):
             else:
                 break
         
-        status_dt = PlayerStatus.objects.all().filter(data__gte=kvk.inicio).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-dt')
+        status_dt = PlayerStatus.objects.exclude(player__in=zerados_lista).filter(data__gte=kvk.inicio).values('player__nick').annotate(kp=Max('killpoints')-Min('killpoints'), dt=Max('deaths')-Min('deaths')).order_by('-dt')
         pos_dt = 1
         for stat in status_dt:
             if stat['player__nick'] != ultimo.player.nick:
