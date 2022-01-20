@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 from datetime import datetime, timezone, timedelta
 
+from .forms import LoginForm
 
 def index(request):
     hoje = datetime.now(timezone(timedelta(hours=-3)))
@@ -51,18 +52,23 @@ def index(request):
 
 
 def logar(request):
-    if request.method == 'GET':
-        return render(request, 'rise/login.html')
-    else:
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('/')
-        else:
-            # Return an 'invalid login' error message.
-            return redirect('/login')
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('/')
+            else:
+                # Return an 'invalid login' error message.
+                return redirect('/login')
+    form = LoginForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'rise/login.html', context=context)
 
 
 @login_required

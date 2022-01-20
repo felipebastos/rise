@@ -8,6 +8,7 @@ license = "GPL-3.0"
 [tool.poetry.dependencies]
 python = "^3.8"
 Django = "^4.0"
+django-simple-captcha = "^0.5.14"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.9.2"

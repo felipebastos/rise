@@ -30,6 +30,7 @@ urlpatterns = [
     path('kvk/', include('kvk.urls')),
     path('mge/', include('mge.urls')),
     path('reports/', include('reports.urls')),
+    path('captcha/',include("captcha.urls")),
 ]
 
 admin.site.site_header  =  "K32 Admin"  
