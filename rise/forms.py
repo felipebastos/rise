@@ -1,5 +1,3 @@
-from cProfile import label
-from attr import attr
 from django import forms
 from captcha.fields import CaptchaField
 
