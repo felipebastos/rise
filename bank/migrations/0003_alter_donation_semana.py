@@ -7,13 +7,18 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bank', '0002_auto_20210707_1526'),
+        ("bank", "0002_auto_20210707_1526"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='donation',
-            name='semana',
-            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to='bank.semana'),
+            model_name="donation",
+            name="semana",
+            field=models.ForeignKey(
+                default=None,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="bank.semana",
+            ),
         ),
     ]

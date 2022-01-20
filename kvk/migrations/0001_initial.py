@@ -8,16 +8,36 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Kvk',
+            name="Kvk",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('inicio', models.DateField(default=datetime.date.today, unique=True)),
-                ('tipo', models.CharField(choices=[('HA', 'Hino Heróico'), ('C8', 'Conflito dos 8')], default='HA', max_length=2)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "inicio",
+                    models.DateField(default=datetime.date.today, unique=True),
+                ),
+                (
+                    "tipo",
+                    models.CharField(
+                        choices=[
+                            ("HA", "Hino Heróico"),
+                            ("C8", "Conflito dos 8"),
+                        ],
+                        default="HA",
+                        max_length=2,
+                    ),
+                ),
             ],
         ),
     ]

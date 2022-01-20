@@ -6,32 +6,32 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mge', '0001_initial'),
+        ("mge", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='inscrito',
+            name="inscrito",
             options={},
         ),
         migrations.AlterModelOptions(
-            name='punido',
+            name="punido",
             options={},
         ),
         migrations.AlterModelOptions(
-            name='ranking',
+            name="ranking",
             options={},
         ),
         migrations.RemoveField(
-            model_name='inscrito',
-            name='order_index',
+            model_name="inscrito",
+            name="order_index",
         ),
         migrations.RemoveField(
-            model_name='punido',
-            name='order_index',
+            model_name="punido",
+            name="order_index",
         ),
         migrations.RemoveField(
-            model_name='ranking',
-            name='order_index',
+            model_name="ranking",
+            name="order_index",
         ),
     ]

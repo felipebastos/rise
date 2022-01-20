@@ -6,18 +6,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('players', '0007_alter_player_observacao'),
+        ("players", "0007_alter_player_observacao"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='player',
-            name='observacao',
+            model_name="player",
+            name="observacao",
             field=models.CharField(blank=True, max_length=500, null=True),
         ),
         migrations.AlterField(
-            model_name='player',
-            name='rank',
-            field=models.CharField(choices=[('R5', 'R5'), ('R4', 'R4'), ('R3', 'R3'), ('R2', 'R2'), ('R1', 'R1'), ('SA', 'SA')], default='R1', max_length=2),
+            model_name="player",
+            name="rank",
+            field=models.CharField(
+                choices=[
+                    ("R5", "R5"),
+                    ("R4", "R4"),
+                    ("R3", "R3"),
+                    ("R2", "R2"),
+                    ("R1", "R1"),
+                    ("SA", "SA"),
+                ],
+                default="R1",
+                max_length=2,
+            ),
         ),
     ]

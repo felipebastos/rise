@@ -6,13 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('players', '0011_alter_player_observacao'),
+        ("players", "0011_alter_player_observacao"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='player',
-            name='specialization',
-            field=models.CharField(choices=[('arq', 'Arquearia'), ('cav', 'Cavalaria'), ('lid', 'Liderança'), ('inf', 'Infantaria'), ('end', 'Especialidade não definida')], default='end', max_length=30),
+            model_name="player",
+            name="specialization",
+            field=models.CharField(
+                choices=[
+                    ("arq", "Arquearia"),
+                    ("cav", "Cavalaria"),
+                    ("lid", "Liderança"),
+                    ("inf", "Infantaria"),
+                    ("end", "Especialidade não definida"),
+                ],
+                default="end",
+                max_length=30,
+            ),
         ),
     ]

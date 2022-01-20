@@ -7,23 +7,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mge', '0002_auto_20210723_1720'),
+        ("mge", "0002_auto_20210723_1720"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='inscrito',
-            name='inserido',
-            field=models.DateTimeField(default=datetime.datetime.now, verbose_name='Inserido'),
+            model_name="inscrito",
+            name="inserido",
+            field=models.DateTimeField(
+                default=datetime.datetime.now, verbose_name="Inserido"
+            ),
         ),
         migrations.AddField(
-            model_name='punido',
-            name='inserido',
-            field=models.DateTimeField(default=datetime.datetime.now, verbose_name='Inserido'),
+            model_name="punido",
+            name="inserido",
+            field=models.DateTimeField(
+                default=datetime.datetime.now, verbose_name="Inserido"
+            ),
         ),
         migrations.AddField(
-            model_name='ranking',
-            name='inserido',
-            field=models.DateTimeField(default=datetime.datetime.now, verbose_name='Inserido'),
+            model_name="ranking",
+            name="inserido",
+            field=models.DateTimeField(
+                default=datetime.datetime.now, verbose_name="Inserido"
+            ),
         ),
     ]

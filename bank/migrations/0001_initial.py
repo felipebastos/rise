@@ -9,18 +9,37 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('players', '0015_alter_player_observacao'),
+        ("players", "0015_alter_player_observacao"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Donation',
+            name="Donation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('data_da_doacao', models.DateField(default=datetime.date.today, verbose_name='Data da doação')),
-                ('donated', models.BooleanField(default=False, verbose_name='Doação realizada')),
-                ('ally', models.ManyToManyField(to='players.Alliance')),
-                ('player', models.ManyToManyField(to='players.Player')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "data_da_doacao",
+                    models.DateField(
+                        default=datetime.date.today,
+                        verbose_name="Data da doação",
+                    ),
+                ),
+                (
+                    "donated",
+                    models.BooleanField(
+                        default=False, verbose_name="Doação realizada"
+                    ),
+                ),
+                ("ally", models.ManyToManyField(to="players.Alliance")),
+                ("player", models.ManyToManyField(to="players.Player")),
             ],
         ),
     ]

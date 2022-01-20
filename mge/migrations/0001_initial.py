@@ -10,73 +10,153 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('players', '0016_auto_20210716_1614'),
+        ("players", "0016_auto_20210716_1614"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Inscrito',
+            name="Inscrito",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('order_index', models.IntegerField(unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("order_index", models.IntegerField(unique=True)),
             ],
             options={
-                'ordering': ['order_index'],
+                "ordering": ["order_index"],
             },
         ),
         migrations.CreateModel(
-            name='Mge',
+            name="Mge",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('criado_em', models.DateField(default=datetime.date.today, verbose_name='Criado em')),
-                ('inscritos', models.ManyToManyField(related_name='mge_inscritos', through='mge.Inscrito', to='players.Player')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "criado_em",
+                    models.DateField(
+                        default=datetime.date.today, verbose_name="Criado em"
+                    ),
+                ),
+                (
+                    "inscritos",
+                    models.ManyToManyField(
+                        related_name="mge_inscritos",
+                        through="mge.Inscrito",
+                        to="players.Player",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['rank__id'],
+                "ordering": ["rank__id"],
             },
         ),
         migrations.CreateModel(
-            name='Ranking',
+            name="Ranking",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('order_index', models.IntegerField(unique=True)),
-                ('mge', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='mge.mge')),
-                ('player', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='players.player')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("order_index", models.IntegerField(unique=True)),
+                (
+                    "mge",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="mge.mge",
+                    ),
+                ),
+                (
+                    "player",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="players.player",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['order_index'],
+                "ordering": ["order_index"],
             },
         ),
         migrations.CreateModel(
-            name='Punido',
+            name="Punido",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('order_index', models.IntegerField(unique=True)),
-                ('mge', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='mge.mge')),
-                ('player', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='players.player')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("order_index", models.IntegerField(unique=True)),
+                (
+                    "mge",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="mge.mge",
+                    ),
+                ),
+                (
+                    "player",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="players.player",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['order_index'],
+                "ordering": ["order_index"],
             },
         ),
         migrations.AddField(
-            model_name='mge',
-            name='punidos',
-            field=models.ManyToManyField(related_name='mge_punidos', through='mge.Punido', to='players.Player'),
+            model_name="mge",
+            name="punidos",
+            field=models.ManyToManyField(
+                related_name="mge_punidos",
+                through="mge.Punido",
+                to="players.Player",
+            ),
         ),
         migrations.AddField(
-            model_name='mge',
-            name='rank',
-            field=models.ManyToManyField(related_name='mge_ranking', through='mge.Ranking', to='players.Player'),
+            model_name="mge",
+            name="rank",
+            field=models.ManyToManyField(
+                related_name="mge_ranking",
+                through="mge.Ranking",
+                to="players.Player",
+            ),
         ),
         migrations.AddField(
-            model_name='inscrito',
-            name='mge',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='mge.mge'),
+            model_name="inscrito",
+            name="mge",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="mge.mge"
+            ),
         ),
         migrations.AddField(
-            model_name='inscrito',
-            name='player',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='players.player'),
+            model_name="inscrito",
+            name="player",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="players.player"
+            ),
         ),
     ]

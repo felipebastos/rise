@@ -8,20 +8,59 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('players', '0016_auto_20210716_1614'),
-        ('kvk', '0001_initial'),
+        ("players", "0016_auto_20210716_1614"),
+        ("kvk", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Desempenho',
+            name="Desempenho",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('data', models.DateField(default=datetime.date.today, verbose_name='Levantado em')),
-                ('kvk', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='kvk.kvk')),
-                ('player', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='players.player')),
-                ('primeiro_status', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='kvkprimeirostatus', to='players.playerstatus')),
-                ('ultimo_status', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='kvkultimostatus', to='players.playerstatus')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "data",
+                    models.DateField(
+                        default=datetime.date.today, verbose_name="Levantado em"
+                    ),
+                ),
+                (
+                    "kvk",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="kvk.kvk",
+                    ),
+                ),
+                (
+                    "player",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="players.player",
+                    ),
+                ),
+                (
+                    "primeiro_status",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="kvkprimeirostatus",
+                        to="players.playerstatus",
+                    ),
+                ),
+                (
+                    "ultimo_status",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="kvkultimostatus",
+                        to="players.playerstatus",
+                    ),
+                ),
             ],
         ),
     ]
