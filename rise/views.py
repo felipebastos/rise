@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 from datetime import datetime, timezone, timedelta
 
-from .forms import LoginForm
+from .forms import LoginForm, SearchPlayerForm
 
 def index(request):
     hoje = datetime.now(timezone(timedelta(hours=-3)))
@@ -41,11 +41,14 @@ def index(request):
         else:
             bod_nulos = bod_nulos + 1
 
+    searchform = SearchPlayerForm()
+
     context = {
         'god_antigos': god_atrasados,
         'god_nulos': god_nulos,
         'bod_antigos': bod_atrasados,
         'bod_nulos': bod_nulos,
+        'searchform': searchform,
     }
 
     return render(request, 'rise/index.html', context=context)

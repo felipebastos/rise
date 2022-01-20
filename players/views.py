@@ -10,6 +10,7 @@ from datetime import date
 
 from .models import Player, PlayerStatus, Alliance, player_status, player_rank, player_spec
 from .forms import UploadFileForm
+from rise.forms import SearchPlayerForm
 from kvk.models import Kvk, Zerado
 
 # Create your views here.
@@ -42,6 +43,9 @@ def index(request, game_id):
 @login_required
 def edit_player(request, game_id):
     player = Player.objects.filter(game_id=game_id).first()
+
+    if not player:
+        raise Http404('Player não existe.')
 
     allies = Alliance.objects.all()
 
@@ -122,8 +126,12 @@ def review_players(request, ally_tag):
 
 def findplayer(request):
     if request.method == 'POST':
-        id = request.POST['id']
-        return redirect(f'/players/{id}')
+        form = SearchPlayerForm(request.POST)
+        if form.is_valid():
+            id = request.POST['id']
+            return redirect(f'/players/{id}')
+        else:
+            raise Http404('Você não procurou por dados válidos.')
     else:
         raise Http404('Só sirvo para buscas do formulário.')
 
