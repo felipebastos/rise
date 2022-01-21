@@ -5,21 +5,24 @@ from players.models import Player
 
 # Create your models here.
 resources = (
-    ('COM', 'Comida'),
-    ('MAD', 'Madeira'),
-    ('PED', 'Pedra'),
-    ('OUR', 'Ouro'),
+    ("COM", "Comida"),
+    ("MAD", "Madeira"),
+    ("PED", "Pedra"),
+    ("OUR", "Ouro"),
 )
 
-class Semana(models.Model):
-    segunda = models.DateField('Segunda', default=date.today)
-    encerrada = models.BooleanField('Trabalhos concluídos', default=False)
 
-    recurso = models.CharField('Material', max_length=15, choices=resources, default='COM')
+class Semana(models.Model):
+    segunda = models.DateField("Segunda", default=date.today)
+    encerrada = models.BooleanField("Trabalhos concluídos", default=False)
+
+    recurso = models.CharField(
+        "Material", max_length=15, choices=resources, default="COM"
+    )
 
     def inicio(self):
-        dia_da_semana = self.segunda.weekday()+1
-        diferenca = timedelta(days=(8-dia_da_semana))
+        dia_da_semana = self.segunda.weekday() + 1
+        diferenca = timedelta(days=(8 - dia_da_semana))
         segunda_seguinte = self.segunda + diferenca
         return segunda_seguinte
 
@@ -32,12 +35,13 @@ class Semana(models.Model):
                 return val
 
     def __str__(self):
-        return f'Semana de {self.inicio()} a {self.final()} - {self.recurso_da_semana()}'
+        return f"Semana de {self.inicio()} a {self.final()} - {self.recurso_da_semana()}"
+
 
 class Donation(models.Model):
-    data_da_doacao = models.DateField('Data da doação', default=date.today)
+    data_da_doacao = models.DateField("Data da doação", default=date.today)
     player = models.ForeignKey(Player, on_delete=models.CASCADE, default=None)
-    donated = models.BooleanField('Doação realizada', default=False)
+    donated = models.BooleanField("Doação realizada", default=False)
 
     semana = models.ForeignKey(Semana, on_delete=models.CASCADE, default=None)
 
@@ -45,4 +49,4 @@ class Donation(models.Model):
         return str(self.id)
 
     def __str__(self):
-        return f'Doação de {self.player.alliance.tag} {self.player.nick}'
+        return f"Doação de {self.player.alliance.tag} {self.player.nick}"

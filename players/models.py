@@ -4,28 +4,28 @@ from datetime import date, datetime, timedelta, timezone
 
 # Create your models here.
 player_status = (
-    ('PLAYER', 'Player'),
-    ('FARM', 'Farm'),
-    ('INATIVO', 'Inativo'),
-    ('MIGROU', 'Migrou'),
-    ('VIGIAR', 'Vigiar'),
-    ('BANIDO', 'BANIDO')
+    ("PLAYER", "Player"),
+    ("FARM", "Farm"),
+    ("INATIVO", "Inativo"),
+    ("MIGROU", "Migrou"),
+    ("VIGIAR", "Vigiar"),
+    ("BANIDO", "BANIDO"),
 )
 player_rank = (
-    ('R5', 'R5'),
-    ('R4', 'R4'),
-    ('R3', 'R3'),
-    ('R2', 'R2'),
-    ('R1', 'R1'),
-    ('SA', 'SA')
+    ("R5", "R5"),
+    ("R4", "R4"),
+    ("R3", "R3"),
+    ("R2", "R2"),
+    ("R1", "R1"),
+    ("SA", "SA"),
 )
 
 player_spec = (
-    ('arq', 'Arquearia'),
-    ('cav', 'Cavalaria'),
-    ('lid', 'Liderança'),
-    ('inf', 'Infantaria'),
-    ('end', 'Especialidade não definida')
+    ("arq", "Arquearia"),
+    ("cav", "Cavalaria"),
+    ("lid", "Liderança"),
+    ("inf", "Infantaria"),
+    ("end", "Especialidade não definida"),
 )
 
 
@@ -34,31 +34,34 @@ class Alliance(models.Model):
     tag = models.CharField(max_length=4)
 
     def __str__(self):
-        return f'{self.tag} - {self.nome}'
+        return f"{self.tag} - {self.nome}"
 
 
 class Player(models.Model):
     game_id = models.CharField(max_length=8, unique=True)
     nick = models.CharField(max_length=100)
-    rank = models.CharField(max_length=2, choices=player_rank, default='R1')
+    rank = models.CharField(max_length=2, choices=player_rank, default="R1")
     specialty = models.CharField(
-        max_length=30, choices=player_spec, default='end')
+        max_length=30, choices=player_spec, default="end"
+    )
     status = models.CharField(
-        max_length=100, default='ATIVO', choices=player_status)
+        max_length=100, default="ATIVO", choices=player_status
+    )
     observacao = models.TextField(
-        max_length=500, blank=True, null=True, default='')
+        max_length=500, blank=True, null=True, default=""
+    )
     alliance = models.ForeignKey(
-        Alliance, on_delete=models.CASCADE, default=None, null=True)
+        Alliance, on_delete=models.CASCADE, default=None, null=True
+    )
 
-    alterado_em = models.DateField('Alterado em', default=date.today)
-    alterado_por = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True)
+    alterado_em = models.DateField("Alterado em", default=date.today)
+    alterado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f'{self.nick}'
+        return f"{self.nick}"
 
     class Meta:
-        ordering = ['nick']
+        ordering = ["nick"]
 
 
 class PlayerStatus(models.Model):
@@ -70,7 +73,7 @@ class PlayerStatus(models.Model):
 
     def editavel(self):
         passou = datetime.now(timezone(-timedelta(hours=3))) - self.data
-        return True if passou < timedelta(hours=1) else False 
+        return True if passou < timedelta(hours=1) else False
 
     def revisavel(self):
         passou = datetime.now(timezone(-timedelta(hours=3))) - self.data
@@ -80,4 +83,4 @@ class PlayerStatus(models.Model):
         return str(self.id)
 
     def __str__(self):
-        return f'{self.player.game_id} - {self.player.nick} - {self.data}'
+        return f"{self.player.game_id} - {self.player.nick} - {self.data}"

@@ -7,34 +7,46 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('players', '0017_alter_playerstatus_data'),
-        ('kvk', '0003_auto_20210724_2100'),
+        ("players", "0017_alter_playerstatus_data"),
+        ("kvk", "0003_auto_20210724_2100"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Zerado',
+            name="Zerado",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateField(auto_now_add=True)),
             ],
         ),
         migrations.AddField(
-            model_name='kvk',
-            name='final',
+            model_name="kvk",
+            name="final",
             field=models.DateField(null=True),
         ),
         migrations.DeleteModel(
-            name='Desempenho',
+            name="Desempenho",
         ),
         migrations.AddField(
-            model_name='zerado',
-            name='kvk',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='kvk.kvk'),
+            model_name="zerado",
+            name="kvk",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="kvk.kvk"
+            ),
         ),
         migrations.AddField(
-            model_name='zerado',
-            name='player',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='players.player'),
+            model_name="zerado",
+            name="player",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="players.player"
+            ),
         ),
     ]

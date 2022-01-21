@@ -7,19 +7,26 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Player',
+            name="Player",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('game_id', models.CharField(max_length=8)),
-                ('nick', models.CharField(max_length=100)),
-                ('power', models.IntegerField()),
-                ('killpoints', models.IntegerField()),
-                ('deaths', models.IntegerField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("game_id", models.CharField(max_length=8)),
+                ("nick", models.CharField(max_length=100)),
+                ("power", models.IntegerField()),
+                ("killpoints", models.IntegerField()),
+                ("deaths", models.IntegerField()),
             ],
         ),
     ]

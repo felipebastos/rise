@@ -8,35 +8,59 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('players', '0015_alter_player_observacao'),
-        ('bank', '0001_initial'),
+        ("players", "0015_alter_player_observacao"),
+        ("bank", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Semana',
+            name="Semana",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('segunda', models.DateField(default=datetime.date.today, verbose_name='Segunda')),
-                ('encerrada', models.BooleanField(verbose_name='Trabalhos concluídos')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "segunda",
+                    models.DateField(
+                        default=datetime.date.today, verbose_name="Segunda"
+                    ),
+                ),
+                (
+                    "encerrada",
+                    models.BooleanField(verbose_name="Trabalhos concluídos"),
+                ),
             ],
         ),
         migrations.RemoveField(
-            model_name='donation',
-            name='ally',
+            model_name="donation",
+            name="ally",
         ),
         migrations.RemoveField(
-            model_name='donation',
-            name='player',
+            model_name="donation",
+            name="player",
         ),
         migrations.AddField(
-            model_name='donation',
-            name='player',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='players.player'),
+            model_name="donation",
+            name="player",
+            field=models.ForeignKey(
+                default=None,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="players.player",
+            ),
         ),
         migrations.AddField(
-            model_name='donation',
-            name='semana',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='bank.semana'),
+            model_name="donation",
+            name="semana",
+            field=models.ForeignKey(
+                default=None,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="bank.semana",
+            ),
         ),
     ]

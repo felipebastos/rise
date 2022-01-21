@@ -21,18 +21,18 @@ from rise import views
 
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('login/', views.logar, name='logar'),
-    path('logout/', views.sair, name='sair'),
-    path('players/', include('players.urls')),
-    path('admin/', admin.site.urls),
-    path('bank/', include('bank.urls')),
-    path('kvk/', include('kvk.urls')),
-    path('mge/', include('mge.urls')),
-    path('reports/', include('reports.urls')),
-    path('captcha/',include("captcha.urls")),
+    path("", views.index, name="index"),
+    path("login/", views.logar, name="logar"),
+    path("logout/", views.sair, name="sair"),
+    path("players/", include("players.urls")),
+    path("admin/", admin.site.urls),
+    path("bank/", include("bank.urls")),
+    path("kvk/", include("kvk.urls")),
+    path("mge/", include("mge.urls")),
+    path("reports/", include("reports.urls")),
+    path("captcha/", include("captcha.urls")),
 ]
 
-admin.site.site_header  =  "K32 Admin"  
-admin.site.site_title  =  "Administração do K32"
-admin.site.index_title  =  "K32 Admin"
+admin.site.site_header = "K32 Admin"
+admin.site.site_title = "Administração do K32"
+admin.site.index_title = "K32 Admin"

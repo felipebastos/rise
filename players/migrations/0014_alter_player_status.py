@@ -6,13 +6,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('players', '0013_rename_specialization_player_specialty'),
+        ("players", "0013_rename_specialization_player_specialty"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='player',
-            name='status',
-            field=models.CharField(choices=[('PLAYER', 'Player'), ('FARM', 'Farm'), ('INATIVO', 'Inativo'), ('MIGROU', 'Migrou'), ('VIGIAR', 'Vigiar'), ('BANIDO', 'BANIDO')], default='ATIVO', max_length=100),
+            model_name="player",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("PLAYER", "Player"),
+                    ("FARM", "Farm"),
+                    ("INATIVO", "Inativo"),
+                    ("MIGROU", "Migrou"),
+                    ("VIGIAR", "Vigiar"),
+                    ("BANIDO", "BANIDO"),
+                ],
+                default="ATIVO",
+                max_length=100,
+            ),
         ),
     ]

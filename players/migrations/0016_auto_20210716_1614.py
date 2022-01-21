@@ -10,18 +10,24 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('players', '0015_alter_player_observacao'),
+        ("players", "0015_alter_player_observacao"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='player',
-            name='alterado_em',
-            field=models.DateField(default=datetime.date.today, verbose_name='Alterado em'),
+            model_name="player",
+            name="alterado_em",
+            field=models.DateField(
+                default=datetime.date.today, verbose_name="Alterado em"
+            ),
         ),
         migrations.AddField(
-            model_name='player',
-            name='alterado_por',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL),
+            model_name="player",
+            name="alterado_por",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

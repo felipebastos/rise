@@ -12,18 +12,21 @@ from players.models import Player, Alliance
 @login_required
 def index(request):
     semanas = Semana.objects.all()
-    context = {
-        'semanas': semanas
-    }
+    context = {"semanas": semanas}
 
-    return render(request, 'bank/index.html', context=context)
+    return render(request, "bank/index.html", context=context)
 
 
 @login_required
 def create_week(request, tag, resource):
     ally = Alliance.objects.filter(tag=tag)[0]
 
-    jogadores = Player.objects.all().filter(alliance=ally).exclude(rank='SA').exclude(status='FARM')
+    jogadores = (
+        Player.objects.all()
+        .filter(alliance=ally)
+        .exclude(rank="SA")
+        .exclude(status="FARM")
+    )
 
     semana = Semana()
     semana.recurso = resource
@@ -35,22 +38,23 @@ def create_week(request, tag, resource):
         doacao_programada.semana = semana
         doacao_programada.save()
 
-    return redirect('/bank/')
+    return redirect("/bank/")
 
 
 @login_required
 def week(request, weekid):
     semana = Semana.objects.get(id=weekid)
 
-    doadores = Donation.objects.filter(
-        semana=semana).order_by('player__game_id')
+    doadores = Donation.objects.filter(semana=semana).order_by(
+        "player__game_id"
+    )
 
     context = {
-        'semana': semana,
-        'doadores': doadores,
+        "semana": semana,
+        "doadores": doadores,
     }
 
-    return render(request, 'bank/week.html', context=context)
+    return render(request, "bank/week.html", context=context)
 
 
 @login_required
@@ -61,12 +65,12 @@ def donated(request, donationid):
 
     doador.save()
 
-    return redirect(f'/bank/week/{doador.semana.id}')
+    return redirect(f"/bank/week/{doador.semana.id}")
 
 
 @login_required
 def donations_report(request):
     context = {
-        'devedores': Donation.objects.filter(donated=False).order_by('player')
+        "devedores": Donation.objects.filter(donated=False).order_by("player")
     }
-    return render(request, 'bank/report.html', context=context)
+    return render(request, "bank/report.html", context=context)

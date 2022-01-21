@@ -12,27 +12,27 @@ from kvk.models import Kvk
 def index(request):
     mges = Mge.objects.all()
     context = {
-        'mges': mges,
+        "mges": mges,
     }
-    return render(request, 'mge/index.html', context=context)
+    return render(request, "mge/index.html", context=context)
 
 
 @login_required
 def startnew(request):
     mge = Mge()
     mge.save()
-    return redirect('/mge/')
+    return redirect("/mge/")
 
 
 def mgeedit(request, id):
     mge = Mge.objects.filter(id=id).first()
-    inscritos = Inscrito.objects.filter(mge=mge).order_by('inserido')
+    inscritos = Inscrito.objects.filter(mge=mge).order_by("inserido")
     id_inscritos = []
     for inscrito in inscritos:
         id_inscritos.append(inscrito.player.id)
-    
-    rank = Ranking.objects.filter(mge=mge).order_by('inserido')
-    punidos = Punido.objects.filter(mge=mge).order_by('inserido')
+
+    rank = Ranking.objects.filter(mge=mge).order_by("inserido")
+    punidos = Punido.objects.filter(mge=mge).order_by("inserido")
     insc_encerradas = False
     if date.today() > mge.semana() and date.today().weekday() > 3:
         # passou da quinta feira
@@ -41,24 +41,24 @@ def mgeedit(request, id):
     if date.today() > mge.semana():
         rank_fechado = True
     context = {
-        'mge': mge,
-        'insc_encerradas': insc_encerradas,
-        'rank': rank,
-        'rank_fechado': rank_fechado,
-        'punidos': punidos,
+        "mge": mge,
+        "insc_encerradas": insc_encerradas,
+        "rank": rank,
+        "rank_fechado": rank_fechado,
+        "punidos": punidos,
     }
-    return render(request, 'mge/mge.html', context=context)
+    return render(request, "mge/mge.html", context=context)
 
 
 @login_required
 def inscrever(request, id):
     mge = Mge.objects.filter(id=id).first()
-    player = Player.objects.filter(game_id=request.POST['player_id']).first()
+    player = Player.objects.filter(game_id=request.POST["player_id"]).first()
     inscrito = Inscrito()
     inscrito.player = player
     inscrito.mge = mge
     inscrito.save()
-    return redirect(f'/mge/editar/{id}/')
+    return redirect(f"/mge/editar/{id}/")
 
 
 @login_required
@@ -69,7 +69,7 @@ def desinscrever(request, id, player_id):
     aremover = Inscrito.objects.filter(mge=mge).filter(player=player).first()
     aremover.delete()
 
-    return redirect(f'/mge/editar/{id}/')
+    return redirect(f"/mge/editar/{id}/")
 
 
 @login_required
@@ -80,7 +80,7 @@ def addtorank(request, id, player_id):
     ranking.player = player
     ranking.mge = mge
     ranking.save()
-    return redirect(f'/mge/editar/{id}/')
+    return redirect(f"/mge/editar/{id}/")
 
 
 @login_required
@@ -91,12 +91,12 @@ def removefromrank(request, id, player_id):
     remover = Ranking.objects.filter(mge=mge).filter(player=player).first()
     remover.delete()
 
-    return redirect(f'/mge/editar/{id}/')
+    return redirect(f"/mge/editar/{id}/")
 
 
 @login_required
 def punir(request, player_id):
-    mge = Mge.objects.order_by('-id').first()
+    mge = Mge.objects.order_by("-id").first()
     player = Player.objects.filter(game_id=player_id).first()
 
     apunir = Punido()
@@ -104,7 +104,8 @@ def punir(request, player_id):
     apunir.player = player
     apunir.save()
 
-    return redirect(f'/mge/editar/{mge.id}/')
+    return redirect(f"/mge/editar/{mge.id}/")
+
 
 @login_required
 def despunir(request, id, player_id):
@@ -114,4 +115,4 @@ def despunir(request, id, player_id):
     despunir = Punido.objects.filter(mge=mge).filter(player=player).first()
     despunir.delete()
 
-    return redirect(f'/mge/editar/{id}/')
+    return redirect(f"/mge/editar/{id}/")
