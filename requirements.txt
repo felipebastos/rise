@@ -23,9 +23,9 @@ django-ranged-response==0.2.0 \
 django-simple-captcha==0.5.14 \
     --hash=sha256:84b5c188e6ae50e9ecec5e5d734c5bc4d2a50fbbca7f59d2c12da9a3bbee5051 \
     --hash=sha256:1bb2c842bde3ae0e23ce3c84b2f07f608b660c8d18201b0812571bccf38cf867
-django==4.0; python_version >= "3.8" \
-    --hash=sha256:59304646ebc6a77b9b6a59adc67d51ecb03c5e3d63ed1f14c909cdfda84e8010 \
-    --hash=sha256:d5a8a14da819a8b9237ee4d8c78dfe056ff6e8a7511987be627192225113ee75
+django==4.0.1; python_version >= "3.8" \
+    --hash=sha256:7cd8e8a3ed2bc0dfda05ce1e53a9c81b30eefd7aa350e538a18884475e4d4ce2 \
+    --hash=sha256:2485eea3cc4c3bae13080dee866ebf90ba9f98d1afe8fda89bfb0eb2e218ef86
 pillow==9.0.0; python_version >= "3.7" \
     --hash=sha256:113723312215b25c22df1fdf0e2da7a3b9c357a7d24a93ebbe80bfda4f37a8d4 \
     --hash=sha256:bb47a548cea95b86494a26c89d153fd31122ed65255db5dcbc421a2d28eb3379 \
