@@ -10,9 +10,10 @@
     <p><b>Observações:</b> {{player.observacao}}</p>
     {% endif %}
     <br>
+    {% if user.is_authenticated %}
     <div class="row">
+
         <div class="col"><b>Alterado em:</b> {{player.alterado_em}} <b>por</b> {{player.alterado_por}}</div>
-        {% if user.is_authenticated %}
         <div class="col"><a href="/players/edit/{{player.game_id}}" class="btn btn-warning"><i
                     class="fas fa-user-edit"></i></a>
             <a href="/mge/punir/{{player.game_id}}/" class="btn btn-danger">Punir MGE</a>
@@ -20,8 +21,9 @@
             <a class="btn btn-danger" href="/kvk/zerado/{{player.game_id}}/">Zerado</a>
             {% endif %}
         </div>
-        {% endif %}
+
     </div>
+    {% endif %}
 </div>
 <div class="container">
     <table class="table table-striped">
@@ -31,25 +33,41 @@
                 <th>Poder</th>
                 <th>Killpoints</th>
                 <th>Mortes</th>
+                {% if user.is_authenticated %}
                 <th>Ações</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
             {% language 'pt-br' %}
+            {% if user.is_authenticated %}
             {% for item in status %}
             <tr>
                 <td>{{item.data}}</td>
                 <td>{{item.power}}</td>
                 <td>{{item.killpoints}}</td>
                 <td>{{item.deaths}}</td>
+
                 <td>
                     {% if item.editavel %}
                     <a class="btn btn-warning" href="/players/statusedit/{{item.get_id}}">Editar</a>
                     <a class="btn btn-danger" href="/players/statusdelete/{{item.get_id}}">Deletar</a>
                     {% endif %}
                 </td>
+
             </tr>
             {% endfor %}
+            {% endif %}
+            {% if not user.is_authenticated %}
+            {% for item in status|slice:":1" %}
+            <tr>
+                <td>{{item.data}}</td>
+                <td>{{item.power}}</td>
+                <td>{{item.killpoints}}</td>
+                <td>{{item.deaths}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
             {% endlanguage %}
         </tbody>
     </table>
