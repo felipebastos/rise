@@ -14,7 +14,7 @@
                 <input class="form-control" type="text" name="player_id" id="player_id" placeholder="ID do jogador"
                     pattern="^[0-9]*$" required>
                 <div class="input-group-append">
-                    <button type="submit" class="btn btn-info">Inscrever</button>
+                    <button type="submit" class="btn btn-primary">Inscrever</button>
                 </div>
             </div>
         </form>
@@ -25,18 +25,18 @@
         <table class='table table-striped'>
             <thead>
                 <tr>
-                    <th>Nick</th>
-                    <th>Abates no KvK</th>
-                    <th>Mortes no KvK</th>
+                    <th scope="col">Nick</th>
+                    <th scope="col">Abates no KvK</th>
+                    <th scope="col">Mortes no KvK</th>
                     {% if user.is_authenticated and not insc_encerradas %}
-                    <th>Ações</th>
+                    <th scope="col">Ações</th>
                     {% endif %}
                 </tr>
             </thead>
             <tbody>
                 {% for inscrito in inscritos %}
                 <tr>
-                    <td>{{inscrito.player.nick}}</td>
+                    <th scope="row">{{inscrito.player.nick}}</th>
                     <td>{{inscrito.kills}}</td>
                     <td>{{inscrito.deaths}}</td>
                     {% if user.is_authenticated and not rank_fechado %}
@@ -55,17 +55,17 @@
     <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Posição</th>
-                <th>Nick</th>
+                <th scope="col">Posição</th>
+                <th scope="col">Nick</th>
                 {% if user.is_authenticated and not rank_fechado %}
-                <th>Ações</th>
+                <th scope="col">Ações</th>
                 {% endif %}
             </tr>
         </thead>
         <tbody>
             {% for ranked in rank %}
             <tr>
-                <td>{{forloop.counter}}</td>
+                <th scope="row">{{forloop.counter}}</th>
                 <td>{{ranked.player.nick}}</td>
                 {% if user.is_authenticated and not rank_fechado %}
                 <td><a href="/mge/removefromrank/{{mge.id}}/{{ranked.player.game_id}}/" class="btn btn-danger">Remover
@@ -80,17 +80,17 @@
     <table class="table table-hover table-striped">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Nick</th>
+                <th scope="col">ID</th>
+                <th scope="col">Nick</th>
                 {% if user.is_authenticated %}
-                <th>Ações</th>
+                <th scope="col">Ações</th>
                 {% endif %}
             </tr>
         </thead>
         <tbody>
             {% for punido in punidos %}
             <tr>
-                <td>{{punido.player.game_id}}</td>
+                <th scope="row">{{punido.player.game_id}}</th>
                 <td>{{punido.player.nick}}</td>
                 {% if user.is_authenticated %}
                 <td><a href="/mge/despunir/{{mge.id}}/{{punido.player.game_id}}/" class="btn btn-warning">Remover</a>

@@ -7,15 +7,15 @@
     <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Nick</th>
-                <th>Aliança</th>
+                <th scope="col">ID</th>
+                <th scope="col">Nick</th>
+                <th scope="col">Aliança</th>
             </tr>
         </thead>
         <tbody>
             {% for player in players %}
             <tr>
-                <td><a href="/players/{{player.game_id}}">{{player.game_id}}</a></td>
+                <th scope="row"><a href="/players/{{player.game_id}}">{{player.game_id}}</a></th>
                 <td>{{player.nick}}</td>
                 <td>{{player.alliance.tag}}</td>
             </tr>

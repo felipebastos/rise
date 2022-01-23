@@ -5,13 +5,16 @@
 {% load i18n %}
 <div class="card">
     <div class="card-body">
-        <div class="card-title">{{nick}} <span class="badge badge-info">ID: {{player_id}}</span>{% if zerado %}<span class="badge badge-danger"><span class="fas fa-fire-alt"></span> Zerado</span>{% endif %}</div>
+        <div class="card-title">{{nick}} <span class="badge bg-info">ID: {{player_id}}</span>{% if zerado %}<span
+                class="badge bg-danger"><span class="fas fa-fire-alt"></span> Zerado</span>{% endif %}</div>
         <div class="card-text">Estes são os seus dados no kvk que começou em {{kvk.inicio}}</div>
         <div class="card-text mb-4 text-muted">última atualização em {{atualizado}}</div>
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item">{{killpoints}} killpoints</li>
-        <li class="list-group-item">{{deaths}} de suas tropas morreram {% if metamortes %} <span title="Sua meta era {{meta}}" class="fas fa-thumbs-up text-success"></span> {% else %} <span title="Sua meta é {{meta}}" class="fas fa-thumbs-down text-danger"></span> {% endif %}</li>
+        <li class="list-group-item">{{deaths}} de suas tropas morreram {% if metamortes %} <span
+                title="Sua meta era {{meta}}" class="fas fa-thumbs-up text-success"></span> {% else %} <span
+                title="Sua meta é {{meta}}" class="fas fa-thumbs-down text-danger"></span> {% endif %}</li>
         <li class="list-group-item">{{perdeuganhou}} {{power}} em poder</li>
     </ul>
     <div class="card-body">
@@ -22,12 +25,13 @@
         {% if not zerado %}
         <li class="list-group-item">{{posdt}}º em mortes no reino.</li>
         {% else %}
-        <li class="list-group-item"><span class="badge badge-danger"><span class="fas fa-fire-alt"></span> Zerado</span> - Não podemos lhe incluir nas comparações de mortes.</li>
+        <li class="list-group-item"><span class="badge bg-danger"><span class="fas fa-fire-alt"></span> Zerado</span>
+            - Não podemos lhe incluir nas comparações de mortes.</li>
         {% endif %}
         <li class="list-group-item">
             Em relação a Killpoints você está melhor que a porcentagem abaixo de jogadores na sua faixa de poder.
             <div class="progress">
-                <div class="progress-bar bg-success" role="progressbar" 
+                <div class="progress-bar bg-success" role="progressbar"
                     style="width: {% widthratio poskpfaixa todoskp 100 %}%;"
                     aria-valuenow="{% widthratio poskpfaixa todoskp 100 %}" aria-valuemin="0" aria-valuemax="100">
                     {% widthratio poskpfaixa todoskp 100 %}%</div>
@@ -44,14 +48,15 @@
     </ul>
     <div class="card-body">
         <div class="card-title">
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#listacomparados" aria-expanded="false" aria-controls="listacomparados">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#listacomparados"
+                aria-expanded="false" aria-controls="listacomparados">
                 Veja com quem foi comparado
-              </button>
+            </button>
         </div>
         <div class="card-text collapse" id="listacomparados">
-            <ul class="list-group">
+            <ol class="list-group-numbered">
                 {% for player in comparadoa %}
-                <li class="list-group-item">{{forloop.counter}}. {{player.nick}}</li>
+                <li class="list-group-item">{{player.nick}}</li>
                 {% endfor %}
             </ol>
         </div>

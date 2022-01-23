@@ -3,38 +3,41 @@
 {% block content %}
 {% load l10n %}
 {% load i18n %}
-<div class="jumbotron text-center">
-    <h1>{{player.game_id}} - {{player.nick}} <span class="badge badge-secondary">{{player.status}}</span></h1>
-    <h2><a href="/players/alliance/{{player.alliance.tag}}">{{player.alliance.tag}}</a> - {{spec}}</h2>
-    {% if user.is_authenticated %}
-    <p><b>Observações:</b> {{player.observacao}}</p>
-    {% endif %}
-    <br>
-    {% if user.is_authenticated %}
-    <div class="row">
+<div class="bg-light p-3 text-center">
+    <div class="container">
+        <h1 class="display-4">{{player.game_id}} - {{player.nick}} <span
+                class="badge bg-secondary">{{player.status}}</span></h1>
+        <h2><a href="/players/alliance/{{player.alliance.tag}}">{{player.alliance.tag}}</a> - {{spec}}</h2>
+        {% if user.is_authenticated %}
+        <p class="lead"><b>Observações:</b> {{player.observacao}}</p>
+        {% endif %}
+        <br>
+        {% if user.is_authenticated %}
+        <div class="row">
 
-        <div class="col"><b>Alterado em:</b> {{player.alterado_em}} <b>por</b> {{player.alterado_por}}</div>
-        <div class="col"><a href="/players/edit/{{player.game_id}}" class="btn btn-warning"><i
-                    class="fas fa-user-edit"></i></a>
-            <a href="/mge/punir/{{player.game_id}}/" class="btn btn-danger">Punir MGE</a>
-            {% if showkvk %}
-            <a class="btn btn-danger" href="/kvk/zerado/{{player.game_id}}/">Zerado</a>
-            {% endif %}
+            <div class="col"><b>Alterado em:</b> {{player.alterado_em}} <b>por</b> {{player.alterado_por}}</div>
+            <div class="col"><a href="/players/edit/{{player.game_id}}" class="btn btn-warning"><i
+                        class="fas fa-user-edit"></i></a>
+                <a href="/mge/punir/{{player.game_id}}/" class="btn btn-danger">Punir MGE</a>
+                {% if showkvk %}
+                <a class="btn btn-danger" href="/kvk/zerado/{{player.game_id}}/">Zerado</a>
+                {% endif %}
+            </div>
+
         </div>
-
+        {% endif %}
     </div>
-    {% endif %}
 </div>
 <div class="container">
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Data da informação</th>
-                <th>Poder</th>
-                <th>Killpoints</th>
-                <th>Mortes</th>
+                <th scope="col">Data da informação</th>
+                <th scope="col">Poder</th>
+                <th scope="col">Killpoints</th>
+                <th scope="col">Mortes</th>
                 {% if user.is_authenticated %}
-                <th>Ações</th>
+                <th scope="col">Ações</th>
                 {% endif %}
             </tr>
         </thead>
@@ -43,7 +46,7 @@
             {% if user.is_authenticated %}
             {% for item in status %}
             <tr>
-                <td>{{item.data}}</td>
+                <th scope="row">{{item.data}}</th>
                 <td>{{item.power}}</td>
                 <td>{{item.killpoints}}</td>
                 <td>{{item.deaths}}</td>
@@ -61,7 +64,7 @@
             {% if not user.is_authenticated %}
             {% for item in status|slice:":1" %}
             <tr>
-                <td>{{item.data}}</td>
+                <th scope="row">{{item.data}}</th>
                 <td>{{item.power}}</td>
                 <td>{{item.killpoints}}</td>
                 <td>{{item.deaths}}</td>

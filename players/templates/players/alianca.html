@@ -3,36 +3,39 @@
 {% block content %}
 {% load l10n %}
 {% load i18n %}
-<div class="jumbotron text-center">
-    <h1>{{ally.tag}} - {{ally.nome}}</h1>
-    <p>{{total}} membros</p>
-    {% language 'pt-br' %}
-    <p>{{power}} de poder total.</p>
-    <p>{{kills}} killpoints da aliança.</p>
-    <p>{{death}} mortes totais na aliança.</p>
-    {% endlanguage %}
-    {% if user.is_authenticated %}
-    <a href="/players/review/{{ally.tag}}" class="btn btn-warning"><i class="fas fa-users"></i> Revisar membros</a>
-    {% endif %}
+<div class="bg-light p-3 text-center">
+    <div class="container">
+        <h1 class="display-4">{{ally.tag}} - {{ally.nome}}</h1>
+        <p class="lead">{{total}} membros</p>
+        {% language 'pt-br' %}
+        <p class="lead">{{power}} de poder total.</p>
+        <p class="lead">{{kills}} killpoints da aliança.</p>
+        <p class="lead">{{death}} mortes totais na aliança.</p>
+        {% endlanguage %}
+        {% if user.is_authenticated %}
+        <a href="/players/review/{{ally.tag}}" class="btn btn-warning"><i class="fas fa-users"></i> Revisar membros</a>
+        {% endif %}
+    </div>
 </div>
 <div class="container-fluid">
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Nick</th>
+                <th scope="col">ID</th>
+                <th scope="col">Nick</th>
                 {% if user.is_authenticated %}
-                <th>Ações</th>
+                <th scope="col">Ações</th>
                 {% endif %}
             </tr>
         </thead>
         <tbody>
             {% for membro in membros %}
             <tr>
-                <td><a href="/players/{{membro.game_id}}">{{membro.game_id}}</a></td>
+                <th scope="row"><a href="/players/{{membro.game_id}}">{{membro.game_id}}</a></th>
                 <td>{{membro.nick}}</td>
                 {% if user.is_authenticated %}
-                <td><a href="/players/edit/{{membro.game_id}}/" class="btn btn-warning"><i class="fas fa-user-edit"></i></a>
+                <td><a href="/players/edit/{{membro.game_id}}/" class="btn btn-warning"><i
+                            class="fas fa-user-edit"></i></a>
                     <a href="/mge/punir/{{membro.game_id}}/" class="btn btn-danger">Punir MGE</a>
                 </td>
                 {% endif %}

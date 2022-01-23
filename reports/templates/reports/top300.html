@@ -3,23 +3,25 @@
 {% block content %}
 <div class="container">
     <h1>Top 300 do K32</h1>
-    <h3 title="O poder do top 300 ativo, contando os banidos que não migraram e as farms fortes.">Segundo os registros, o poder para pareamento é {{poder}}</h3>
-    <h3 title="Todos os jogadores, mesmo fora do top 300, menos: banidos e farms">Já o poder de batalha do reino é de {{p_batalha}}</h3>
-    <h3>O poder de sacrifício é de {{p_sacrificio}}</h3>
-    <table class="table table-hover table-striped">
+    <h4 title="O poder do top 300 ativo, contando os banidos que não migraram e as farms fortes.">Segundo os registros,
+        o poder para pareamento é {{poder}}</h4>
+    <h4 title="Todos os jogadores, mesmo fora do top 300, menos: banidos e farms">Já o poder de batalha do reino é de
+        {{p_batalha}}</h4>
+    <h4>O poder de sacrifício é de {{p_sacrificio}}</h4>
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>Pos.</th>
-                <th>Nick</th>
-                <th>Aliança</th>
-                <th>Poder</th>
-                <th>Killpoints</th>
-                <th>Mortes</th>
+                <th scope="col">Pos.</th>
+                <th scope="col">Nick</th>
+                <th scope="col">Aliança</th>
+                <th scope="col">Poder</th>
+                <th scope="col">Killpoints</th>
+                <th scope="col">Mortes</th>
             </tr>
         </thead>
         {% for jogador in jogadores %}
         <tr>
-            <td>{{forloop.counter}}</td>
+            <th scope="row">{{forloop.counter}}</th>
             <td><a href="/players/{{jogador.player.game_id}}">{{jogador.player.nick}}</a></td>
             <td>{{jogador.player.alliance.tag}}</td>
             <td>{{jogador.power}}</td>
