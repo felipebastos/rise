@@ -1,8 +1,10 @@
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.db.models.aggregates import Max, Min
 from datetime import date
-from players.models import Player
+from players.models import Player, PlayerStatus
 from .models import Mge, Punido, Ranking, Inscrito
 from kvk.models import Kvk
 
@@ -27,9 +29,6 @@ def startnew(request):
 def mgeedit(request, id):
     mge = Mge.objects.filter(id=id).first()
     inscritos = Inscrito.objects.filter(mge=mge).order_by("inserido")
-    id_inscritos = []
-    for inscrito in inscritos:
-        id_inscritos.append(inscrito.player.id)
 
     rank = Ranking.objects.filter(mge=mge).order_by("inserido")
     punidos = Punido.objects.filter(mge=mge).order_by("inserido")
@@ -46,18 +45,43 @@ def mgeedit(request, id):
         "rank": rank,
         "rank_fechado": rank_fechado,
         "punidos": punidos,
+        "inscritos": inscritos,
     }
     return render(request, "mge/mge.html", context=context)
 
 
-@login_required
 def inscrever(request, id):
     mge = Mge.objects.filter(id=id).first()
+
     player = Player.objects.filter(game_id=request.POST["player_id"]).first()
-    inscrito = Inscrito()
-    inscrito.player = player
-    inscrito.mge = mge
-    inscrito.save()
+
+    if player and not Inscrito.objects.filter(player=player, mge=mge).first():
+        inscrito = Inscrito()
+        inscrito.player = player
+        inscrito.mge = mge
+
+        kvk = Kvk.objects.order_by("-inicio").first()
+
+        final = kvk.final
+        if not final:
+            final = timezone.now()
+
+        status = (
+            PlayerStatus.objects.all()
+            .filter(player=player)
+            .filter(data__gte=kvk.inicio)
+            .filter(data__lte=final)
+            .values("player__nick")
+            .annotate(
+                kp=Max("killpoints") - Min("killpoints"),
+                dt=Max("deaths") - Min("deaths"),
+            )
+        )
+
+        inscrito.kills = status[0]["kp"]
+        inscrito.deaths = status[0]["dt"]
+
+        inscrito.save()
     return redirect(f"/mge/editar/{id}/")
 
 

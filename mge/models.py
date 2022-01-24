@@ -40,4 +40,7 @@ class Inscrito(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     mge = models.ForeignKey(Mge, on_delete=models.CASCADE)
 
+    kills = models.IntegerField(default=0)
+    deaths = models.IntegerField(default=0)
+
     inserido = models.DateTimeField("Inserido", auto_now_add=True)

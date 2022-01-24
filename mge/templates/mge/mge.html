@@ -5,7 +5,7 @@
     <h1 class="text-center">MGE que inicia em {{mge.semana}}</h1>
     <h2 class="text-center">Inscrição <i class="fas fa-file-signature"></i></h2>
 
-    {% if user.is_authenticated and not insc_encerradas %}
+    {% if not insc_encerradas %}
     <div class="container">
         <h3>Inscrever</h3>
         <form action="/mge/inscrever/{{mge.id}}/" method="post">
