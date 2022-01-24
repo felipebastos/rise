@@ -33,7 +33,7 @@ def mgeedit(request, id):
     rank = Ranking.objects.filter(mge=mge).order_by("inserido")
     punidos = Punido.objects.filter(mge=mge).order_by("inserido")
     insc_encerradas = False
-    if date.today() > mge.semana() and date.today().weekday() > 3:
+    if date.today() > mge.semana():
         # passou da quinta feira
         insc_encerradas = True
     rank_fechado = False
