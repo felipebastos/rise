@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.core.paginator import Paginator
 from django.db.models.aggregates import Max, Min
 
 from datetime import date
@@ -290,6 +291,13 @@ def alliance(request, ally_tag):
 
         if ally:
             membros = Player.objects.filter(alliance=ally)
+
+            paginator = Paginator(membros, 25)
+
+            page_number = request.GET.get("page")
+
+            pagina = paginator.get_page(page_number)
+
             kills = 0
             deaths = 0
             power = 0
@@ -304,15 +312,17 @@ def alliance(request, ally_tag):
                     deaths = deaths + status.deaths
                     power = power + status.power
             context = {
-                "membros": membros,
+                "membros": pagina,
                 "ally": ally,
                 "total": len(membros),
                 "kills": kills,
                 "power": power,
                 "death": deaths,
+                "range": range(1, pagina.paginator.num_pages + 1),
             }
             return render(request, "players/alianca.html", context)
-    except:
+    except Exception as e:
+        print(e)
         raise Http404("Aliança não está nos registros.")
 
 

@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models.aggregates import Max, Min
 from django.shortcuts import render
+from django.core.paginator import Paginator
 
 from datetime import date, datetime, timedelta
 
@@ -89,15 +90,27 @@ def top300(request):
 
     os300 = oReino[:300]
 
+    paginator = Paginator(os300, 25)
+
+    page_number = request.GET.get("page")
+
+    pagina = paginator.get_page(page_number)
+
     poder = 0
     for p in os300:
         poder += p.power
 
+    slice = 0
+    if page_number:
+        slice = (int(page_number) - 1) * 25
+
     context = {
-        "jogadores": os300,
+        "jogadores": pagina,
         "poder": poder,
         "p_batalha": poder_de_batalha,
         "p_sacrificio": poder_de_sacrificio,
+        "range": range(1, pagina.paginator.num_pages + 1),
+        "slice": slice,
     }
     return render(request, "reports/top300.html", context=context)
 

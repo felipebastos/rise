@@ -8,6 +8,43 @@
     <h4 title="Todos os jogadores, mesmo fora do top 300, menos: banidos e farms">Já o poder de batalha do reino é de
         {{p_batalha}}</h4>
     <h4>O poder de sacrifício é de {{p_sacrificio}}</h4>
+    <hr>
+    <nav aria-label="Paginação entre membros">
+        <ul class="pagination justify-content-center">
+            {% if jogadores.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">Primeira</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ jogadores.previous_page_number }}">Anterior</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link" href="#">Primeira</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
+            {% endif %}
+
+            {% for num in range %}
+            {% if num == jogadores.number %}
+            <li class="page-item active" aria-current="page">
+
+                <a class="page-link" href="#">{{ jogadores.number }}</a>
+
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{num}}">{{ num }}</a>
+            </li>
+            {% endif %}
+
+            {% endfor %}
+
+
+            {% if jogadores.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ jogadores.next_page_number }}">Próxima</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ jogadores.paginator.num_pages }}">Última</a></li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link" href="#">Próxima</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#">Última</a></li>
+            {% endif %}
+        </ul>
+    </nav>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -21,7 +58,7 @@
         </thead>
         {% for jogador in jogadores %}
         <tr>
-            <th scope="row">{{forloop.counter}}</th>
+            <th scope="row">{{forloop.counter|add:slice}}</th>
             <td><a href="/players/{{jogador.player.game_id}}">{{jogador.player.nick}}</a></td>
             <td>{{jogador.player.alliance.tag}}</td>
             <td>{{jogador.power}}</td>
