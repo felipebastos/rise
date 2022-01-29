@@ -13,36 +13,44 @@ from .forms import LoginForm, SearchPlayerForm
 def index(request):
     hoje = datetime.now(timezone(timedelta(hours=-3)))
 
-    players_god = Player.objects.filter(alliance__tag="GoD")
     god_atrasados = 0
     god_nulos = 0
-    for player in players_god:
-        status = (
-            PlayerStatus.objects.filter(player=player).order_by("-data").first()
-        )
-        if status:
-            delta = hoje - status.data
-            if delta.days > 15:
-                god_atrasados = god_atrasados + 1
-            if status.power == 0:
-                god_nulos = god_nulos + 1
-        else:
-            god_nulos = god_nulos + 1
-    players_bod = Player.objects.filter(alliance__tag="BoD")
     bod_atrasados = 0
     bod_nulos = 0
-    for player in players_bod:
-        status = (
-            PlayerStatus.objects.filter(player=player).order_by("-data").first()
-        )
-        if status:
-            delta = hoje - status.data
-            if delta.days > 15:
-                bod_atrasados = bod_atrasados + 1
-            if status.power == 0:
+
+    if request.user.is_authenticated:
+        players_god = Player.objects.filter(alliance__tag="GoD")
+
+        for player in players_god:
+            status = (
+                PlayerStatus.objects.filter(player=player)
+                .order_by("-data")
+                .first()
+            )
+            if status:
+                delta = hoje - status.data
+                if delta.days > 15:
+                    god_atrasados = god_atrasados + 1
+                if status.power == 0:
+                    god_nulos = god_nulos + 1
+            else:
+                god_nulos = god_nulos + 1
+        players_bod = Player.objects.filter(alliance__tag="BoD")
+
+        for player in players_bod:
+            status = (
+                PlayerStatus.objects.filter(player=player)
+                .order_by("-data")
+                .first()
+            )
+            if status:
+                delta = hoje - status.data
+                if delta.days > 15:
+                    bod_atrasados = bod_atrasados + 1
+                if status.power == 0:
+                    bod_nulos = bod_nulos + 1
+            else:
                 bod_nulos = bod_nulos + 1
-        else:
-            bod_nulos = bod_nulos + 1
 
     ultimo = PlayerStatus.objects.order_by("-data").first()
 
