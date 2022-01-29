@@ -521,7 +521,11 @@ def como_estou(request):
         players_faixa_original = []
         for stat in faixa_original:
             if stat.player not in players_faixa_original:
-                players_faixa_original.append(stat.player)
+                if (
+                    stat.data.hour == primeiro.data.hour
+                    and stat.data.minute == primeiro.data.minute
+                ):
+                    players_faixa_original.append(stat.player)
 
         status_kp_similares = (
             PlayerStatus.objects.all()
@@ -566,6 +570,7 @@ def como_estou(request):
             "kvk": kvk,
             "nick": ultimo.player.nick,
             "player_id": ultimo.player.game_id,
+            "primeirostatus": primeiro,
             "atualizado": ultimo.data,
             "killpoints": ultimo.killpoints - primeiro.killpoints,
             "deaths": ultimo.deaths - primeiro.deaths,

@@ -5,16 +5,32 @@
 {% load i18n %}
 <div class="card">
     <div class="card-body">
-        <div class="card-title">{{nick}} <span class="badge bg-info">ID: {{player_id}}</span>{% if zerado %}<span
-                class="badge bg-danger"><span class="fas fa-fire-alt"></span> Zerado</span>{% endif %}</div>
+        <div class="card-title">{{nick}} <a href="/players/{{player_id}}/"><span class="badge bg-info">ID:
+                    {{player_id}}</span></a>{% if zerado %}<span class="badge bg-danger"><span
+                    class="fas fa-fire-alt"></span> Zerado</span>{% endif %}</div>
         <div class="card-text">Estes são os seus dados no kvk que começou em {{kvk.inicio}}</div>
         <div class="card-text mb-4 text-muted">última atualização em {{atualizado}}</div>
+    </div>
+    <div class="card-body">
+        <div class="card-title"><b>Quais seus dados na abertura do kvk?</b></div>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Status atualizado em {{primeirostatus.data}}</li>
+        <li class="list-group-item">{{primeirostatus.power}} poder</li>
+        <li class="list-group-item">{{primeirostatus.killpoints}} killpoints</li>
+        <li class="list-group-item">{{primeirostatus.deaths}} mortes</li>
+    </ul>
+    <div class="card-body">
+        <div class="card-title"><b>O que você já fez neste Kvk?</b></div>
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item">{{killpoints}} killpoints</li>
         <li class="list-group-item">{{deaths}} de suas tropas morreram {% if metamortes %} <span
-                title="Sua meta era {{meta}}" class="fas fa-thumbs-up text-success"></span> {% else %} <span
-                title="Sua meta é {{meta}}" class="fas fa-thumbs-down text-danger"></span> {% endif %}</li>
+                class="fas fa-thumbs-up text-success"></span>
+            <div class="alert alert-success">Sua meta era {{meta}}</div> {% else %} <span
+                class="fas fa-thumbs-down text-danger"></span>
+            <div class="alert alert-danger">Sua meta é {{meta}}</div>{% endif %}
+        </li>
         <li class="list-group-item">{{perdeuganhou}} {{power}} em poder</li>
     </ul>
     <div class="card-body">
