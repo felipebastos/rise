@@ -275,12 +275,13 @@ def populate(request):
             if row[4] == "":
                 death = 0
 
-            obj_status, created_status = PlayerStatus.objects.get_or_create(
-                player=jogador,
-                power=poder.replace(".", ""),
-                killpoints=killpoints,
-                deaths=death.replace(".", ""),
-            )
+            statusnovo = PlayerStatus()
+            statusnovo.player = jogador
+            statusnovo.power = poder.replace(".", "")
+            statusnovo.killpoints = killpoints
+            statusnovo.deaths = death.replace(".", "")
+            statusnovo.save()
+
     return HttpResponseRedirect("/")
 
 
