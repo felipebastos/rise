@@ -13,6 +13,7 @@
             <div class="input-group">
                 <input class="form-control" type="text" name="player_id" id="player_id" placeholder="ID do jogador"
                     pattern="^[0-9]*$" required>
+                <input class="form-control" type="text" name="general" id="general" placeholder="general que deseja">
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-primary">Inscrever</button>
                 </div>
@@ -28,6 +29,7 @@
                     <th scope="col">Nick</th>
                     <th scope="col">Abates no KvK</th>
                     <th scope="col">Mortes no KvK</th>
+                    <th scope="col">General</th>
                     {% if user.is_authenticated and not insc_encerradas %}
                     <th scope="col">Ações</th>
                     {% endif %}
@@ -39,6 +41,7 @@
                     <th scope="row">{{inscrito.player.nick}}</th>
                     <td>{{inscrito.kills}}</td>
                     <td>{{inscrito.deaths}}</td>
+                    <td>{{inscrito.general}}</td>
                     {% if user.is_authenticated and not rank_fechado %}
                     <td><a href="/mge/addtorank/{{mge.id}}/{{inscrito.player.game_id}}/" class="btn btn-info">Adicionar
                             ao

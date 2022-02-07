@@ -59,6 +59,7 @@ def inscrever(request, id):
         inscrito = Inscrito()
         inscrito.player = player
         inscrito.mge = mge
+        inscrito.general = request.POST["general"] or ""
 
         kvk = Kvk.objects.order_by("-inicio").first()
 

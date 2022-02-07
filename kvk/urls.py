@@ -13,4 +13,5 @@ urlpatterns = [
         views.removezerado,
         name="removezerado",
     ),
+    path("analise/<kvkid>/", views.analisedesempenho, name="analisedesempenho"),
 ]

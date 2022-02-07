@@ -43,4 +43,6 @@ class Inscrito(models.Model):
     kills = models.IntegerField(default=0)
     deaths = models.IntegerField(default=0)
 
+    general = models.TextField(default="")
+
     inserido = models.DateTimeField("Inserido", auto_now_add=True)

@@ -104,3 +104,82 @@ def removezerado(request, kvk, zerado_id):
     zerado.delete()
 
     return redirect(f"/kvk/edit/{zerado.kvk.id}/")
+
+
+def analisedesempenho(request, kvkid):
+    kvk = Kvk.objects.get(pk=kvkid)
+
+    if kvk.id == 4:
+        return Http404("Este KvK ainda não suportava a análise.")
+
+    context = {}
+
+    faixas = [
+        (100000001, 5000000000, 3000000),
+        (90000001, 100000000, 2200000),
+        (80000001, 90000000, 1500000),
+        (70000001, 80000000, 1100000),
+        (60000001, 70000000, 700000),
+        (50000001, 60000000, 600000),
+        (40000001, 50000000, 500000),
+        (0, 40000000, 500000),
+    ]
+
+    primeiro = (
+        PlayerStatus.objects.filter(data__gte=kvk.inicio)
+        .order_by("data")
+        .first()
+    )
+
+    categorizados = []
+    for faixa in faixas:
+        zerados = Zerado.objects.filter(kvk=kvk)
+        zerados_lista = []
+        for zerado_pra_lista in zerados:
+            zerados_lista.append(zerado_pra_lista.player)
+
+        faixa_original = PlayerStatus.objects.filter(
+            data__year=primeiro.data.year,
+            data__month=primeiro.data.month,
+            data__day=primeiro.data.day,
+            power__gte=faixa[0],
+            power__lte=faixa[1],
+        ).order_by("data")
+
+        players_faixa_original = []
+        for stat in faixa_original:
+            if stat.player not in players_faixa_original:
+                if (
+                    stat.data.hour == primeiro.data.hour
+                    and stat.data.minute == primeiro.data.minute
+                ):
+                    players_faixa_original.append(stat.player)
+        status_dt = (
+            PlayerStatus.objects.exclude(player__in=zerados_lista)
+            .filter(player__in=players_faixa_original)
+            .filter(data__gte=kvk.inicio)
+            .values("player__nick", "player__game_id")
+            .annotate(
+                kp=Max("killpoints") - Min("killpoints"),
+                dt=Max("deaths") - Min("deaths"),
+            )
+            .order_by("-dt")
+        )
+        media = 0
+        for status in status_dt:
+            media = media + status["dt"]
+
+        media = media // len(status_dt)
+
+        categorizados.append(
+            {
+                "faixa0": faixa[0],
+                "faixa1": faixa[1],
+                "media": media,
+                "meiamedia": media * 0.5,
+                "membros": status_dt,
+            }
+        )
+        context["categorizados"] = categorizados
+
+    return render(request, "kvk/analise.html", context=context)
