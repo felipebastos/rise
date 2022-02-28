@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models.aggregates import Max, Min
-from datetime import date
+from datetime import date, timedelta
 from players.models import Player, PlayerStatus
 from .models import Mge, Punido, Ranking, Inscrito
 from kvk.models import Kvk
@@ -12,7 +12,7 @@ from kvk.models import Kvk
 
 
 def index(request):
-    mges = Mge.objects.all()
+    mges = Mge.objects.all().order_by("-criado_em")
     context = {
         "mges": mges,
     }
@@ -33,11 +33,11 @@ def mgeedit(request, id):
     rank = Ranking.objects.filter(mge=mge).order_by("inserido")
     punidos = Punido.objects.filter(mge=mge).order_by("inserido")
     insc_encerradas = False
-    if date.today() > mge.semana():
+    if date.today() > mge.semana() - timedelta(days=3):
         # passou da quinta feira
         insc_encerradas = True
     rank_fechado = False
-    if date.today() > mge.semana():
+    if date.today() > mge.semana() + timedelta(days=4):
         rank_fechado = True
     context = {
         "mge": mge,

@@ -2,63 +2,36 @@
 {% block title %}- Home{% endblock %}
 {% block content %}
 <div class="container">
-    {% if user.is_authenticated %}
     <div class="row">
-        <div class="col-sm-6">
-            <h1>Gestão de doações</h1>
-            <a class="btn btn-primary" href="/bank/"><i class="fas fa-piggy-bank"></i> Doações</a>
-            <br>
+        <div class="bg-light p-3 text-center">
+            <h1 class="display-4">Reino 1032 Granada</h1>
+            <p class="lead">
+                Reino de língua portuguesa, predominantemente de nacionalidade brasileira, sendo a maior parte low
+                spender e f2p <i>(exploradores de baú que não jogam pra valer, podem parar de ler por aqui).</i>
+            </p>
         </div>
-        <div class="col-sm-6">
-            <h1>Encontre um jogador</h1>
-            <form class="form-inline" action="/players/find/" method="post">
-                {% csrf_token %}
-                <div class="input-group">
-                    {{searchform.id}}
-                    <div class="input-group-append">
-                        <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-sm-6">
-            <h1>Alertas da GoD</h1>
-            <ul>
-                <li>A GoD tem <a href="/players/old/GoD/">{{god_antigos}}</a> registros mais antigos do que quinze dias.
-                </li>
-                <li>A GoD tem <a href="/players/nostatus/GoD/">{{god_nulos}}</a> registros sem anotação de status ou com
-                    poder zero.</li>
-            </ul>
-        </div>
-        <div class="col-sm-6">
-            <h1>Alertas da BoD</h1>
-            <ul>
-                <li>A BoD tem <a href="/players/old/BoD/">{{bod_antigos}}</a> registros mais antigos do que quinze dias.
-                </li>
-                <li>A BoD tem <a href="/players/nostatus/BoD/">{{bod_nulos}}</a> registros sem anotação de status ou com
-                    poder zero.</li>
+        <div class="bg-light p-3">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Focado em <b>kxk</b>, tendo como vitória os kxk 3, 5(luz e trevas), 6-8-9
+                    (HA).</li>
+                <li class="list-group-item">Contamos com <b>Bot de títulos</b> via discord 24/7.</li>
+                <li class="list-group-item"><b>MGE é controlado, fora de kxk</b>, sendo priorizado comandantes de rally
+                    ou guarnição, e sendo
+                    usado
+                    como criterio de escolha os resultados do kxk anterior (mortes e pontos de abate).</li>
+                <li class="list-group-item"><b>MGE livre durante kxk</b>, para etapas de KE.</li>
+                <li class="list-group-item"><b>Sistema automatizado de captura de informações</b> (Poder, Mortes, Pontos
+                    de abate), evitando
+                    erro
+                    humano ou adulteração de informações.</li>
             </ul>
         </div>
     </div>
-    {% endif %}
-    <div class="row">
-        <div class="col">
-            <h1>Verifique seu desempenho no kvk atualmente aberto</h1>
-            <form action="/players/desempenho/" method="post">
-                {% csrf_token %}
-                <input class="form-control" id="game_id" name="game_id" type="text" placeholder="ID">
-                <input class="form-control btn btn-primary" type="submit" value="Analisar">
-            </form>
-        </div>
-    </div>
     <hr>
-    <h1>Ranking Geral do Reino</h1>
+    <h1 class="display-4 text-center">Top 10 do Reino</h1>
     <div class="row">
         <div class="col-sm-4">
-            <h3>Top 10 - Poder</h3>
+            <h3>Poder</h3>
             <ol class="list-group list-group-numbered">
                 {% for p in top10poder %}
                 <li class="list-group-item"><a href="/players/{{p.player.game_id}}/">{{p.player.nick}}</a></li>
@@ -66,7 +39,7 @@
             </ol>
         </div>
         <div class="col-sm-4">
-            <h3>Top 10 - Killpoints</h3>
+            <h3>Killpoints</h3>
             <ol class="list-group list-group-numbered">
                 {% for p in top10kp %}
                 <li class="list-group-item"><a href="/players/{{p.player.game_id}}/">{{p.player.nick}}</a></li>
@@ -74,12 +47,23 @@
             </ol>
         </div>
         <div class="col-sm-4">
-            <h3>Top 10 - Mortes</h3>
+            <h3>Mortes</h3>
             <ol class="list-group list-group-numbered">
                 {% for p in top10dt %}
                 <li class="list-group-item"><a href="/players/{{p.player.game_id}}/">{{p.player.nick}}</a></li>
                 {% endfor %}
             </ol>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <h1 class="display-5 text-center">Verifique seu desempenho no kvk atualmente aberto</h1>
+            <form action="/players/desempenho/" method="post">
+                {% csrf_token %}
+                <input class="form-control" id="game_id" name="game_id" type="text" placeholder="ID">
+                <input class="form-control btn btn-primary" type="submit" value="Analisar">
+            </form>
         </div>
     </div>
 </div>

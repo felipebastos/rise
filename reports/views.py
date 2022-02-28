@@ -3,15 +3,67 @@ from django.db.models.aggregates import Max, Min
 from django.shortcuts import render
 from django.core.paginator import Paginator
 
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
-from players.models import Alliance, PlayerStatus
+from players.models import Alliance, PlayerStatus, Player
+from rise.forms import SearchPlayerForm
 
 # Create your views here.
 @login_required
 def index(request):
+    hoje = datetime.now(timezone(timedelta(hours=-3)))
+
+    god_atrasados = 0
+    god_nulos = 0
+    bod_atrasados = 0
+    bod_nulos = 0
+
+    if request.user.is_authenticated:
+        players_god = Player.objects.filter(alliance__tag="GoD")
+
+        for player in players_god:
+            status = (
+                PlayerStatus.objects.filter(player=player)
+                .order_by("-data")
+                .first()
+            )
+            if status:
+                delta = hoje - status.data
+                if delta.days > 15:
+                    god_atrasados = god_atrasados + 1
+                if status.power == 0:
+                    god_nulos = god_nulos + 1
+            else:
+                god_nulos = god_nulos + 1
+        players_bod = Player.objects.filter(alliance__tag="BoD")
+
+        for player in players_bod:
+            status = (
+                PlayerStatus.objects.filter(player=player)
+                .order_by("-data")
+                .first()
+            )
+            if status:
+                delta = hoje - status.data
+                if delta.days > 15:
+                    bod_atrasados = bod_atrasados + 1
+                if status.power == 0:
+                    bod_nulos = bod_nulos + 1
+            else:
+                bod_nulos = bod_nulos + 1
+
     aliancas = Alliance.objects.all().filter(tag__in=["GoD", "BoD", "AoD"])
-    context = {"alliances": aliancas}
+
+    searchform = SearchPlayerForm()
+
+    context = {
+        "searchform": searchform,
+        "god_antigos": god_atrasados,
+        "god_nulos": god_nulos,
+        "bod_antigos": bod_atrasados,
+        "bod_nulos": bod_nulos,
+        "alliances": aliancas,
+    }
 
     if request.method == "POST":
         try:

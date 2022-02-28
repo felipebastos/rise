@@ -1,57 +1,12 @@
-from django.db.models.aggregates import Count, Max
-from django.db.models.expressions import Case, When
-from players.models import Alliance, PlayerStatus, Player
+from players.models import PlayerStatus
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from datetime import datetime, timezone, timedelta
-
-from .forms import LoginForm, SearchPlayerForm
+from .forms import LoginForm
 
 
 def index(request):
-    hoje = datetime.now(timezone(timedelta(hours=-3)))
-
-    god_atrasados = 0
-    god_nulos = 0
-    bod_atrasados = 0
-    bod_nulos = 0
-
-    if request.user.is_authenticated:
-        players_god = Player.objects.filter(alliance__tag="GoD")
-
-        for player in players_god:
-            status = (
-                PlayerStatus.objects.filter(player=player)
-                .order_by("-data")
-                .first()
-            )
-            if status:
-                delta = hoje - status.data
-                if delta.days > 15:
-                    god_atrasados = god_atrasados + 1
-                if status.power == 0:
-                    god_nulos = god_nulos + 1
-            else:
-                god_nulos = god_nulos + 1
-        players_bod = Player.objects.filter(alliance__tag="BoD")
-
-        for player in players_bod:
-            status = (
-                PlayerStatus.objects.filter(player=player)
-                .order_by("-data")
-                .first()
-            )
-            if status:
-                delta = hoje - status.data
-                if delta.days > 15:
-                    bod_atrasados = bod_atrasados + 1
-                if status.power == 0:
-                    bod_nulos = bod_nulos + 1
-            else:
-                bod_nulos = bod_nulos + 1
-
     ultimo = PlayerStatus.objects.order_by("-data").first()
 
     oReinoPoder = (
@@ -90,14 +45,7 @@ def index(request):
         .order_by("-deaths")
     )
 
-    searchform = SearchPlayerForm()
-
     context = {
-        "god_antigos": god_atrasados,
-        "god_nulos": god_nulos,
-        "bod_antigos": bod_atrasados,
-        "bod_nulos": bod_nulos,
-        "searchform": searchform,
         "top10poder": oReinoPoder[:10],
         "top10kp": oReinokillpoints[:10],
         "top10dt": oReinomortes[:10],

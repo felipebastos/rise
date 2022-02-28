@@ -2,6 +2,49 @@
 {% block title %}- Rankings{% endblock %}
 {% block content %}
 <div class="container">
+    {% if user.is_authenticated %}
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Gestão de doações</h1>
+            <a class="btn btn-primary" href="/bank/"><i class="fas fa-piggy-bank"></i> Doações</a>
+            <br>
+        </div>
+        <div class="col-sm-6">
+            <h1>Encontre um jogador</h1>
+            <form class="form-inline" action="/players/find/" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    {{searchform.id}}
+                    <div class="input-group-append">
+                        <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Alertas da GoD</h1>
+            <ul>
+                <li>A GoD tem <a href="/players/old/GoD/">{{god_antigos}}</a> registros mais antigos do que quinze dias.
+                </li>
+                <li>A GoD tem <a href="/players/nostatus/GoD/">{{god_nulos}}</a> registros sem anotação de status ou com
+                    poder zero.</li>
+            </ul>
+        </div>
+        <div class="col-sm-6">
+            <h1>Alertas da BoD</h1>
+            <ul>
+                <li>A BoD tem <a href="/players/old/BoD/">{{bod_antigos}}</a> registros mais antigos do que quinze dias.
+                </li>
+                <li>A BoD tem <a href="/players/nostatus/BoD/">{{bod_nulos}}</a> registros sem anotação de status ou com
+                    poder zero.</li>
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+    <hr>
     <form class="form-inline" action="/reports/" method="post">
         {% csrf_token %}
         <div class="form-group">

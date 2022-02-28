@@ -18,7 +18,11 @@
 <div class="container">
     <h1>KvK's</h1>
     {% for kvk in kvks %}
+    {% if forloop.counter == 1 %}
     <a href="/kvk/edit/{{kvk.id}}/" class="btn btn-primary">{{kvk.inicio}}</a>
+    {% else %}
+    <a href="/kvk/edit/{{kvk.id}}/" class="btn btn-secondary">{{kvk.inicio}}</a>
+    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}
