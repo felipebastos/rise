@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date, timedelta, datetime
+from mge.forms import COMMANDER_CHOICES
 
 from players.models import Player
 
@@ -8,6 +9,9 @@ from players.models import Player
 
 class Mge(models.Model):
     criado_em = models.DateField("Criado em", default=date.today)
+    tipo = models.CharField(
+        "Tipo", max_length=2, choices=COMMANDER_CHOICES, default="0"
+    )
 
     class Meta:
         ordering = ["criado_em"]
@@ -19,7 +23,7 @@ class Mge(models.Model):
         return domingo
 
     def __str__(self):
-        return f"MGE iniciado em {self.semana()}"
+        return f"MGE de {COMMANDER_CHOICES[int(self.tipo)][1]} iniciado em"
 
 
 class Punido(models.Model):

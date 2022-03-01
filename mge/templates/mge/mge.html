@@ -2,7 +2,7 @@
 {% block title %}- MGE{% endblock %}
 {% block content %}
 <div class="container">
-    <h1 class="text-center">MGE que inicia em {{mge.semana}}</h1>
+    <h1 class="text-center">{{mge}} {{mge.semana}}</h1>
     <h2 class="text-center">Inscrição <i class="fas fa-file-signature"></i></h2>
 
     {% if not insc_encerradas %}
@@ -13,7 +13,12 @@
             <div class="input-group">
                 <input class="form-control" type="text" name="player_id" id="player_id" placeholder="ID do jogador"
                     pattern="^[0-9]*$" required>
-                <input class="form-control" type="text" name="general" id="general" placeholder="comandante que deseja">
+                <select class="form-select" name="general" id="general">
+                    <option value="Tanto faz" selected>Selecione seu comandante</option>
+                    {% for opcao in opcoes %}
+                    <option value="{{opcao}}">{{opcao}}</option>
+                    {% endfor %}
+                </select>
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-primary">Inscrever</button>
                 </div>
@@ -29,7 +34,12 @@
             <div class="input-group">
                 <input class="form-control" type="text" name="player_id" id="player_id" placeholder="ID do jogador"
                     pattern="^[0-9]*$" required>
-                <input class="form-control" type="text" name="general" id="general" placeholder="comandante que deseja">
+                <select class="form-select" name="general" id="general">
+                    <option value="Tanto faz" selected>Selecione seu comandante</option>
+                    {% for opcao in opcoes %}
+                    <option value="{{opcao}}">{{opcao}}</option>
+                    {% endfor %}
+                </select>
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-primary">Inscrever</button>
                 </div>
@@ -38,7 +48,7 @@
     </div>
     {% endif %}
     <div class="container">
-        <h3>Inscritos</h3>
+        <h3 class="text-center">Lista de Inscritos</h3>
         <table class='table table-striped'>
             <thead>
                 <tr>

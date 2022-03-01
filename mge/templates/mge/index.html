@@ -4,17 +4,21 @@
 {% if user.is_authenticated %}
 <div class="container">
     <h1>Gestão de MGE</h1>
-    <a href="/mge/startnew/" class="btn btn-success">Iniciar novo MGE</a>
+    <form action="/mge/startnew/" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-success" type="submit">Criar</button>
+    </form>
 </div>
 {% endif %}
 <div class="container">
     <h1>MGE's por dia de início</h1>
     {% for mge in mges %}
     {% if forloop.counter == 1 %}
-    <a href="/mge/editar/{{mge.id}}/" class="btn btn-primary">Domingo {{mge.semana}}</a>
+    <a href="/mge/view/{{mge.id}}/" class="btn btn-primary">Domingo {{mge.semana}}</a>
     <hr>
     {% else %}
-    <a href="/mge/editar/{{mge.id}}/" class="btn btn-secondary">Domingo {{mge.semana}}</a>
+    <a href="/mge/view/{{mge.id}}/" class="btn btn-secondary">Domingo {{mge.semana}}</a>
     {% endif %}
     {% endfor %}
 </div>

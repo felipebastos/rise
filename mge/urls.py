@@ -5,7 +5,7 @@ from . import views
 urlpatterns = [
     path("", views.index, name="index"),
     path("startnew/", views.startnew, name="startnew"),
-    path("editar/<id>/", views.mgeedit, name="mgeedit"),
+    path("view/<id>/", views.mgeedit, name="mgeedit"),
     path("inscrever/<id>/", views.inscrever, name="inscrever"),
     path(
         "desinscrever/<id>/<player_id>/",

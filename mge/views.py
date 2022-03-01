@@ -1,9 +1,9 @@
-from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models.aggregates import Max, Min
 from datetime import date, timedelta
+from mge.forms import COMMANDERS, CriaMGE
 from players.models import Player, PlayerStatus
 from .models import Mge, Punido, Ranking, Inscrito
 from kvk.models import Kvk
@@ -13,21 +13,38 @@ from kvk.models import Kvk
 
 def index(request):
     mges = Mge.objects.all().order_by("-criado_em")
+    form = CriaMGE()
     context = {
         "mges": mges,
+        "form": form,
     }
     return render(request, "mge/index.html", context=context)
 
 
 @login_required
 def startnew(request):
-    mge = Mge()
-    mge.save()
+    form = CriaMGE(request.POST or None)
+
+    if request.method == "POST":
+        if form.is_valid():
+            quais = form.cleaned_data.get("commanders")
+            mge = Mge()
+            mge.tipo = quais
+            mge.save()
+
     return redirect("/mge/")
 
 
 def mgeedit(request, id):
     mge = Mge.objects.filter(id=id).first()
+
+    opcoes = None
+    if 0 < int(mge.tipo) < 5:
+        opcoes = COMMANDERS[int(mge.tipo) - 1]
+    if int(mge.tipo) >= 5:
+        opcoes = COMMANDERS[int(mge.tipo) - 5]
+        opcoes.append("Lançamento")
+
     inscritos = Inscrito.objects.filter(mge=mge).order_by("inserido")
 
     rank = Ranking.objects.filter(mge=mge).order_by("inserido")
@@ -41,6 +58,7 @@ def mgeedit(request, id):
         rank_fechado = True
     context = {
         "mge": mge,
+        "opcoes": opcoes,
         "insc_encerradas": insc_encerradas,
         "rank": rank,
         "rank_fechado": rank_fechado,
@@ -83,7 +101,7 @@ def inscrever(request, id):
         inscrito.deaths = status[0]["dt"]
 
         inscrito.save()
-    return redirect(f"/mge/editar/{id}/")
+    return redirect(f"/mge/view/{id}/")
 
 
 @login_required
@@ -94,7 +112,7 @@ def desinscrever(request, id, player_id):
     aremover = Inscrito.objects.filter(mge=mge).filter(player=player).first()
     aremover.delete()
 
-    return redirect(f"/mge/editar/{id}/")
+    return redirect(f"/mge/view/{id}/")
 
 
 @login_required
@@ -105,7 +123,7 @@ def addtorank(request, id, player_id):
     ranking.player = player
     ranking.mge = mge
     ranking.save()
-    return redirect(f"/mge/editar/{id}/")
+    return redirect(f"/mge/view/{id}/")
 
 
 @login_required
@@ -116,7 +134,7 @@ def removefromrank(request, id, player_id):
     remover = Ranking.objects.filter(mge=mge).filter(player=player).first()
     remover.delete()
 
-    return redirect(f"/mge/editar/{id}/")
+    return redirect(f"/mge/view/{id}/")
 
 
 @login_required
@@ -129,7 +147,7 @@ def punir(request, player_id):
     apunir.player = player
     apunir.save()
 
-    return redirect(f"/mge/editar/{mge.id}/")
+    return redirect(f"/mge/view/{mge.id}/")
 
 
 @login_required
@@ -140,4 +158,4 @@ def despunir(request, id, player_id):
     despunir = Punido.objects.filter(mge=mge).filter(player=player).first()
     despunir.delete()
 
-    return redirect(f"/mge/editar/{id}/")
+    return redirect(f"/mge/view/{id}/")
