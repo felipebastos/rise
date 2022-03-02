@@ -12,6 +12,7 @@ django-simple-captcha = "^0.5.14"
 python-dotenv = "^0.19.2"
 djangorestframework = "^3.13.1"
 djangorestframework-simplejwt = "^5.0.0"
+django-filter = "^21.1"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.9.2"
