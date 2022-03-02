@@ -10,12 +10,15 @@ python = "^3.8"
 Django = "^4.0.1"
 django-simple-captcha = "^0.5.14"
 python-dotenv = "^0.19.2"
+djangorestframework = "^3.13.1"
+djangorestframework-simplejwt = "^5.0.0"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.9.2"
 pytest = "^6.2.4"
 autopep8 = "^1.5.7"
 black = "^21.12b0"
+requests = "^2.27.1"
 
 [tool.black]
 line-length = 80

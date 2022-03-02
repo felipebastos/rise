@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.contrib.auth import logout
 from django.urls import include, path
 
 from rise import views
@@ -31,6 +30,8 @@ urlpatterns = [
     path("mge/", include("mge.urls")),
     path("reports/", include("reports.urls")),
     path("captcha/", include("captcha.urls")),
+    path("api/v1/", include("api.urls")),
+    path("api-auth/", include("rest_framework.urls")),
 ]
 
 admin.site.site_header = "K32 Admin"
