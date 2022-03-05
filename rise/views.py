@@ -6,6 +6,10 @@ from django.contrib.auth.decorators import login_required
 from .forms import LoginForm
 
 
+def ang(request):
+    return render(request, "rise/ang.html")
+
+
 def index(request):
     ultimo = PlayerStatus.objects.order_by("-data").first()
 
