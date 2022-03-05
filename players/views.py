@@ -225,7 +225,18 @@ def populate(request):
                 jogador.save()
             else:
                 # update some data
+                oldnick = jogador.nick
+                print(f"Mudança de nick: {oldnick} > {row[2]}")
                 jogador.nick = row[2]
+                if jogador.nick != oldnick:
+                    if jogador.observacao:
+                        jogador.observacao += (
+                            f"\r\nMudança de nick: {oldnick} > {row[2]}"
+                        )
+                    else:
+                        jogador.observacao = (
+                            f"Mudança de nick: {oldnick} > {row[2]}"
+                        )
                 ally = Alliance.objects.filter(tag=row[4]).first()
                 if ally is not None:
                     jogador.alliance = ally
