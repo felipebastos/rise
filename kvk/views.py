@@ -112,6 +112,10 @@ def analisedesempenho(request, kvkid):
     if kvk.id == 4:
         return Http404("Este KvK ainda não suportava a análise.")
 
+    final = kvk.final
+    if not final:
+        final = timezone.now()
+
     context = {}
 
     faixas = [
@@ -158,6 +162,7 @@ def analisedesempenho(request, kvkid):
             PlayerStatus.objects.exclude(player__in=zerados_lista)
             .filter(player__in=players_faixa_original)
             .filter(data__gte=kvk.inicio)
+            .filter(data__lte=final)
             .values("player__nick", "player__game_id")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
