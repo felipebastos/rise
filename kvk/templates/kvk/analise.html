@@ -3,6 +3,11 @@
 {% block content %}
 
 <div class="container">
+    {% if tipo == 'kp' %}
+    <h1>Análise por Killpoints</h1>
+    {% else %}
+    <h1>Análise por Mortes</h1>
+    {% endif %}
     <table class="table">
         <th>Legenda</th>
         <tr class="table-success">
@@ -40,12 +45,22 @@
                         </thead>
                         <tbody>
                             {% for player in grupo.membros %}
+                            {% if tipo == 'dt' %}
                             {% if player.dt >= grupo.media %}
                             <tr class="table-success">
                                 {% elif player.dt >= grupo.meiamedia %}
                             <tr class="table-warning">
                                 {% else %}
                             <tr class="table-danger">
+                                {% endif %}
+                                {% else %}
+                                {% if player.kp >= grupo.media %}
+                            <tr class="table-success">
+                                {% elif player.kp >= grupo.meiamedia %}
+                            <tr class="table-warning">
+                                {% else %}
+                            <tr class="table-danger">
+                                {% endif %}
                                 {% endif %}
                                 <th scope="row">{{forloop.counter}}</th>
                                 <td><a href="/players/{{player.player__game_id}}/">{{player.player__nick}}</a></td>

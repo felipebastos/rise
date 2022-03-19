@@ -106,8 +106,11 @@ def removezerado(request, kvk, zerado_id):
     return redirect(f"/kvk/edit/{zerado.kvk.id}/")
 
 
-def analisedesempenho(request, kvkid):
+def analisedesempenho(request, kvkid, cat):
     kvk = Kvk.objects.get(pk=kvkid)
+
+    if cat not in ["kp", "dt"]:
+        return Http404("Tipo de ranking indisponível.")
 
     if kvk.id == 4:
         return Http404("Este KvK ainda não suportava a análise.")
@@ -116,7 +119,9 @@ def analisedesempenho(request, kvkid):
     if not final:
         final = timezone.now()
 
-    context = {}
+    context = {
+        "tipo": cat,
+    }
 
     faixas = [
         (100000001, 5000000000, 3000000),
@@ -158,7 +163,7 @@ def analisedesempenho(request, kvkid):
                     and stat.data.minute == primeiro.data.minute
                 ):
                     players_faixa_original.append(stat.player)
-        status_dt = (
+        status = (
             PlayerStatus.objects.exclude(player__in=zerados_lista)
             .filter(player__in=players_faixa_original)
             .filter(data__gte=kvk.inicio)
@@ -168,13 +173,13 @@ def analisedesempenho(request, kvkid):
                 kp=Max("killpoints") - Min("killpoints"),
                 dt=Max("deaths") - Min("deaths"),
             )
-            .order_by("-dt")
+            .order_by(f"-{cat}")
         )
         media = 0
-        for status in status_dt:
-            media = media + status["dt"]
+        for stat in status:
+            media = media + stat[cat]
 
-        media = media // len(status_dt)
+        media = media // len(status)
 
         categorizados.append(
             {
@@ -182,7 +187,7 @@ def analisedesempenho(request, kvkid):
                 "faixa1": faixa[1],
                 "media": media,
                 "meiamedia": media * 0.5,
-                "membros": status_dt,
+                "membros": status,
             }
         )
         context["categorizados"] = categorizados
