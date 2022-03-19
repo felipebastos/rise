@@ -206,7 +206,7 @@ def upload_csv(request):
 
 @login_required
 def populate(request):
-    with open("./dados.csv") as f:
+    with open("./dados.csv", encoding="utf-8") as f:
         reader = csv.reader(f)
         for row in reader:
             # jump header
@@ -288,9 +288,15 @@ def populate(request):
 
             statusnovo = PlayerStatus()
             statusnovo.player = jogador
-            statusnovo.power = poder.replace(".", "")
+            if type(poder) == str:
+                statusnovo.power = poder.replace(".", "")
+            else:
+                statusnovo.power = poder
             statusnovo.killpoints = killpoints
-            statusnovo.deaths = death.replace(".", "")
+            if type(death) == str:
+                statusnovo.deaths = death.replace(".", "")
+            else:
+                statusnovo.deaths = death
             statusnovo.save()
 
     return HttpResponseRedirect("/")
