@@ -163,7 +163,7 @@ def analisedesempenho(request, kvkid):
             .filter(player__in=players_faixa_original)
             .filter(data__gte=kvk.inicio)
             .filter(data__lte=final)
-            .values("player__nick", "player__game_id")
+            .values("player__nick", "player__game_id", "player__alliance__tag")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
                 dt=Max("deaths") - Min("deaths"),

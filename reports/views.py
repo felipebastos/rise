@@ -19,7 +19,7 @@ def index(request):
     bod_nulos = 0
 
     if request.user.is_authenticated:
-        players_god = Player.objects.filter(alliance__tag="GoD")
+        players_god = Player.objects.filter(alliance__tag="32BR")
 
         for player in players_god:
             status = (
@@ -35,7 +35,7 @@ def index(request):
                     god_nulos = god_nulos + 1
             else:
                 god_nulos = god_nulos + 1
-        players_bod = Player.objects.filter(alliance__tag="BoD")
+        players_bod = Player.objects.filter(alliance__tag="32br")
 
         for player in players_bod:
             status = (
@@ -52,7 +52,7 @@ def index(request):
             else:
                 bod_nulos = bod_nulos + 1
 
-    aliancas = Alliance.objects.all().filter(tag__in=["GoD", "BoD", "AoD"])
+    aliancas = Alliance.objects.all().filter(tag__in=["32BR", "32br", "AoD"])
 
     searchform = SearchPlayerForm()
 
