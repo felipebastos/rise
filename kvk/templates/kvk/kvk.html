@@ -25,7 +25,7 @@
             {% for item in topkp %}
             <tr>
                 <th scope="row">{{forloop.counter}}</th>
-                <td>{{item.player__nick}}</td>
+                <td><a href="/players/{{item.player__game_id}}/">{{item.player__nick}}</a></td>
                 <td>{{item.kp}}</td>
             </tr>
             {% endfor %}
@@ -44,7 +44,7 @@
             {% for item in topdt %}
             <tr>
                 <th scope="row">{{forloop.counter}}</th>
-                <td>{{item.player__nick}}</td>
+                <td><a href="/players/{{item.player__game_id}}/">{{item.player__nick}}</a></td>
                 <td>{{item.dt}}</td>
             </tr>
             {% endfor %}

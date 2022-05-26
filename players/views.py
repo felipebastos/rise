@@ -541,7 +541,6 @@ def como_estou(request):
             if stat.player not in players_faixa_original:
                 if (
                     stat.data.hour == primeiro.data.hour
-                    and stat.data.minute == primeiro.data.minute
                 ):
                     players_faixa_original.append(stat.player)
 

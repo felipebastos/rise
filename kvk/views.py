@@ -42,11 +42,14 @@ def show_kvk(request, kvkid):
     if not final:
         final = timezone.now()
 
+    farms_banidos_e_inativos = Player.objects.filter(status__in=['BANIDO', 'FARM', 'MIGROU', 'INATIVO'])
+
     topkp = (
         PlayerStatus.objects.all()
+        .exclude(player__in=farms_banidos_e_inativos)
         .filter(data__gte=kvk.inicio)
         .filter(data__lte=final)
-        .values("player__nick")
+        .values("player__nick", "player__game_id")
         .annotate(
             kp=Max("killpoints") - Min("killpoints"),
             dt=Max("deaths") - Min("deaths"),
@@ -56,9 +59,10 @@ def show_kvk(request, kvkid):
     topdt = (
         PlayerStatus.objects.all()
         .exclude(player__in=zerados_lista)
+        .exclude(player__in=farms_banidos_e_inativos)
         .filter(data__gte=kvk.inicio)
         .filter(data__lte=final)
-        .values("player__nick")
+        .values("player__nick", "player__game_id")
         .annotate(
             kp=Max("killpoints") - Min("killpoints"),
             dt=Max("deaths") - Min("deaths"),
@@ -123,6 +127,8 @@ def analisedesempenho(request, kvkid, cat):
         "tipo": cat,
     }
 
+    farms_banidos_e_inativos = Player.objects.filter(status__in=['BANIDO', 'FARM', 'MIGROU', 'INATIVO'])
+
     faixas = [
         (100000001, 5000000000, 3000000),
         (90000001, 100000000, 2200000),
@@ -160,11 +166,11 @@ def analisedesempenho(request, kvkid, cat):
             if stat.player not in players_faixa_original:
                 if (
                     stat.data.hour == primeiro.data.hour
-                    and stat.data.minute == primeiro.data.minute
                 ):
                     players_faixa_original.append(stat.player)
+
         status = (
-            PlayerStatus.objects.exclude(player__in=zerados_lista)
+            PlayerStatus.objects.exclude(player__in=zerados_lista).exclude(player__in=farms_banidos_e_inativos)
             .filter(player__in=players_faixa_original)
             .filter(data__gte=kvk.inicio)
             .filter(data__lte=final)
