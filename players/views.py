@@ -273,7 +273,7 @@ def populate(request):
             kills.append(kills_t5)
 
             killpoints = 0
-            coeficientes = [0.2, 2, 5, 10, 20]
+            coeficientes = [0.2, 2, 4, 10, 20]
             for i in range(len(kills)):
                 if isinstance(kills[i], str):
                     if "." in kills[i]:
@@ -283,7 +283,7 @@ def populate(request):
                 killpoints = killpoints + kills[i] * coeficientes[i]
 
             death = row[10]
-            if row[4] == "":
+            if row[10] == "":
                 death = 0
 
             statusnovo = PlayerStatus()
