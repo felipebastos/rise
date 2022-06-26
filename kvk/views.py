@@ -4,11 +4,12 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.db.models.aggregates import Max, Min
+from django.db.models import FilteredRelation, Q
 from django.utils import timezone
 
 from players.models import Player, PlayerStatus
 
-from .models import Kvk, Zerado
+from .models import Kvk, Zerado, AdicionalDeFarms
 
 # Create your views here.
 
@@ -187,6 +188,12 @@ def analisedesempenho(request, kvkid, cat):
 
         media = media // len(status)
 
+        adicionais = AdicionalDeFarms.objects.filter(kvk=kvk)
+        adicionais_dic = {}
+        for adicional in adicionais:
+            adicionais_dic[adicional.player.game_id] = int(adicional.t4_deaths*0.25 + adicional.t5_deaths*0.5)
+        context["adicionais"] = adicionais_dic
+
         categorizados.append(
             {
                 "faixa0": faixa[0],
@@ -197,5 +204,26 @@ def analisedesempenho(request, kvkid, cat):
             }
         )
         context["categorizados"] = categorizados
+        context["kvk"] = kvkid
 
     return render(request, "kvk/analise.html", context=context)
+
+
+@login_required
+def adicionarFarms(request):
+    print('Cheguei na adicionar.')
+    if request.method == 'POST':
+        for k in request.POST:
+            print(f'{k}: {request.POST[k]}')
+        kvk = Kvk.objects.filter(id=request.POST['kvkid']).first()
+        print(kvk)
+        player = Player.objects.filter(game_id=request.POST['player_id']).first()
+
+        if kvk and player:
+            novo = AdicionalDeFarms()
+            novo.t4_deaths = request.POST['t4']
+            novo.t5_deaths = request.POST['t5']
+            novo.player = player
+            novo.kvk = kvk
+            novo.save()
+    return redirect(f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/")
