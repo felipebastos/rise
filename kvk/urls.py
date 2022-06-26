@@ -18,4 +18,5 @@ urlpatterns = [
         views.analisedesempenho,
         name="analisedesempenho",
     ),
+    path("adicionarfarm/", views.adicionarFarms, name="adicionarFarms"),
 ]

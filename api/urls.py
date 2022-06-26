@@ -14,6 +14,9 @@ from api.views import (
     AllianceViewSet,
     PunidoViewSet,
     RankingViewSet,
+    Top10KillPointsViewSet,
+    Top10MortesViewSet,
+    Top10PowerViewSet,
     ZeradoViewSet,
 )
 
@@ -31,6 +34,9 @@ router.register(r"rankings", RankingViewSet)
 router.register(r"inscritos", InscritoViewSet)
 router.register(r"kvks", KvkViewSet)
 router.register(r"zerados", ZeradoViewSet)
+router.register(r"power", Top10PowerViewSet)
+router.register(r"killpoints", Top10KillPointsViewSet)
+router.register(r"deaths", Top10MortesViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

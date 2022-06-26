@@ -1,6 +1,7 @@
 {% extends 'rise/base.html' %}
 {% block title %}- KvK{% endblock %}
 {% block content %}
+{% load filters %}
 
 <div class="container">
     {% if tipo == 'kp' %}
@@ -41,6 +42,9 @@
                                 <th scope="col">Nick</th>
                                 <th scope="col">Killpoints</th>
                                 <th scope="col">Mortes</th>
+                                {% if user.is_authenticated %}
+                                <th scope="col">Ações</th>
+                                {% endif %}
                             </tr>
                         </thead>
                         <tbody>
@@ -66,8 +70,22 @@
                                 <td><a href="/players/{{player.player__game_id}}/">[{{player.player__alliance__tag}}]
                                         {{player.player__nick}}</a></td>
                                 <td>{{player.kp}}</td>
-                                <td>{{player.dt}}</td>
+                                <td>{{player.dt}}
+                                    {% if player.player__game_id in adicionais %}
+                                    <span style="color:green;">+ {{adicionais|get:player.player__game_id}}</span>
+                                    {% endif %}
+                                </td>
+                                {% if user.is_authenticated %}
+                                <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal"
+                                        data-bs-nick="{{player.nick}}" data-bs-kvkid="{{kvk}}" data-bs-cat="{{tipo}}"
+                                        data-bs-playerid="{{player.player__game_id}}">Adicionar dados das
+                                        farms</button></td>
+
+
+                                {% endif %}
                             </tr>
+                            <!-- modal -->
+
                             {% endfor %}
                         </tbody>
                     </table>
@@ -79,5 +97,59 @@
 
     </div>
 </div>
+
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">
+                    Adicionar dados das farms</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/kvk/adicionarfarm/" method="post">
+                <div class="modal-body">
+                    Jogador: <span id="nick"></span><br>
+                    {% csrf_token %}
+                    <input type="hidden" name="cat" id="categ" value="">
+                    <input type="hidden" name="kvkid" id="kvkid" value="">
+                    <input type="hidden" name="player_id" id="playerid" value="">
+                    <input class="form-control" type="text" name="t4" placeholder="mortes de t4" id=""><br>
+                    <input class="form-control" type="text" name="t5" placeholder="mortes de t5" id=""><br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const exampleModal = document.getElementById('modal')
+    exampleModal.addEventListener('show.bs.modal', event => {
+        // Button that triggered the modal
+        const button = event.relatedTarget
+        // Extract info from data-bs-* attributes
+        const nick = button.getAttribute('data-bs-nick')
+        const cat = button.getAttribute('data-bs-cat')
+        const kvkid = button.getAttribute('data-bs-kvkid')
+        const playerid = button.getAttribute('data-bs-playerid')
+        // If necessary, you could initiate an AJAX request here
+        // and then do the updating in a callback.
+        //
+        // Update the modal's content.
+        const modalnick = exampleModal.querySelector('#nick')
+        const modalCatInput = exampleModal.querySelector('#categ')
+        const modalKvkIdInput = exampleModal.querySelector('#kvkid')
+        const modalPlayerIdInput = exampleModal.querySelector('#playerid')
+
+        modalnick.textContent = nick
+        modalCatInput.value = cat
+        modalKvkIdInput.value = kvkid
+        modalPlayerIdInput.value = playerid
+    })
+
+</script>
 
 {% endblock %}

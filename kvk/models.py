@@ -25,3 +25,9 @@ class Zerado(models.Model):
     kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
+
+class AdicionalDeFarms(models.Model):
+    kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    t4_deaths = models.IntegerField(default=0)
+    t5_deaths = models.IntegerField(default=0)
