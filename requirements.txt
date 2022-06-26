@@ -18,9 +18,9 @@ backports.zoneinfo==0.2.1; python_version < "3.9" and python_version >= "3.8" \
     --hash=sha256:1b13e654a55cd45672cb54ed12148cd33628f672548f373963b0bff67b217328 \
     --hash=sha256:4a0f800587060bf8880f954dbef70de6c11bbe59c673c3d818921f042f9954a6 \
     --hash=sha256:fadbfe37f74051d024037f223b8e001611eac868b5c5b06144ef4d8b799862f2
-django-cors-headers==3.12.0; python_version >= "3.7" \
-    --hash=sha256:5f07e2ff8a95c887698e748588a4a0b2ad0ad1b5a292e2d33132f1253e2a97cb \
-    --hash=sha256:39d1d5acb872c1860ecfd88b8572bfbb3a1f201b5685ede951d71fc57c7dfae5
+django-cors-headers==3.13.0; python_version >= "3.7" \
+    --hash=sha256:f9dc6b4e3f611c3199700b3e5f3398c28757dcd559c2f82932687f3d0443cfdf \
+    --hash=sha256:37e42883b5f1f2295df6b4bba96eb2417a14a03270cb24b2a07f021cd4487cf4
 django-filter==21.1; python_version >= "3.6" \
     --hash=sha256:632a251fa8f1aadb4b8cceff932bb52fe2f826dd7dfe7f3eac40e5c463d6836e \
     --hash=sha256:f4a6737a30104c98d2e2a5fb93043f36dd7978e0c7ddc92f5998e85433ea5063
@@ -29,9 +29,9 @@ django-ranged-response==0.2.0 \
 django-simple-captcha==0.5.17 \
     --hash=sha256:9649e66dab4e71efacbfef02f48b83b91684898352a1ab56f1686ce71033b328 \
     --hash=sha256:f9a07e5e9de264ba4039c9eaad66bc48188a21ceda5fcdc2fa13c5512141c2c9
-django==4.0.4; python_version >= "3.8" \
-    --hash=sha256:07c8638e7a7f548dc0acaaa7825d84b7bd42b10e8d22268b3d572946f1e9b687 \
-    --hash=sha256:4e8177858524417563cc0430f29ea249946d831eacb0068a1455686587df40b5
+django==4.0.5; python_version >= "3.8" \
+    --hash=sha256:502ae42b6ab1b612c933fb50d5ff850facf858a4c212f76946ecd8ea5b3bf2d9 \
+    --hash=sha256:f7431a5de7277966f3785557c3928433347d998c1e6459324501378a291e5aab
 djangorestframework-simplejwt==5.2.0; python_version >= "3.7" \
     --hash=sha256:bcc4cb74dcb637ca1e17eed35276bd618ab19491f8c53e65dee6271177c355e8 \
     --hash=sha256:a60b09afb27d91ad1d7ac904cc632bd52cecead8f389f0fa1532ceb0fb757a74
