@@ -77,8 +77,9 @@
                                 </td>
                                 {% if user.is_authenticated %}
                                 <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal"
-                                        data-bs-nick="{{player.nick}}" data-bs-kvkid="{{kvk}}" data-bs-cat="{{tipo}}"
-                                        data-bs-playerid="{{player.player__game_id}}">Adicionar dados das
+                                        data-bs-nick="{{player.player__nick}}" data-bs-kvkid="{{kvk}}"
+                                        data-bs-cat="{{tipo}}" data-bs-playerid="{{player.player__game_id}}">Adicionar
+                                        dados das
                                         farms</button></td>
 
 
@@ -126,25 +127,22 @@
 </div>
 
 <script>
-    const exampleModal = document.getElementById('modal')
-    exampleModal.addEventListener('show.bs.modal', event => {
-        // Button that triggered the modal
+    const modal = document.getElementById('modal')
+    modal.addEventListener('show.bs.modal', event => {
+
         const button = event.relatedTarget
-        // Extract info from data-bs-* attributes
+
         const nick = button.getAttribute('data-bs-nick')
         const cat = button.getAttribute('data-bs-cat')
         const kvkid = button.getAttribute('data-bs-kvkid')
         const playerid = button.getAttribute('data-bs-playerid')
-        // If necessary, you could initiate an AJAX request here
-        // and then do the updating in a callback.
-        //
-        // Update the modal's content.
+
         const modalnick = exampleModal.querySelector('#nick')
         const modalCatInput = exampleModal.querySelector('#categ')
         const modalKvkIdInput = exampleModal.querySelector('#kvkid')
         const modalPlayerIdInput = exampleModal.querySelector('#playerid')
 
-        modalnick.textContent = nick
+        modalnick.innerHTML = nick
         modalCatInput.value = cat
         modalKvkIdInput.value = kvkid
         modalPlayerIdInput.value = playerid
