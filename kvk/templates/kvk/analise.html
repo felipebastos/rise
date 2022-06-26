@@ -85,8 +85,6 @@
 
                                 {% endif %}
                             </tr>
-                            <!-- modal -->
-
                             {% endfor %}
                         </tbody>
                     </table>
@@ -137,12 +135,12 @@
         const kvkid = button.getAttribute('data-bs-kvkid')
         const playerid = button.getAttribute('data-bs-playerid')
 
-        const modalnick = exampleModal.querySelector('#nick')
-        const modalCatInput = exampleModal.querySelector('#categ')
-        const modalKvkIdInput = exampleModal.querySelector('#kvkid')
-        const modalPlayerIdInput = exampleModal.querySelector('#playerid')
+        const modalnick = modal.querySelector('#nick')
+        const modalCatInput = modal.querySelector('#categ')
+        const modalKvkIdInput = modal.querySelector('#kvkid')
+        const modalPlayerIdInput = modal.querySelector('#playerid')
 
-        modalnick.innerHTML = nick
+        modalnick.textContent = nick
         modalCatInput.value = cat
         modalKvkIdInput.value = kvkid
         modalPlayerIdInput.value = playerid
