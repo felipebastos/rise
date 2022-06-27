@@ -9,6 +9,7 @@
     {% else %}
     <h1>Análise por Mortes</h1>
     {% endif %}
+    <a href="/kvk/edit/{{kvk}}/" class="btn btn-secondary">Voltar</a>
     <table class="table">
         <th>Legenda</th>
         <tr class="table-success">
@@ -19,6 +20,11 @@
         </tr>
         <tr class="table-danger">
             <td>Fez menos que 50% da média</td>
+        </tr>
+        <tr>
+            <td><span style="color:green;">+numero</span> é o número de mortes nas farms onde T4 vale 0.25 e T5 vale
+                0.5.
+            </td>
         </tr>
     </table>
     <div class="accordion" id="accordionExample">
@@ -35,59 +41,60 @@
                 aria-labelledby="heading{{forloop.counter}}" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                     <h4>A média do grupo é: {{grupo.media}}</h4>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Posição</th>
-                                <th scope="col">Nick</th>
-                                <th scope="col">Killpoints</th>
-                                <th scope="col">Mortes</th>
-                                {% if user.is_authenticated %}
-                                <th scope="col">Ações</th>
-                                {% endif %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for player in grupo.membros %}
-                            {% if tipo == 'dt' %}
-                            {% if player.dt >= grupo.media %}
-                            <tr class="table-success">
-                                {% elif player.dt >= grupo.meiamedia %}
-                            <tr class="table-warning">
-                                {% else %}
-                            <tr class="table-danger">
-                                {% endif %}
-                                {% else %}
-                                {% if player.kp >= grupo.media %}
-                            <tr class="table-success">
-                                {% elif player.kp >= grupo.meiamedia %}
-                            <tr class="table-warning">
-                                {% else %}
-                            <tr class="table-danger">
-                                {% endif %}
-                                {% endif %}
-                                <th scope="row">{{forloop.counter}}</th>
-                                <td><a href="/players/{{player.player__game_id}}/">[{{player.player__alliance__tag}}]
-                                        {{player.player__nick}}</a></td>
-                                <td>{{player.kp}}</td>
-                                <td>{{player.dt}}
-                                    {% if player.player__game_id in adicionais %}
-                                    <span style="color:green;">+ {{adicionais|get:player.player__game_id}}</span>
+                    <div class="table-responsive-sm">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Posição</th>
+                                    <th scope="col">Nick</th>
+                                    <th scope="col">Killpoints</th>
+                                    <th scope="col">Mortes</th>
+                                    {% if user.is_authenticated %}
+                                    <th scope="col">Ações</th>
                                     {% endif %}
-                                </td>
-                                {% if user.is_authenticated %}
-                                <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal"
-                                        data-bs-nick="{{player.player__nick}}" data-bs-kvkid="{{kvk}}"
-                                        data-bs-cat="{{tipo}}" data-bs-playerid="{{player.player__game_id}}">Adicionar
-                                        dados das
-                                        farms</button></td>
-
-
-                                {% endif %}
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for player in grupo.membros %}
+                                {% if tipo == 'dt' %}
+                                {% if player.dt >= grupo.media %}
+                                <tr class="table-success">
+                                    {% elif player.dt >= grupo.meiamedia %}
+                                <tr class="table-warning">
+                                    {% else %}
+                                <tr class="table-danger">
+                                    {% endif %}
+                                    {% else %}
+                                    {% if player.kp >= grupo.media %}
+                                <tr class="table-success">
+                                    {% elif player.kp >= grupo.meiamedia %}
+                                <tr class="table-warning">
+                                    {% else %}
+                                <tr class="table-danger">
+                                    {% endif %}
+                                    {% endif %}
+                                    <th scope="row">{{forloop.counter}}</th>
+                                    <td><a href="/players/{{player.player__game_id}}/">[{{player.player__alliance__tag}}]
+                                            {{player.player__nick}}</a></td>
+                                    <td>{{player.kp}}</td>
+                                    <td>{{player.dt}}
+                                        {% if player.player__game_id in adicionais %}
+                                        <span style="color:green;">+ {{adicionais|get:player.player__game_id}}</span>
+                                        {% endif %}
+                                    </td>
+                                    {% if user.is_authenticated %}
+                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal"
+                                            data-bs-nick="{{player.player__nick}}" data-bs-kvkid="{{kvk}}"
+                                            data-bs-cat="{{tipo}}"
+                                            data-bs-playerid="{{player.player__game_id}}">Adicionar
+                                            dados das
+                                            farms</button></td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -112,8 +119,16 @@
                     <input type="hidden" name="cat" id="categ" value="">
                     <input type="hidden" name="kvkid" id="kvkid" value="">
                     <input type="hidden" name="player_id" id="playerid" value="">
-                    <input class="form-control" type="text" name="t4" placeholder="mortes de t4" id=""><br>
-                    <input class="form-control" type="text" name="t5" placeholder="mortes de t5" id=""><br>
+                    <div class="mb-3">
+                        <label for="t4" class="form-label">Mortes de T4</label>
+                        <input id="t4" class="form-control" type="text" name="t4" placeholder="mortes de t4" value="0"
+                            pattern="^(0|[1-9][0-9]*)$">
+                    </div>
+                    <div class="mb-3">
+                        <label for="t5" class="form-label">Mortes de T5</label>
+                        <input id="t5" class="form-control" type="text" name="t5" placeholder="mortes de t5" value="0"
+                            pattern="^(0|[1-9][0-9]*)$">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
