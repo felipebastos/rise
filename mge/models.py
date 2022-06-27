@@ -42,6 +42,9 @@ class Punido(models.Model):
 
     inserido = models.DateTimeField("Inserido", auto_now_add=True)
 
+    def __str__(self):
+        return f"Punido no {self.mge}"
+
 
 class Ranking(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)

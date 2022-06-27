@@ -1,6 +1,7 @@
 {% extends 'rise/base.html' %}
 {% block title %}- MGE{% endblock %}
 {% block content %}
+{% load mgefilters %}
 <div class="container">
     <h1 class="text-center">{{mge}} {{mge.semana}}</h1>
     <h2 class="text-center">Inscrição <i class="fas fa-file-signature"></i></h2>
@@ -70,7 +71,23 @@
             <tbody>
                 {% for inscrito in inscritos %}
                 <tr>
-                    <th scope="row">{{inscrito.player.nick}}</th>
+                    <th scope="row">{{inscrito.player.nick}}
+                        {% if inscrito|temPunicoes %}
+                        <span class="dropdown">
+                            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownPunicoes"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownPunicoes">
+                                {% for punicao in inscrito|getPunicoes %}
+                                <li><a class="dropdown-item" href="/mge/view/{{punicao.mge.id}}/">{{punicao}}
+                                        {{punicao.mge.semana}}</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </span>
+                        {% endif %}
+                    </th>
                     <td>{{inscrito.kills}}</td>
                     <td>{{inscrito.deaths}}</td>
                     <td>{{inscrito.general}}</td>
