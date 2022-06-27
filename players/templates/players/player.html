@@ -76,4 +76,17 @@
         </tbody>
     </table>
 </div>
+{% if user.is_authenticated %}
+<div class="container">
+    <h2>Histórico de punições</h2>
+    <ul class="list-group">
+        {% for punicao in punicoesMge %}
+        <li class="list-group-item">{{punicao}} {{punicao.mge.semana}}</li>
+        {% endfor %}
+        {% for punicao in punicoesPoder %}
+        <li class="list-group-item">{{punicao}} {{punicao.inserido}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
 {% endblock %}

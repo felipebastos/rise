@@ -9,6 +9,8 @@ from django.db.models.aggregates import Max, Min
 
 from datetime import date
 
+from mge.models import EventoDePoder, Punido
+
 from .models import (
     Player,
     PlayerStatus,
@@ -38,11 +40,17 @@ def index(request, game_id):
         exibirkvk = False
         if temKvk and temKvk.ativo:
             exibirkvk = True
+        
+        punido = Punido.objects.filter(player=player)
+        punidoPoder = EventoDePoder.objects.filter(player=player)
+
         context = {
             "player": player,
             "status": status,
             "spec": spec,
             "showkvk": exibirkvk,
+            "punicoesMge": punido,
+            "punicoesPoder": punidoPoder,
         }
     except Player.DoesNotExist:
         raise Http404("Player não encontrado.")
