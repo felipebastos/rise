@@ -20,4 +20,5 @@ urlpatterns = [
     ),
     path("punir/<player_id>/", views.punir, name="punir"),
     path("despunir/<id>/<player_id>/", views.despunir, name="despunir"),
+    path("punirPoder/<playerId>/", views.punirEventoDePoder, name="punirPoder"),
 ]

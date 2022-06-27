@@ -5,7 +5,7 @@ from django.db.models.aggregates import Max, Min
 from datetime import date, timedelta
 from mge.forms import COMMANDERS, CriaMGE
 from players.models import Player, PlayerStatus
-from .models import Comandante, Mge, Punido, Ranking, Inscrito
+from .models import Comandante, EventoDePoder, Mge, Punido, Ranking, Inscrito
 from kvk.models import Kvk
 
 # Create your views here.
@@ -163,3 +163,14 @@ def despunir(request, id, player_id):
     despunir.delete()
 
     return redirect(f"/mge/view/{id}/")
+
+
+@login_required
+def punirEventoDePoder(request, playerId):
+    player = Player.objects.filter(game_id=playerId).first()
+
+    punicao = EventoDePoder()
+    punicao.player = player
+    punicao.save()
+
+    return redirect(f"/players/{playerId}/")
