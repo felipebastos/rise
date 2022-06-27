@@ -15,9 +15,15 @@
                     pattern="^[0-9]*$" required>
                 <select class="form-select" name="general" id="general">
                     <option value="Tanto faz" selected>Selecione seu comandante</option>
+                    {% if not generais.length > 0 %}
                     {% for opcao in opcoes %}
                     <option value="{{opcao}}">{{opcao}}</option>
                     {% endfor %}
+                    {% else %}
+                    {% for general in generais %}
+                    <option value="{{general.nome}}">{{general.nome}}</option>
+                    {% endfor %}
+                    {% endif %}
                 </select>
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-primary">Inscrever</button>
