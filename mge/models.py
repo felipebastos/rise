@@ -68,3 +68,12 @@ class Inscrito(models.Model):
 class Comandante(models.Model):
     nome = models.TextField()
     tipo = models.CharField(max_length=3, choices=tipos_comandantes, default="arc")
+
+
+class EventoDePoder(models.Model):
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    
+    inserido = models.DateTimeField("Inserido", auto_now_add=True)
+
+    def __str__(self):
+        return f"Punido no evento de poder de"

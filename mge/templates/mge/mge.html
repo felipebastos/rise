@@ -84,6 +84,11 @@
                                         {{punicao.mge.semana}}</a>
                                 </li>
                                 {% endfor %}
+                                {% for punicao in inscrito|getPunicoesPoder %}
+                                <li><a class="dropdown-item" href="#">{{punicao}}
+                                        {{punicao.inserido}}</a>
+                                </li>
+                                {% endfor %}
                             </ul>
                         </span>
                         {% endif %}
