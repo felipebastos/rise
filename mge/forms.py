@@ -18,6 +18,7 @@ COMMANDERS = [
         "Pakal",
         "Leônidas",
         "Zenobia",
+        "Flavius",
     ],
     [
         "Chandra",
@@ -31,6 +32,7 @@ COMMANDERS = [
         "Artemísia",
         "Amanitore",
         "Nabuco",
+        "Henry",
     ],
     [
         "Wu Zetian",

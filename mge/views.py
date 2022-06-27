@@ -5,7 +5,7 @@ from django.db.models.aggregates import Max, Min
 from datetime import date, timedelta
 from mge.forms import COMMANDERS, CriaMGE
 from players.models import Player, PlayerStatus
-from .models import Mge, Punido, Ranking, Inscrito
+from .models import Comandante, Mge, Punido, Ranking, Inscrito
 from kvk.models import Kvk
 
 # Create your views here.
@@ -43,7 +43,10 @@ def mgeedit(request, id):
         opcoes = COMMANDERS[int(mge.tipo) - 1]
     if int(mge.tipo) >= 5:
         opcoes = COMMANDERS[int(mge.tipo) - 5]
-        opcoes.append("Lançamento")
+        if "Lançamento" not in opcoes:
+            opcoes.append("Lançamento")
+
+    generais = Comandante.objects.filter(tipo=mge.tipo_mge)
 
     inscritos = Inscrito.objects.filter(mge=mge).order_by("inserido")
 
@@ -59,6 +62,7 @@ def mgeedit(request, id):
     context = {
         "mge": mge,
         "opcoes": opcoes,
+        "generais": generais,
         "insc_encerradas": insc_encerradas,
         "rank": rank,
         "rank_fechado": rank_fechado,
