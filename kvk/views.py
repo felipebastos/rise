@@ -128,7 +128,7 @@ def analisedesempenho(request, kvkid, cat):
         "tipo": cat,
     }
 
-    farms_banidos_e_inativos = Player.objects.filter(status__in=['BANIDO', 'FARM', 'MIGROU', 'INATIVO'])
+    banidos_e_inativos = Player.objects.filter(status__in=['BANIDO', 'MIGROU', 'INATIVO'])
 
     faixas = [
         (100000001, 5000000000, 3000000),
@@ -171,7 +171,7 @@ def analisedesempenho(request, kvkid, cat):
                     players_faixa_original.append(stat.player)
 
         status = (
-            PlayerStatus.objects.exclude(player__in=zerados_lista).exclude(player__in=farms_banidos_e_inativos)
+            PlayerStatus.objects.exclude(player__in=zerados_lista).exclude(player__in=banidos_e_inativos)
             .filter(player__in=players_faixa_original)
             .filter(data__gte=kvk.inicio)
             .filter(data__lte=final)
