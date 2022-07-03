@@ -20,4 +20,6 @@ urlpatterns = [
         "statusdelete/<status_id>/", views.delete_status, name="delete_status"
     ),
     path("desempenho/", views.como_estou, name="como_estou"),
+    path("advertencias/", views.advertencias, name="advertencias"),
+    path("adv_add/", views.criar_advertencia, name="adv_add"),
 ]
