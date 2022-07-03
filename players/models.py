@@ -84,3 +84,13 @@ class PlayerStatus(models.Model):
 
     def __str__(self):
         return f"{self.player.game_id} - {self.player.nick} - {self.data}"
+
+
+class Advertencia(models.Model):
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    inicio = models.DateTimeField(auto_now_add=True)
+    duracao = models.IntegerField(null=False, default=1)
+    descricao = models.TextField(max_length=500)
+
+    def final(self):
+        return self.inicio + timedelta(days=self.duracao)

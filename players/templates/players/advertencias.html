@@ -1,0 +1,47 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Aliança{% endblock %}
+{% block content %}
+{% load l10n %}
+{% load i18n %}
+{% language 'pt-br' %}
+<div class="container">
+    {% if user.is_authenticated %}
+    <h3>Inserir uma advertência</h3>
+    <form action="/players/adv_add/" method="post">
+        {% csrf_token %}
+        <label for="gameid">ID</label>
+        <input class="form-control" type="text" name="game_id" id="gameid" pattern="^[0-9]*$" required>
+        <label for="descricao">Descrição</label>
+        <input class="form-control" type="text" name="descricao" id="descricao">
+        <label for="duracao">Duração em dias</label>
+        <input class="form-control" type="number" name="duracao" id="duracao" min="1">
+        <button class="btn btn-primary" type="submit">Adicionar advertência</button>
+        <button class="btn btn-warning" type="reset">Cancelar</button>
+    </form>
+    <hr>
+    {% endif %}
+    <table class='table table-striped'>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Player</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Início</th>
+                <th scope="col">Final</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for adv in advertencias %}
+            <tr>
+                <th scope="row">{{adv.player.game_id}}</th>
+                <td>{{adv.player.nick}}</td>
+                <td>{{adv.descricao}}</td>
+                <td>{{adv.inicio}}</td>
+                <td>{{adv.final}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endlanguage %}
+{% endblock %}

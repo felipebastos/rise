@@ -5,13 +5,15 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.paginator import Paginator
+from django.db.models import Sum, F
 from django.db.models.aggregates import Max, Min
 
-from datetime import date
+from datetime import date, timedelta
 
 from mge.models import EventoDePoder, Punido
 
 from .models import (
+    Advertencia,
     Player,
     PlayerStatus,
     Alliance,
@@ -620,3 +622,26 @@ def como_estou(request):
         return render(request, "players/emkvk.html", context=context)
     else:
         return Http404(request)
+
+@login_required
+def criar_advertencia(request):
+    player = Player.objects.filter(game_id=request.POST['game_id']).first()
+
+    adv = Advertencia()
+    adv.player = player
+    adv.descricao = request.POST['descricao']
+    adv.duracao = request.POST['duracao']
+
+    adv.save()
+
+    return redirect('/players/advertencias')
+
+@login_required
+def advertencias(request):
+    advs = Advertencia.objects.all().order_by('-inicio')
+
+    context = {
+        'advertencias': advs,
+    }
+
+    return render(request, "players/advertencias.html", context=context)
