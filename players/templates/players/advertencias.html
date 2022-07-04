@@ -32,7 +32,11 @@
         </thead>
         <tbody>
             {% for adv in advertencias %}
+            {% if adv.is_restrito %}
+            <tr class="table-warning">
+                {% else %}
             <tr>
+                {% endif %}
                 <th scope="row">{{adv.player.game_id}}</th>
                 <td>{{adv.player.nick}}</td>
                 <td>{{adv.descricao}}</td>
