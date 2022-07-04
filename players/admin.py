@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Player, Alliance, PlayerStatus
+from .models import Advertencia, Player, Alliance, PlayerStatus
 
 
 class PlayerAdmin(admin.ModelAdmin):
@@ -25,3 +25,4 @@ class PlayerStatusAdmin(admin.ModelAdmin):
 admin.site.register(Alliance)
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(PlayerStatus, PlayerStatusAdmin)
+admin.site.register(Advertencia)

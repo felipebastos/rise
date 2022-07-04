@@ -1,14 +1,13 @@
 import csv
 
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.paginator import Paginator
-from django.db.models import Sum, F
 from django.db.models.aggregates import Max, Min
 
-from datetime import date, timedelta
+from datetime import date
 
 from mge.models import EventoDePoder, Punido
 
@@ -636,7 +635,7 @@ def criar_advertencia(request):
 
     return redirect('/players/advertencias')
 
-@login_required
+
 def advertencias(request):
     advs = Advertencia.objects.all().order_by('-inicio')
 
