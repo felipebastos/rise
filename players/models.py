@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
-from django.utils import timezone
+from django.utils import timezone as tz
 from django.db import models
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 # Create your models here.
 player_status = (
@@ -97,4 +97,4 @@ class Advertencia(models.Model):
         return self.inicio + timedelta(days=self.duracao)
 
     def is_restrito(self):
-        return True if timezone.now() < self.final() else False
+        return True if tz.now() < self.final() else False
