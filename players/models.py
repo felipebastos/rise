@@ -6,6 +6,7 @@ from datetime import date, datetime, timedelta, timezone
 # Create your models here.
 player_status = (
     ("PLAYER", "Player"),
+    ("SECUNDARIA", "Secundária"),
     ("FARM", "Farm"),
     ("INATIVO", "Inativo"),
     ("MIGROU", "Migrou"),
