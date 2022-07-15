@@ -24,12 +24,17 @@
         <div class="card-title"><b>O que você já fez neste Kvk?</b></div>
     </div>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item">{{killpoints}} killpoints</li>
+        <li class="list-group-item">{{killpoints}} killpoints {% if metakp %} <span
+                class="fas fa-thumbs-up text-success"></span>
+            <div class="alert alert-success">Sua meta era {{mediakp}}</div> {% else %} <span
+                class="fas fa-thumbs-down text-danger"></span>
+            <div class="alert alert-danger">Sua meta é {{mediakp}}</div>{% endif %}
+        </li>
         <li class="list-group-item">{{deaths}} de suas tropas morreram {% if metamortes %} <span
                 class="fas fa-thumbs-up text-success"></span>
-            <div class="alert alert-success">Sua meta era {{meta}}</div> {% else %} <span
+            <div class="alert alert-success">Sua meta era {{mediamortes}}</div> {% else %} <span
                 class="fas fa-thumbs-down text-danger"></span>
-            <div class="alert alert-danger">Sua meta é {{meta}}</div>{% endif %}
+            <div class="alert alert-danger">Sua meta é {{mediamortes}}</div>{% endif %}
         </li>
         <li class="list-group-item">{{perdeuganhou}} {{power}} em poder</li>
     </ul>

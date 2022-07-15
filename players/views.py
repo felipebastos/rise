@@ -451,13 +451,17 @@ def como_estou(request):
         if not kvk:
             kvk = Kvk.objects.all().order_by("-inicio").first()
 
+        final = kvk.final
+        if not final:
+            final = timezone.now()
+
         id = request.POST["game_id"]
         o_player = Player.objects.filter(game_id=id).first()
         status = (
-            PlayerStatus.objects.filter(player=o_player)
-            .filter(data__gte=kvk.inicio)
-            .order_by("data")
-        )
+                PlayerStatus.objects.filter(player=o_player)
+                .filter(data__gte=kvk.inicio, data__lte=final)
+                .order_by("data")
+            )
 
         zerado = False
         if Zerado.objects.filter(kvk=kvk, player=o_player).first():
@@ -468,11 +472,13 @@ def como_estou(request):
         for zerado_pra_lista in zerados:
             zerados_lista.append(zerado_pra_lista.player)
 
+        banidos_e_inativos = Player.objects.filter(status__in=['BANIDO', 'MIGROU', 'INATIVO'])
+
         primeiro = status.first()
         ultimo = status.last()
 
         status_kp = (
-            PlayerStatus.objects.filter(data__gte=kvk.inicio)
+            PlayerStatus.objects.filter(data__gte=kvk.inicio, data__lte=final)
             .values("player__nick")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
@@ -489,7 +495,7 @@ def como_estou(request):
 
         status_dt = (
             PlayerStatus.objects.exclude(player__in=zerados_lista)
-            .filter(data__gte=kvk.inicio)
+            .filter(data__gte=kvk.inicio, data__lte=final)
             .values("player__nick")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
@@ -555,8 +561,10 @@ def como_estou(request):
 
         status_kp_similares = (
             PlayerStatus.objects.all()
+            .exclude(player__in=banidos_e_inativos)
+            .exclude(player__in=zerados_lista)
             .filter(player__in=players_faixa_original)
-            .filter(data__gte=kvk.inicio)
+            .filter(data__gte=kvk.inicio, data__lte=final)
             .values("player__nick")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
@@ -566,8 +574,10 @@ def como_estou(request):
         )
         status_dt_similares = (
             PlayerStatus.objects.all()
+            .exclude(player__in=banidos_e_inativos)
+            .exclude(player__in=zerados_lista)
             .filter(player__in=players_faixa_original)
-            .filter(data__gte=kvk.inicio)
+            .filter(data__gte=kvk.inicio, data__lte=final)
             .values("player__nick")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
@@ -575,22 +585,33 @@ def como_estou(request):
             )
             .order_by("-dt")
         )
+        
 
         todos_kp = len(status_kp_similares)
         pos_kp_faixa = todos_kp
+        media_kp = 0
+        continue_contando = True
         for stat in status_kp_similares:
+            media_kp = media_kp + stat['kp']
             if stat["player__nick"] != ultimo.player.nick:
-                pos_kp_faixa = pos_kp_faixa - 1
+                if continue_contando:
+                    pos_kp_faixa = pos_kp_faixa - 1
             else:
-                break
+                continue_contando = False
+        media_kp = int(media_kp/len(status_kp_similares))
 
         todos_dt = len(status_dt_similares)
         pos_dt_faixa = todos_dt
+        media_mortes = 0
+        continue_contando = True
         for stat in status_dt_similares:
+            media_mortes = media_mortes + stat["dt"]
             if stat["player__nick"] != ultimo.player.nick:
-                pos_dt_faixa = pos_dt_faixa - 1
+                if continue_contando:
+                    pos_dt_faixa = pos_dt_faixa - 1
             else:
-                break
+                continue_contando = False
+        media_mortes = int(media_mortes/len(status_dt_similares))
 
         context = {
             "kvk": kvk,
@@ -612,9 +633,13 @@ def como_estou(request):
             "posdtfaixa": pos_dt_faixa,
             "comparadoa": players_faixa_original,
             "metamortes": True
-            if meta < ultimo.deaths - primeiro.deaths
+            if media_mortes < ultimo.deaths - primeiro.deaths
             else False,
-            "meta": meta,
+            "mediamortes": media_mortes,
+            "metakp": True
+            if media_kp < ultimo.killpoints - primeiro.killpoints
+            else False,
+            "mediakp": media_kp,
             "zerado": zerado,
         }
 
