@@ -19,4 +19,5 @@ urlpatterns = [
         name="analisedesempenho",
     ),
     path("adicionarfarm/", views.adicionarFarms, name="adicionarFarms"),
+    path("etapa/<kvkid>/", views.registrarEtapa, name="registrarEtapa"),
 ]

@@ -17,14 +17,11 @@ class LoginForm(forms.Form):
 
 
 class SearchPlayerForm(forms.Form):
-    id = forms.CharField(
+    busca = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
-                "placeholder": "nome de usuário",
-                "pattern": "^[0-9]*$",
-                "placeholder": "ID do jogador",
-                "min": "0",
+                "placeholder": "Nick ou ID do jogador",
             }
         )
     )

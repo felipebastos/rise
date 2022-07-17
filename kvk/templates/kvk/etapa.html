@@ -1,0 +1,31 @@
+{% extends 'rise/base.html' %}
+{% block title %}- KvK{% endblock %}
+{% block content %}
+{% if kvk.ativo %}
+<div class="container">
+    <form action="/kvk/etapa/{{kvk.id}}/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <br>
+        <button class="btn btn-primary" type="submit">Enviar</button>
+    </form>
+</div>
+{% endif %}
+<div class="container">
+    <h2>Etapas do {{kvk}}</h2>
+    <table class="table table-striped">
+        <thead>
+            <th>Data</th>
+            <th>Descrição</th>
+        </thead>
+        <tbody>
+            {% for etapa in etapas %}
+            <tr>
+                <td>{{etapa.date}}</td>
+                <td>{{etapa.descricao}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -22,7 +22,7 @@ from .models import (
 )
 from .forms import UploadFileForm
 from rise.forms import SearchPlayerForm
-from kvk.models import Kvk, Zerado
+from kvk.models import Etapas, Kvk, Zerado
 
 # Create your views here.
 
@@ -45,6 +45,23 @@ def index(request, game_id):
         punido = Punido.objects.filter(player=player)
         punidoPoder = EventoDePoder.objects.filter(player=player)
 
+        etapas = Etapas.objects.all()
+
+        elementos = []
+        for etapa in etapas:
+            elementos.append(etapa)
+        for stat in status:
+            elementos.append(stat)
+
+        def orderByDate(e):
+            if type(e) is Etapas:
+                return e.date
+            else:
+                return e.data
+
+        elementos.sort(reverse=True, key=orderByDate)
+
+
         context = {
             "player": player,
             "status": status,
@@ -52,6 +69,7 @@ def index(request, game_id):
             "showkvk": exibirkvk,
             "punicoesMge": punido,
             "punicoesPoder": punidoPoder,
+            "elementos": elementos,
         }
     except Player.DoesNotExist:
         raise Http404("Player não encontrado.")
@@ -145,8 +163,11 @@ def findplayer(request):
     if request.method == "POST":
         form = SearchPlayerForm(request.POST)
         if form.is_valid():
-            id = request.POST["id"]
-            return redirect(f"/players/{id}")
+            busca = request.POST["busca"]
+            player = Player.objects.filter(game_id=busca).first()
+            if not player:
+                player = Player.objects.filter(nick=busca).first()
+            return redirect(f"/players/{player.game_id}")
         else:
             raise Http404("Você não procurou por dados válidos.")
     else:

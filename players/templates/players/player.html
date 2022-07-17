@@ -45,7 +45,8 @@
         <tbody>
             {% language 'pt-br' %}
             {% if user.is_authenticated %}
-            {% for item in status %}
+            {% for item in elementos %}
+            {% if item.data %}
             <tr>
                 <th scope="row">{{item.data}}</th>
                 <td>{{item.power}}</td>
@@ -60,6 +61,15 @@
                 </td>
 
             </tr>
+            {% else %}
+            <tr class="table-danger">
+                <th scope="row">{{item.date}}</th>
+                <td>{{item.kvk}}</td>
+                <td>{{item.descricao}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endif %}
             {% endfor %}
             {% endif %}
             {% if not user.is_authenticated %}

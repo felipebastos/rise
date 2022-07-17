@@ -6,10 +6,11 @@ from django.contrib.auth.decorators import login_required
 from django.db.models.aggregates import Max, Min
 from django.db.models import FilteredRelation, Q
 from django.utils import timezone
+from kvk.forms import EtapaForm
 
 from players.models import Player, PlayerStatus
 
-from .models import Kvk, Zerado, AdicionalDeFarms
+from .models import Etapas, Kvk, Zerado, AdicionalDeFarms
 
 # Create your views here.
 
@@ -227,3 +228,32 @@ def adicionarFarms(request):
             novo.kvk = kvk
             novo.save()
     return redirect(f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/")
+
+
+@login_required
+def registrarEtapa(request, kvkid):
+    if request.method == 'POST':
+        form = EtapaForm(request.POST)
+        print(request.POST['kvk'])
+        if form.is_valid():
+            nova = Etapas()
+            id = request.POST['kvk']
+            kvk = Kvk.objects.filter(pk=id).first()
+            nova.kvk = kvk
+            nova.date = request.POST['date']
+            nova.descricao = request.POST['descricao']
+            nova.save()
+            return redirect(f'/kvk/edit/{kvkid}/')
+
+    kvk = Kvk.objects.filter(pk=kvkid).first()
+    form = EtapaForm(initial={'kvk': kvk})
+
+    etapas = Etapas.objects.filter(kvk=kvk)
+
+    context = {
+        'form': form,
+        'etapas': etapas,
+        'kvk': kvk,
+    }
+
+    return render(request, 'kvk/etapa.html', context=context)

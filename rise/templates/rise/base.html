@@ -99,8 +99,8 @@
                 <form class="d-flex" role="search" action="/players/find/" method="post">
                     {% csrf_token %}
                     <div class="input-group">
-                        <input type="text" name="id" class="form-control" placeholder="ID do jogador" pattern="^[0-9]*$"
-                            min="0" required id="id_id">
+                        <input type="text" name="busca" class="form-control" placeholder="Nick ou ID do jogador"
+                            required id="busca_busca">
                         <div class="input-group-append">
                             <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
                         </div>
