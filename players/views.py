@@ -167,7 +167,10 @@ def findplayer(request):
             player = Player.objects.filter(game_id=busca).first()
             if not player:
                 player = Player.objects.filter(nick=busca).first()
-            return redirect(f"/players/{player.game_id}")
+            if player:
+                return redirect(f"/players/{player.game_id}")
+            else:
+                raise Http404("Jogador não encontrado.")
         else:
             raise Http404("Você não procurou por dados válidos.")
     else:
