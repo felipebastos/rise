@@ -1,7 +1,7 @@
 import csv
 
 from django.shortcuts import redirect, render
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.paginator import Paginator
@@ -72,7 +72,7 @@ def index(request, game_id):
             "elementos": elementos,
         }
     except Player.DoesNotExist:
-        raise Http404("Player não encontrado.")
+        return render(request, 'rise/404.html')
     return render(request, "players/player.html", context)
 
 
@@ -81,7 +81,7 @@ def edit_player(request, game_id):
     player = Player.objects.filter(game_id=game_id).first()
 
     if not player:
-        raise Http404("Player não existe.")
+        return render(request, 'rise/404.html')
 
     allies = Alliance.objects.all()
 
@@ -146,7 +146,7 @@ def review_players(request, ally_tag):
                 }
                 return render(request, "players/review.html", context)
         except:
-            raise Http404("Aliança não está nos registros.")
+            return render(request, 'rise/404.html')
     else:
         membros = Player.objects.filter(alliance__tag=ally_tag)
         semalianca = Alliance.objects.filter(tag="PSA").first()
@@ -170,11 +170,11 @@ def findplayer(request):
             if player:
                 return redirect(f"/players/{player.game_id}")
             else:
-                raise Http404("Jogador não encontrado.")
+                return render(request, 'rise/404.html')
         else:
-            raise Http404("Você não procurou por dados válidos.")
+            return render(request, 'rise/404.html')
     else:
-        raise Http404("Só sirvo para buscas do formulário.")
+        return render(request, 'rise/404.html')
 
 
 @login_required
@@ -220,7 +220,7 @@ def add_status(request, game_id):
             return redirect(request.POST["origem"])
         return redirect(f"/players/{game_id}/")
     except Exception as e:
-        raise Http404("Player não existe.")
+        return render(request, 'rise/404.html')
 
 
 @login_required
@@ -372,9 +372,8 @@ def alliance(request, ally_tag):
                 "range": range(1, pagina.paginator.num_pages + 1),
             }
             return render(request, "players/alianca.html", context)
-    except Exception as e:
-        print(e)
-        raise Http404("Aliança não está nos registros.")
+    except Exception:
+        return render(request, 'rise/404.html')
 
 
 @login_required
@@ -669,7 +668,7 @@ def como_estou(request):
 
         return render(request, "players/emkvk.html", context=context)
     else:
-        return Http404(request)
+        return render(request, 'rise/404.html')
 
 @login_required
 def criar_advertencia(request):

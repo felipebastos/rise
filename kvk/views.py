@@ -1,10 +1,8 @@
 from datetime import date
 
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.db.models.aggregates import Max, Min
-from django.db.models import FilteredRelation, Q
 from django.utils import timezone
 from kvk.forms import EtapaForm
 
@@ -101,7 +99,7 @@ def add_zerado(request, player_id):
         zerado.save()
         return redirect(f"/kvk/edit/{running_kvk.id}/")
 
-    return Http404("Não há kvk em andamento.")
+    return render(request, 'rise/404.html')
 
 
 @login_required
@@ -116,10 +114,10 @@ def analisedesempenho(request, kvkid, cat):
     kvk = Kvk.objects.get(pk=kvkid)
 
     if cat not in ["kp", "dt"]:
-        return Http404("Tipo de ranking indisponível.")
+        return render(request, 'rise/404.html')
 
     if kvk.id == 4:
-        return Http404("Este KvK ainda não suportava a análise.")
+        return render(request, 'rise/404.html')
 
     final = kvk.final
     if not final:
