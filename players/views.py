@@ -166,9 +166,12 @@ def findplayer(request):
             busca = request.POST["busca"]
             player = Player.objects.filter(game_id=busca).first()
             if not player:
-                player = Player.objects.filter(nick=busca).first()
-            if player:
-                return redirect(f"/players/{player.game_id}")
+                players = Player.objects.filter(nick__icontains=busca)
+                context = {
+                    "membros": players,
+                    "termo": busca,
+                }
+                return render(request, "players/searchresult.html", context=context)
             else:
                 return render(request, 'rise/404.html')
         else:

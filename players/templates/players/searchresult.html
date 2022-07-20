@@ -1,0 +1,27 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Aliança{% endblock %}
+{% block content %}
+{% load l10n %}
+{% load i18n %}
+<div class="container">
+    <h1>Resultado da busca por "{{termo}}"</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nick</th>
+                <th scope="col">Aliança</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for membro in membros %}
+            <tr>
+                <th scope="row"><a href="/players/{{membro.game_id}}">{{membro.game_id}}</a></th>
+                <td>{{membro.nick}}</td>
+                <td>{{membro.alliance.tag}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
