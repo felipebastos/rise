@@ -190,3 +190,100 @@ def top300rev(request):
     }
 
     return render(request, "reports/rev300.html", context=context)
+
+
+def analisedesempenho(request, cat):
+    if cat not in ["kp", "dt"]:
+        return render(request, 'rise/404.html')
+
+    ultima_leitura = PlayerStatus.objects.order_by('-data').first()
+    banidos_e_inativos = Player.objects.filter(status__in=['BANIDO', 'MIGROU', 'INATIVO'])
+
+    oReino = (
+        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
+        .exclude(player__status="INATIVO")
+        .filter(
+            data__year=ultima_leitura.data.year,
+            data__month=ultima_leitura.data.month,
+            data__day=ultima_leitura.data.day,
+        )
+        .order_by("-power")
+    )
+
+    oReinoUnico = {}
+    for status in oReino:
+        if status.player.game_id not in oReinoUnico.keys():
+            oReinoUnico[status.player.game_id] = status
+
+    todos = list(oReinoUnico.values())
+    todos.sort(key=lambda x: x.power if (x is not None) else 0, reverse=True)
+
+    os300 = todos[:300]
+
+    mais_fraco_do_top300 = os300[-1:]
+    
+    context = {
+        "tipo": cat,
+    }
+
+    faixas = [
+        (100000001, 5000000000, 3000000),
+        (90000001, 100000000, 2200000),
+        (80000001, 90000000, 1500000),
+        (70000001, 80000000, 1100000),
+        (60000001, 70000000, 700000),
+        (50000001, 60000000, 600000),
+        (40000001, 50000000, 500000),
+        (0, 40000000, 500000),
+    ]
+
+    categorizados = []
+    for faixa in faixas:
+        faixa_original = PlayerStatus.objects.filter(power__gte=mais_fraco_do_top300[0].power).filter(
+            data__year=ultima_leitura.data.year,
+            data__month=ultima_leitura.data.month,
+            data__day=ultima_leitura.data.day,
+            power__gte=faixa[0],
+            power__lte=faixa[1],
+        ).order_by("data")
+
+        players_faixa_original = []
+        for stat in faixa_original:
+            if stat.player not in players_faixa_original:
+                if (
+                    stat.data.hour == ultima_leitura.data.hour
+                ):
+                    players_faixa_original.append(stat.player)
+
+        status = (
+            PlayerStatus.objects.exclude(player__in=banidos_e_inativos)
+            .filter(player__in=players_faixa_original)
+            .filter(data__year=ultima_leitura.data.year,
+            data__month=ultima_leitura.data.month,
+            data__day=ultima_leitura.data.day,)
+            .values("player__nick", "player__game_id", "player__alliance__tag")
+            .annotate(
+                kp=Max("killpoints"),
+                dt=Max("deaths"),
+            )
+            .order_by(f"-{cat}")
+        )
+        media = 0
+        if len(status) > 0:
+            for stat in status:
+                media = media + stat[cat]
+
+            media = media // len(status)
+
+        categorizados.append(
+            {
+                "faixa0": faixa[0],
+                "faixa1": faixa[1],
+                "media": media,
+                "meiamedia": media * 0.5,
+                "membros": status,
+            }
+        )
+        context["categorizados"] = categorizados
+
+    return render(request, "reports/analise.html", context=context)
