@@ -20,6 +20,12 @@
                 <td>{{membro.nick}}</td>
                 <td>{{membro.alliance.tag}}</td>
             </tr>
+            {% empty %}
+            <tr>
+                <td></td>
+                <td>Não houve resultados.</td>
+                <td></td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>

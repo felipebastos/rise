@@ -20,6 +20,12 @@
                 <td><a href="/player/{{divida.player.game_id}}/">{{divida.player.game_id}}</a></td>
                 <td>{{divida.player.nick}}</td>
             </tr>
+            {% empty %}
+            <tr>
+                <td></td>
+                <td>Não há devedores registrados.</td>
+                <td></td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>

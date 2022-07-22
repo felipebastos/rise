@@ -1,6 +1,7 @@
 {% extends 'rise/base.html' %}
 {% block title %}- KvK{% endblock %}
 {% block content %}
+{% if user.is_authenticated %}
 {% if kvk.ativo %}
 <div class="container">
     <form action="/kvk/etapa/{{kvk.id}}/" method="post">
@@ -11,8 +12,9 @@
     </form>
 </div>
 {% endif %}
+{% endif %}
 <div class="container">
-    <h2>Etapas do {{kvk}}</h2>
+    <h2>Etapas do KvK iniciado em {{kvk.inicio}}</h2>
     <table class="table table-striped">
         <thead>
             <th>Data</th>
@@ -23,6 +25,11 @@
             <tr>
                 <td>{{etapa.date}}</td>
                 <td>{{etapa.descricao}}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td>Este kvk não possui etapas registradas.</td>
+                <td></td>
             </tr>
             {% endfor %}
         </tbody>

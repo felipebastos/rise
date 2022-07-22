@@ -43,6 +43,14 @@
                 <td>{{adv.inicio}}</td>
                 <td>{{adv.final}}</td>
             </tr>
+            {% empty %}
+            <tr>
+                <td></td>
+                <td>Nenhuma advertência registrada.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>

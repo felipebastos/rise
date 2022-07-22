@@ -103,6 +103,16 @@
                             class="btn btn-warning">Cancelar</a></td>
                     {% endif %}
                 </tr>
+                {% empty %}
+                <tr>
+                    <td></td>
+                    <td>Não há inscritos ainda.</td>
+                    <td></td>
+                    <td></td>
+                    {% if user.is_authenticated and not rank_fechado %}
+                    <td></td>
+                    {% endif %}
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -128,8 +138,16 @@
                 <td><a href="/mge/removefromrank/{{mge.id}}/{{ranked.player.game_id}}/" class="btn btn-danger">Remover
                         do rank</a></td>
                 {% endif %}
-                {% endfor %}
             </tr>
+            {% empty %}
+            <tr>
+                <td></td>
+                <td>O ranking ainda não foi selecionado.</td>
+                {% if user.is_authenticated and not rank_fechado %}
+                <td></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
     <hr>
@@ -152,6 +170,16 @@
                 {% if user.is_authenticated %}
                 <td><a href="/mge/despunir/{{mge.id}}/{{punido.player.game_id}}/" class="btn btn-warning">Remover</a>
                 </td>
+                {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td></td>
+                <td>
+                    Ainda não houve quebras de limites registradas.
+                </td>
+                {% if user.is_authenticated %}
+                <td></td>
                 {% endif %}
             </tr>
             {% endfor %}

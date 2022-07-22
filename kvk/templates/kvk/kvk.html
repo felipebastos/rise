@@ -75,6 +75,15 @@
                 </td>
                 {% endif %}
             </tr>
+            {% empty %}
+            <tr>
+                <th scope="row"></th>
+                <td></td>
+                <td></td>
+                {% if kvk.ativo and user.is_authenticated %}
+                <td></td>
+                {% endif %}
+            </tr>
             {% endfor %}
         </tbody>
     </table>
