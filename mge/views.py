@@ -83,6 +83,9 @@ def inscrever(request, id):
         inscrito.mge = mge
         inscrito.general = request.POST["general"] or ""
 
+        if 'intuito' in request.POST:
+            inscrito.intuito = request.POST["intuito"]
+
         kvk = Kvk.objects.order_by("-inicio").first()
 
         final = kvk.final

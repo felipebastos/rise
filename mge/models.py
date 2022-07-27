@@ -62,6 +62,8 @@ class Inscrito(models.Model):
 
     general = models.TextField(default="")
 
+    intuito = models.BooleanField(default=False)
+
     inserido = models.DateTimeField("Inserido", auto_now_add=True)
 
 

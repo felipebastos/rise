@@ -26,6 +26,14 @@
                     {% endfor %}
                     {% endif %}
                 </select>
+                <div class="form-control">
+                    <div class="form-check form-switch form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="intuito" value="True" id="sohLiberar">
+                        <label class="form-check-label" for="sohLiberar">
+                            Só quero liberar
+                        </label>
+                    </div>
+                </div>
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-primary">Inscrever</button>
                 </div>
@@ -42,7 +50,7 @@
                 <input class="form-control" type="text" name="player_id" id="player_id" placeholder="ID do jogador"
                     pattern="^[0-9]*$" required>
                 <select class="form-select" name="general" id="general">
-                    <option value="Tanto faz" selected>Selecione seu comandante</option>
+                    <option value="Tanto faz" selected>Selecione o comandante</option>
                     {% for opcao in opcoes %}
                     <option value="{{opcao}}">{{opcao}}</option>
                     {% endfor %}
@@ -103,7 +111,8 @@
                     {% else %}
                     <td>Novo no reino.</td>
                     {% endif %}
-                    <td>{{inscrito.general}}</td>
+                    <td>{{inscrito.general}}{% if inscrito.intuito %} <span class="badge bg-success">Apenas
+                            liberar</span>{% endif %}</td>
                     {% if user.is_authenticated and not rank_fechado %}
                     <td><a href="/mge/addtorank/{{mge.id}}/{{inscrito.player.game_id}}/" class="btn btn-info">Adicionar
                             ao
