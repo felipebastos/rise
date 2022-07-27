@@ -101,8 +101,12 @@ def inscrever(request, id):
             )
         )
 
-        inscrito.kills = status[0]["kp"]
-        inscrito.deaths = status[0]["dt"]
+        if status:
+            inscrito.kills = status[0]["kp"]
+            inscrito.deaths = status[0]["dt"]
+        else:
+            inscrito.kills = -1
+            inscrito.deaths = -1
 
         inscrito.save()
     return redirect(f"/mge/view/{id}/")

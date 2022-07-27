@@ -93,8 +93,16 @@
                         </span>
                         {% endif %}
                     </th>
+                    {% if inscrito.kills >= 0 %}
                     <td>{{inscrito.kills}}</td>
+                    {% else %}
+                    <td>Novo no reino.</td>
+                    {% endif %}
+                    {% if inscrito.deaths >= 0 %}
                     <td>{{inscrito.deaths}}</td>
+                    {% else %}
+                    <td>Novo no reino.</td>
+                    {% endif %}
                     <td>{{inscrito.general}}</td>
                     {% if user.is_authenticated and not rank_fechado %}
                     <td><a href="/mge/addtorank/{{mge.id}}/{{inscrito.player.game_id}}/" class="btn btn-info">Adicionar
