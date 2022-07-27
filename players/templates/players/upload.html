@@ -3,9 +3,14 @@
 {% block content %}
 {% load l10n %}
 {% load i18n %}
-<form action="/players/upload/" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Enviar</button>
-</form>
+<div class="container">
+    <form action="/players/upload/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="inputFile">Planilha CSV</label>
+            <input type="file" class="form-control" name="file" required id="id_file">
+            <button class="btn btn-outline-primary" type="submit" id="inputGroupFileAddon">Enviar</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
