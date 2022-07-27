@@ -139,71 +139,74 @@
 </div>
 <hr>
 <h2 class="text-center">Ranking <i class="fas fa-trophy"></i></h2>
-<table class="table table-striped table-hover">
-    <thead>
-        <tr>
-            <th scope="col">Posição</th>
-            <th scope="col">Nick</th>
-            {% if user.is_authenticated and not rank_fechado %}
-            <th scope="col">Ações</th>
-            {% endif %}
-        </tr>
-    </thead>
-    <tbody>
-        {% for ranked in rank %}
-        <tr>
-            <th scope="row">{{forloop.counter}}</th>
-            <td>{{ranked.player.nick}}</td>
-            {% if user.is_authenticated and not rank_fechado %}
-            <td><a href="/mge/removefromrank/{{mge.id}}/{{ranked.player.game_id}}/" class="btn btn-danger">Remover
-                    do rank</a></td>
-            {% endif %}
-        </tr>
-        {% empty %}
-        <tr>
-            <td></td>
-            <td>O ranking ainda não foi selecionado.</td>
-            {% if user.is_authenticated and not rank_fechado %}
-            <td></td>
-            {% endif %}
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="container">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Posição</th>
+                <th scope="col">Nick</th>
+                {% if user.is_authenticated and not rank_fechado %}
+                <th scope="col">Ações</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for ranked in rank %}
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{ranked.player.nick}}</td>
+                {% if user.is_authenticated and not rank_fechado %}
+                <td><a href="/mge/removefromrank/{{mge.id}}/{{ranked.player.game_id}}/" class="btn btn-danger">Remover
+                        do rank</a></td>
+                {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td></td>
+                <td>O ranking ainda não foi selecionado.</td>
+                {% if user.is_authenticated and not rank_fechado %}
+                <td></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 <hr>
 <h2 class="text-center">Punidos <i class="fas fa-user-alt-slash"></i></h2>
-<table class="table table-hover table-striped">
-    <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Nick</th>
-            {% if user.is_authenticated %}
-            <th scope="col">Ações</th>
-            {% endif %}
-        </tr>
-    </thead>
-    <tbody>
-        {% for punido in punidos %}
-        <tr>
-            <th scope="row">{{punido.player.game_id}}</th>
-            <td>{{punido.player.nick}}</td>
-            {% if user.is_authenticated %}
-            <td><a href="/mge/despunir/{{mge.id}}/{{punido.player.game_id}}/" class="btn btn-warning">Remover</a>
-            </td>
-            {% endif %}
-        </tr>
-        {% empty %}
-        <tr>
-            <td></td>
-            <td>
-                Ainda não houve quebras de limites registradas.
-            </td>
-            {% if user.is_authenticated %}
-            <td></td>
-            {% endif %}
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="container">
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nick</th>
+                {% if user.is_authenticated %}
+                <th scope="col">Ações</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for punido in punidos %}
+            <tr>
+                <th scope="row">{{punido.player.game_id}}</th>
+                <td>{{punido.player.nick}}</td>
+                {% if user.is_authenticated %}
+                <td><a href="/mge/despunir/{{mge.id}}/{{punido.player.game_id}}/" class="btn btn-warning">Remover</a>
+                </td>
+                {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td></td>
+                <td>
+                    Ainda não houve quebras de limites registradas.
+                </td>
+                {% if user.is_authenticated %}
+                <td></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}
