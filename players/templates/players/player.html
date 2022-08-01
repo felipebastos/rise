@@ -96,6 +96,13 @@
         {% for punicao in punicoesPoder %}
         <li class="list-group-item">{{punicao}} {{punicao.inserido}}</li>
         {% endfor %}
+        {% for advertencia in advertencias %}
+        <li class="list-group-item text-wrap" style="width:100%;"><b>Advertido por</b> {{advertencia.descricao}}
+            <b>de</b> {{advertencia.inicio}}
+            <b>até</b>
+            {{advertencia.final}}
+        </li>
+        {% endfor %}
     </ul>
 </div>
 {% endif %}

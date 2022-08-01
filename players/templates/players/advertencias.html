@@ -20,6 +20,7 @@
     </form>
     <hr>
     {% endif %}
+    <h1>Advertências ainda válidas</h1>
     <table class='table table-striped'>
         <thead>
             <tr>
@@ -32,14 +33,10 @@
         </thead>
         <tbody>
             {% for adv in advertencias %}
-            {% if adv.is_restrito %}
             <tr class="table-warning">
-                {% else %}
-            <tr>
-                {% endif %}
                 <th scope="row">{{adv.player.game_id}}</th>
                 <td>{{adv.player.nick}}</td>
-                <td>{{adv.descricao}}</td>
+                <td class="text-wrap" style="width:30%;">{{adv.descricao}}</td>
                 <td>{{adv.inicio}}</td>
                 <td>{{adv.final}}</td>
             </tr>
@@ -54,6 +51,39 @@
             {% endfor %}
         </tbody>
     </table>
+    {% if user.is_authenticated %}
+    <h1>Advertências vencidas</h1>
+    <table class='table table-striped'>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Player</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Início</th>
+                <th scope="col">Final</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for adv in vencidas %}
+            <tr>
+                <th scope="row">{{adv.player.game_id}}</th>
+                <td>{{adv.player.nick}}</td>
+                <td class="text-wrap" style="width:30%;">{{adv.descricao}}</td>
+                <td>{{adv.inicio}}</td>
+                <td>{{adv.final}}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td></td>
+                <td>Nenhuma advertência registrada.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 </div>
 {% endlanguage %}
 {% endblock %}

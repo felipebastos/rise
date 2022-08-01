@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.db.models.aggregates import Max, Min
 from datetime import date, timedelta
 from mge.forms import COMMANDERS, CriaMGE
-from players.models import Player, PlayerStatus
+from players.models import Advertencia, Player, PlayerStatus
 from .models import Comandante, EventoDePoder, Mge, Punido, Ranking, Inscrito
 from kvk.models import Kvk
 
@@ -158,6 +158,12 @@ def punir(request, player_id):
     apunir.player = player
     apunir.save()
 
+    adv = Advertencia()
+    adv.player = player
+    adv.duracao = 15
+    adv.descricao = f'Queimou pontuação máxima no {mge} {mge.semana().strftime("%d/%m/%y")}'
+    adv.save()
+
     return redirect(f"/mge/view/{mge.id}/")
 
 
@@ -179,5 +185,11 @@ def punirEventoDePoder(request, playerId):
     punicao = EventoDePoder()
     punicao.player = player
     punicao.save()
+
+    adv = Advertencia()
+    adv.player = player
+    adv.duracao = 15
+    adv.descricao = f'Quebrou ranking do evento de poder em {timezone.now().strftime("%d/%m/%y")}'
+    adv.save()
 
     return redirect(f"/players/{playerId}/")

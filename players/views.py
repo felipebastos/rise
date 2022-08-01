@@ -44,6 +44,7 @@ def index(request, game_id):
         
         punido = Punido.objects.filter(player=player)
         punidoPoder = EventoDePoder.objects.filter(player=player)
+        advertencias = Advertencia.objects.filter(player=player)
 
         etapas = Etapas.objects.all()
 
@@ -69,6 +70,7 @@ def index(request, game_id):
             "showkvk": exibirkvk,
             "punicoesMge": punido,
             "punicoesPoder": punidoPoder,
+            "advertencias": advertencias,
             "elementos": elementos,
         }
     except Player.DoesNotExist:
@@ -173,7 +175,7 @@ def findplayer(request):
                 }
                 return render(request, "players/searchresult.html", context=context)
             else:
-                return render(request, 'rise/404.html')
+                return redirect(f'/players/{player.game_id}/')
         else:
             return render(request, 'rise/404.html')
     else:
@@ -690,8 +692,17 @@ def criar_advertencia(request):
 def advertencias(request):
     advs = Advertencia.objects.all().order_by('-inicio')
 
+    validas = []
+    vencidas = []
+    for adv in advs:
+        if adv.is_restrito():
+            validas.append(adv)
+        else:
+            vencidas.append(adv)
+
     context = {
-        'advertencias': advs,
+        'advertencias': validas,
+        'vencidas': vencidas,
     }
 
     return render(request, "players/advertencias.html", context=context)
