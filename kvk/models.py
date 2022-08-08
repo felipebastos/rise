@@ -26,14 +26,23 @@ class Zerado(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
 
+    def __str__(self) -> str:
+        return f'Player {self.player} no KvK {self.kvk}'
+
 class AdicionalDeFarms(models.Model):
     kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     t4_deaths = models.IntegerField(default=0)
     t5_deaths = models.IntegerField(default=0)
 
+    def __str__(self) -> str:
+        return f'Adicional de {self.player} no KvK {self.kvk}'
+
 
 class Etapas(models.Model):
     kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
     date = models.DateTimeField()
     descricao = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return f'Etapa {self.descricao} do KvK {self.kvk}'
