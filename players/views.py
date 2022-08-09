@@ -2,7 +2,7 @@ import csv
 
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.db.models.aggregates import Max, Min
@@ -79,6 +79,7 @@ def index(request, game_id):
 
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def edit_player(request, game_id):
     player = Player.objects.filter(game_id=game_id).first()
 
@@ -133,6 +134,7 @@ def listspecs(request, spec):
 
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def review_players(request, ally_tag):
     if request.method == "GET":
         try:
@@ -183,6 +185,7 @@ def findplayer(request):
 
 
 @login_required
+@permission_required('players.playerstatus.can_edit_playerstatus')
 def add_status(request, game_id):
     try:
         poder = ""
@@ -229,6 +232,7 @@ def add_status(request, game_id):
 
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def upload_csv(request):
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
@@ -243,6 +247,7 @@ def upload_csv(request):
 
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def populate(request):
     with open("./dados.csv", encoding="utf-8") as f:
         reader = csv.reader(f)
@@ -447,6 +452,7 @@ def antigos(request, ally_tag):
 
 
 @login_required
+@permission_required('players.playerstatus.can_edit_playerstatus')
 def editaStatus(request, status_id):
     if request.method == "POST":
         status = PlayerStatus.objects.all().filter(id=status_id).first()
@@ -465,6 +471,7 @@ def editaStatus(request, status_id):
 
 
 @login_required
+@permission_required('players.playerstatus.can_edit_playerstatus')
 def delete_status(request, status_id):
     status = PlayerStatus.objects.all().filter(id=status_id).first()
     if status.editavel():
@@ -676,6 +683,7 @@ def como_estou(request):
         return render(request, 'rise/404.html')
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def criar_advertencia(request):
     player = Player.objects.filter(game_id=request.POST['game_id']).first()
 

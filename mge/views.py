@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.utils import timezone
 from django.db.models.aggregates import Max, Min
 from datetime import date, timedelta
@@ -22,6 +22,7 @@ def index(request):
 
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def startnew(request):
     form = CriaMGE(request.POST or None)
 
@@ -116,6 +117,7 @@ def inscrever(request, id):
 
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def desinscrever(request, id, player_id):
     mge = Mge.objects.filter(id=id).first()
     player = Player.objects.filter(game_id=player_id).first()
@@ -127,6 +129,7 @@ def desinscrever(request, id, player_id):
 
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def addtorank(request, id, player_id):
     mge = Mge.objects.filter(id=id).first()
     player = Player.objects.filter(game_id=player_id).first()
@@ -149,6 +152,7 @@ def removefromrank(request, id, player_id):
 
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def punir(request, player_id):
     mge = Mge.objects.order_by("-id").first()
     player = Player.objects.filter(game_id=player_id).first()
@@ -168,6 +172,7 @@ def punir(request, player_id):
 
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def despunir(request, id, player_id):
     mge = Mge.objects.filter(id=id).first()
     player = Player.objects.filter(game_id=player_id).first()
@@ -179,6 +184,7 @@ def despunir(request, id, player_id):
 
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def punirEventoDePoder(request, playerId):
     player = Player.objects.filter(game_id=playerId).first()
 

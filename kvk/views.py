@@ -1,7 +1,7 @@
 from datetime import date
 
 from django.shortcuts import redirect, render
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models.aggregates import Max, Min
 from django.utils import timezone
 from kvk.forms import EtapaForm
@@ -22,6 +22,7 @@ def index(request):
 
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def new_kvk(request):
     novo = Kvk()
     novo.inicio = request.POST["inicio"]
@@ -209,6 +210,7 @@ def analisedesempenho(request, kvkid, cat):
 
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def adicionarFarms(request):
     print('Cheguei na adicionar.')
     if request.method == 'POST':
@@ -229,6 +231,7 @@ def adicionarFarms(request):
 
 
 @login_required
+@permission_required('players.player.can_edit_player')
 def registrarEtapa(request, kvkid):
     if request.method == 'POST':
         form = EtapaForm(request.POST)
