@@ -66,6 +66,9 @@ class Inscrito(models.Model):
 
     inserido = models.DateTimeField("Inserido", auto_now_add=True)
 
+    def __str__(self) -> str:
+        return f'{self.player} pediu {self.general} em {self.inserido}'
+
 
 class Comandante(models.Model):
     nome = models.TextField()
