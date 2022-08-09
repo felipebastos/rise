@@ -20,6 +20,7 @@ def transferir():
     objlist = Player.objects.using('default').all()
     for obj in objlist:
         novo = Player()
+        novo.pk = obj.pk
         novo.nick = obj.nick
         novo.alliance = obj.alliance
         novo.rank = obj.rank
@@ -33,6 +34,7 @@ def transferir():
     objlist = PlayerStatus.objects.using('default').all()
     for obj in objlist:
         novo = PlayerStatus()
+        novo.pk = obj.pk
         novo.player = obj.player
         novo.data = obj.data
         novo.power = obj.power
@@ -43,6 +45,7 @@ def transferir():
     objlist = Advertencia.objects.using('default').all()
     for obj in objlist:
         nova = Advertencia()
+        nova.pk = obj.pk
         nova.player = obj.player
         nova.inicio = obj.inicio
         nova.duracao = obj.duracao
@@ -67,6 +70,7 @@ def transferir():
     objlist = Etapas.objects.using('default').all()
     for obj in objlist:
         nova = Etapas()
+        nova.pk = obj.pk
         nova.kvk = obj.kvk
         nova.date = obj.date
         nova.descricao = obj.descricao
