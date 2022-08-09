@@ -57,7 +57,7 @@ class Inscrito(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     mge = models.ForeignKey(Mge, on_delete=models.CASCADE)
 
-    kills = models.IntegerField(default=0)
+    kills = models.BigIntegerField(default=0)
     deaths = models.IntegerField(default=0)
 
     general = models.TextField(default="")

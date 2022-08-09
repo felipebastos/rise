@@ -70,7 +70,7 @@ class PlayerStatus(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     data = models.DateTimeField(auto_now_add=True)
     power = models.IntegerField(null=True)
-    killpoints = models.IntegerField()
+    killpoints = models.BigIntegerField()
     deaths = models.IntegerField()
 
     def editavel(self):
