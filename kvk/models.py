@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import date
 
+from django.utils import timezone
+
 from players.models import Player
 
 
@@ -24,7 +26,7 @@ class Kvk(models.Model):
 class Zerado(models.Model):
     kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(default=timezone.now)
 
     def __str__(self) -> str:
         return f'Player {self.player} no KvK {self.kvk}'

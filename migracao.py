@@ -18,39 +18,13 @@ def transferir():
     migrar(objlist)
     print('Inserindo os Jogadores do site.')
     objlist = Player.objects.using('default').all()
-    for obj in objlist:
-        novo = Player()
-        novo.pk = obj.pk
-        novo.nick = obj.nick
-        novo.alliance = obj.alliance
-        novo.rank = obj.rank
-        novo.specialty = obj.specialty
-        novo.status = obj.status
-        novo.observacao = obj.observacao
-        novo.alterado_em = obj.alterado_em
-        novo.alterado_por = obj.alterado_por
-        novo.save(using='kingdom')
+    migrar(objlist)
     print('Inserindo os Status dos jogadores do site.')
     objlist = PlayerStatus.objects.using('default').all()
-    for obj in objlist:
-        novo = PlayerStatus()
-        novo.pk = obj.pk
-        novo.player = obj.player
-        novo.data = obj.data
-        novo.power = obj.power
-        novo.killpoints = obj.killpoints
-        novo.deaths = obj.deaths
-        novo.save()
+    migrar(objlist)
     print('Inserindo as Advertências do site.')
     objlist = Advertencia.objects.using('default').all()
-    for obj in objlist:
-        nova = Advertencia()
-        nova.pk = obj.pk
-        nova.player = obj.player
-        nova.inicio = obj.inicio
-        nova.duracao = obj.duracao
-        obj.descricao = obj.descricao
-        nova.save()
+    migrar(objlist)
     print('Inserindo as Semanas de doação do site.')
     objlist = Semana.objects.using('default').all()
     migrar(objlist)
@@ -68,13 +42,7 @@ def transferir():
     migrar(objlist)
     print('Inserindo as Etapas de KvK do site.')
     objlist = Etapas.objects.using('default').all()
-    for obj in objlist:
-        nova = Etapas()
-        nova.pk = obj.pk
-        nova.kvk = obj.kvk
-        nova.date = obj.date
-        nova.descricao = obj.descricao
-        nova.save()
+    migrar(objlist)
     print('Inserindo os MGEs do site.')
     objlist = Mge.objects.using('default').all()
     migrar(objlist)

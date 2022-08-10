@@ -1,5 +1,6 @@
 from django.db import models
-from datetime import date, timedelta, datetime
+from datetime import date, timedelta
+from django.utils import timezone
 from mge.forms import COMMANDER_CHOICES
 
 from players.models import Player
@@ -40,7 +41,7 @@ class Punido(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     mge = models.ForeignKey(Mge, on_delete=models.CASCADE)
 
-    inserido = models.DateTimeField("Inserido", auto_now_add=True)
+    inserido = models.DateTimeField("Inserido", default=timezone.now)
 
     def __str__(self):
         return f"Punido no {self.mge}"
@@ -50,7 +51,7 @@ class Ranking(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     mge = models.ForeignKey(Mge, on_delete=models.CASCADE)
 
-    inserido = models.DateTimeField("Inserido", auto_now_add=True)
+    inserido = models.DateTimeField("Inserido", default=timezone.now)
 
 
 class Inscrito(models.Model):
@@ -64,7 +65,7 @@ class Inscrito(models.Model):
 
     intuito = models.BooleanField(default=False)
 
-    inserido = models.DateTimeField("Inserido", auto_now_add=True)
+    inserido = models.DateTimeField("Inserido", default=timezone.now)
 
     def __str__(self) -> str:
         return f'{self.player} pediu {self.general} em {self.inserido}'
@@ -78,7 +79,7 @@ class Comandante(models.Model):
 class EventoDePoder(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     
-    inserido = models.DateTimeField("Inserido", auto_now_add=True)
+    inserido = models.DateTimeField("Inserido", default=timezone.now)
 
     def __str__(self):
         return f"Punido no evento de poder de"

@@ -68,7 +68,7 @@ class Player(models.Model):
 
 class PlayerStatus(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    data = models.DateTimeField(auto_now_add=True)
+    data = models.DateTimeField(default=tz.now)
     power = models.IntegerField(null=True)
     killpoints = models.BigIntegerField()
     deaths = models.IntegerField()
@@ -90,7 +90,7 @@ class PlayerStatus(models.Model):
 
 class Advertencia(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    inicio = models.DateTimeField(auto_now_add=True)
+    inicio = models.DateTimeField(default=tz.now)
     duracao = models.IntegerField(null=False, default=1)
     descricao = models.TextField(max_length=500)
 
