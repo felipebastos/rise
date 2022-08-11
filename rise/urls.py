@@ -28,6 +28,7 @@ urlpatterns = [
     path("bank/", include("bank.urls")),
     path("kvk/", include("kvk.urls")),
     path("mge/", include("mge.urls")),
+    path("items/", include("items.urls")),
     path("reports/", include("reports.urls")),
     path("captcha/", include("captcha.urls")),
     path("api/v1/", include("api.urls")),

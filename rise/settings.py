@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "kvk.apps.KvkConfig",
     "mge.apps.MgeConfig",
     "reports.apps.ReportsConfig",
+    "items.apps.ItemsConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
