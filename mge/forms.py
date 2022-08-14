@@ -50,3 +50,9 @@ class CriaMGE(forms.Form):
         widget=forms.Select(attrs={"class": "form-select"}),
         initial="0",
     )
+    controle = forms.ChoiceField(
+        label="O MGE é livre?",
+        choices=(("0", 'Sim'), ("1", 'Não')),
+        widget=forms.Select(attrs={"class": "form-select"}),
+        initial="1",
+    )

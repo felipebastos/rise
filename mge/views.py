@@ -29,7 +29,9 @@ def startnew(request):
         if form.is_valid():
             quais = form.cleaned_data.get("commanders")
             mge = Mge()
+            mge.temporada = Mge.objects.all().aggregate(Max('temporada'))['temporada__max'] + 1
             mge.tipo = quais
+            mge.livre = False if form.cleaned_data.get("controle") == "Sim" else True
             mge.save()
 
     return redirect("/mge/")

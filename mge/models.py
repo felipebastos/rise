@@ -21,6 +21,9 @@ class Mge(models.Model):
     )
     tipo_mge = models.CharField("Tipo de MGE", max_length=3, choices=tipos_comandantes, default="ndf")
 
+    temporada = models.IntegerField(default=0)
+    livre = models.BooleanField(default=False)
+
     class Meta:
         ordering = ["criado_em"]
 
@@ -32,9 +35,9 @@ class Mge(models.Model):
 
     def __str__(self):
         if self.tipo != 0:
-            return f"MGE de {COMMANDER_CHOICES[int(self.tipo)][1]} iniciado em"
+            return f"Temporada {self.temporada} - {COMMANDER_CHOICES[int(self.tipo)][1]} [{'LIVRE' if self.livre else 'CONTROLADO'}] iniciado em"
         else:
-            return f"MGE de {tipos_comandantes[self.tipo_mge][1]} iniciado em"
+            return f"Temporada {self.temporada} - {tipos_comandantes[self.tipo_mge][1]} [{'LIVRE' if self.livre else 'CONTROLADO'}] iniciado em"
 
 
 class Punido(models.Model):

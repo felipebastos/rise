@@ -15,10 +15,10 @@
     <h1>MGE's por dia de início</h1>
     {% for mge in mges %}
     {% if forloop.counter == 1 %}
-    <a href="/mge/view/{{mge.id}}/" class="btn btn-primary">Domingo {{mge.semana}}</a>
+    <a href="/mge/view/{{mge.id}}/" class="btn btn-primary">{{mge}} {{mge.semana}}</a>
     <hr>
     {% else %}
-    <a href="/mge/view/{{mge.id}}/" class="btn btn-secondary">Domingo {{mge.semana}}</a>
+    <a href="/mge/view/{{mge.id}}/" class="btn btn-secondary">{{mge}} {{mge.semana}}</a>
     {% endif %}
     {% endfor %}
 </div>
