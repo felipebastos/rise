@@ -679,15 +679,16 @@ def como_estou(request):
 def criar_advertencia(request):
     player = Player.objects.filter(game_id=request.POST['game_id']).first()
 
-    adv = Advertencia()
-    adv.player = player
-    adv.descricao = request.POST['descricao']
-    adv.duracao = request.POST['duracao']
+    if player:
+        adv = Advertencia()
+        adv.player = player
+        adv.descricao = request.POST['descricao']
+        adv.duracao = request.POST['duracao']
 
-    adv.save()
+        adv.save()
 
-    return redirect('/players/advertencias')
-
+        return redirect('/players/advertencias')
+    return render(request, 'rise/404.html')
 
 def advertencias(request):
     advs = Advertencia.objects.all().order_by('-inicio')
