@@ -341,9 +341,9 @@ def populate(request):
 
 
 @login_required
-def alliance(request, ally_tag):
+def alliance(request, ally_id):
     try:
-        ally = Alliance.objects.filter(tag=ally_tag).first()
+        ally = Alliance.objects.get(pk=ally_id)
 
         if ally:
             membros = Player.objects.filter(alliance=ally)

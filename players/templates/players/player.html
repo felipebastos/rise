@@ -7,7 +7,7 @@
     <div class="container">
         <h1 class="display-4">{{player.game_id}} - {{player.nick}} <span
                 class="badge bg-secondary">{{player.status}}</span></h1>
-        <h2><a href="/players/alliance/{{player.alliance.tag}}">{{player.alliance.tag}}</a> - {{spec}}</h2>
+        <h2><a href="/players/alliance/{{player.alliance.id}}/">{{player.alliance.tag}}</a> - {{spec}}</h2>
         {% if user.is_authenticated %}
         <p class="lead"><b>Observações:</b> {{player.observacao}}</p>
         {% endif %}
