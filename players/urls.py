@@ -3,7 +3,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("<int:game_id>/", views.index, name="index"),
+    path("<int:game_id>/", views.index, name="player_profile"),
     path("upload/", views.upload_csv, name="upload_csv"),
     path("populate/", views.populate, name="populate"),
     path("alliance/<str:ally_id>/", views.alliance, name="alliance"),
@@ -13,8 +13,8 @@ urlpatterns = [
     path("listspec/<spec>/", views.listspecs, name="listspec"),
     path("review/<ally_tag>/", views.review_players, name="reviewplayers"),
     path("top300/", views.top300, name="top300"),
-    path("nostatus/<ally_tag>/", views.falta_status, name="falta_status"),
-    path("old/<ally_tag>/", views.antigos, name="antigos"),
+    path("nostatus/<ally_id>/", views.falta_status, name="falta_status"),
+    path("old/<ally_id>/", views.antigos, name="antigos"),
     path("statusedit/<status_id>/", views.editaStatus, name="edit_status"),
     path(
         "statusdelete/<status_id>/", views.delete_status, name="delete_status"

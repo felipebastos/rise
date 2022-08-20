@@ -41,17 +41,17 @@
                             Reino
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbardrop1">
-                            <li><a href="/reports/300/" class="dropdown-item">Top 300</a></li>
-                            <li><a class="dropdown-item" href="/kvk/">KvK</a></li>
-                            <li><a href="/mge/" class="dropdown-item">MGE</a></li>
-                            <li><a href="/players/advertencias/" class="dropdown-item">Advertências</a></li>
-                            <li><a href="/items/" class="dropdown-item">Pedido de items</a></li>
+                            <li><a href="{% url 'top300' %}" class="dropdown-item">Top 300</a></li>
+                            <li><a class="dropdown-item" href="{% url 'kvk_index' %}">KvK</a></li>
+                            <li><a href="{% url 'mge_index' %}" class="dropdown-item">MGE</a></li>
+                            <li><a href="{% url 'advertencias' %}" class="dropdown-item">Advertências</a></li>
+                            <li><a href="{% url 'itemshome' %}" class="dropdown-item">Pedido de items</a></li>
                             {% if user.is_authenticated %}
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a href="/reports/" class="dropdown-item">Relatório</a></li>
-                            <li><a href="/players/upload/" class="dropdown-item">Subir planilha</a></li>
+                            <li><a href="{% url 'reports_index' %}" class="dropdown-item">Relatório</a></li>
+                            <li><a href="{% url 'upload_csv' %}" class="dropdown-item">Subir planilha</a></li>
                             {% endif %}
                         </ul>
                     </li>
@@ -61,16 +61,16 @@
                             Alianças
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbardrop2">
-                            <li><a class="dropdown-item" href="/players/alliance/1/">32BR</a></li>
-                            <li><a class="dropdown-item" href="/players/alliance/2/">32br</a></li>
-                            <li><a class="dropdown-item" href="/players/alliance/3/">32SG</a></li>
+                            <li><a class="dropdown-item" href="{% url 'alliance' 1 %}">32BR</a></li>
+                            <li><a class="dropdown-item" href="{% url 'alliance' 2 %}">32br</a></li>
+                            <li><a class="dropdown-item" href="{% url 'alliance' 3 %}">32SG</a></li>
                             {% if user.is_authenticated %}
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="/players/alliance/8/">Banidos</a></li>
-                            <li><a class="dropdown-item" href="/players/alliance/9/">Migraram</a></li>
-                            <li><a class="dropdown-item" href="/players/alliance/11/">Sem aliança</a></li>
+                            <li><a class="dropdown-item" href="{% url 'alliance' 8 %}">Banidos</a></li>
+                            <li><a class="dropdown-item" href="{% url 'alliance' 9 %}">Migraram</a></li>
+                            <li><a class="dropdown-item" href="{% url 'alliance' 11 %}">Sem aliança</a></li>
                             {% endif %}
                         </ul>
                     </li>
@@ -80,24 +80,24 @@
                             Especialidades
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbardrop3">
-                            <li><a class="dropdown-item" href="/players/listspec/arq/">Arquearia</a></li>
-                            <li><a class="dropdown-item" href="/players/listspec/inf/">Infantaria</a></li>
-                            <li><a class="dropdown-item" href="/players/listspec/cav/">Cavalaria</a></li>
-                            <li><a class="dropdown-item" href="/players/listspec/lid/">Liderança</a></li>
+                            <li><a class="dropdown-item" href="{% url 'listspec' 'arq' %}">Arquearia</a></li>
+                            <li><a class="dropdown-item" href="{% url 'listspec' 'inf' %}">Infantaria</a></li>
+                            <li><a class="dropdown-item" href="{% url 'listspec' 'cav' %}">Cavalaria</a></li>
+                            <li><a class="dropdown-item" href="{% url 'listspec' 'lid' %}">Liderança</a></li>
                             {% if user.is_authenticated %}
-                            <li><a class="dropdown-item" href="/players/listspec/end/">Não definidos</a></li>
+                            <li><a class="dropdown-item" href="{% url 'listspec' 'end' %}">Não definidos</a></li>
                             {% endif %}
                         </ul>
                     </li>
                     <li class="nav-item">
                         {% if user.is_authenticated %}
-                        <span class="nav-link">Olá, {{user.username}} | <a href="/logout">Sair</a></span>
+                        <span class="nav-link">Olá, {{user.username}} | <a href="{% url 'sair' %}">Sair</a></span>
                         {% else %}
-                        <a class="nav-link" href="/login">Login</a>
+                        <a class="nav-link" href="{% url 'logar' %}">Login</a>
                         {% endif %}
                     </li>
                 </ul>
-                <form class="d-flex" role="search" action="/players/find/" method="post">
+                <form class="d-flex" role="search" action="{% url 'findplayer' %}" method="post">
                     {% csrf_token %}
                     <div class="input-group">
                         <input type="text" name="busca" class="form-control" placeholder="Nick ou ID do jogador"

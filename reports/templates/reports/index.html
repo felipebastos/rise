@@ -6,12 +6,12 @@
     <div class="row">
         <div class="col-sm-6">
             <h1>Gestão de doações</h1>
-            <a class="btn btn-primary" href="/bank/"><i class="fas fa-piggy-bank"></i> Doações</a>
+            <a class="btn btn-primary" href="{% url 'bank_index' %}"><i class="fas fa-piggy-bank"></i> Doações</a>
             <br>
         </div>
         <div class="col-sm-6">
             <h1>Encontre um jogador</h1>
-            <form class="form-inline" action="/players/find/" method="post">
+            <form class="form-inline" action="{% url 'findplayer' %}" method="post">
                 {% csrf_token %}
                 <div class="input-group">
                     {{searchform.busca}}
@@ -27,10 +27,11 @@
         <div class="col-sm-6">
             <h1>Alertas da 32BR</h1>
             <ul>
-                <li>A 32BR tem <a href="/players/old/32BR/">{{god_antigos}}</a> registros mais antigos do que quinze
+                <li>A 32BR tem <a href="{% url 'antigos' 1 %}">{{god_antigos}}</a> registros mais antigos do que quinze
                     dias.
                 </li>
-                <li>A 32BR tem <a href="/players/nostatus/32BR/">{{god_nulos}}</a> registros sem anotação de status ou
+                <li>A 32BR tem <a href="{% url 'falta_status' 1 %}">{{god_nulos}}</a> registros sem anotação de status
+                    ou
                     com
                     poder zero.</li>
             </ul>
@@ -38,10 +39,11 @@
         <div class="col-sm-6">
             <h1>Alertas da 32br</h1>
             <ul>
-                <li>A 32br tem <a href="/players/old/32br/">{{bod_antigos}}</a> registros mais antigos do que quinze
+                <li>A 32br tem <a href="{% url 'antigos' 2 %}">{{bod_antigos}}</a> registros mais antigos do que quinze
                     dias.
                 </li>
-                <li>A 32br tem <a href="/players/nostatus/32br/">{{bod_nulos}}</a> registros sem anotação de status ou
+                <li>A 32br tem <a href="{% url 'falta_status' 2 %}">{{bod_nulos}}</a> registros sem anotação de status
+                    ou
                     com
                     poder zero.</li>
             </ul>
@@ -49,7 +51,7 @@
     </div>
     {% endif %}
     <hr>
-    <form class="form-inline" action="/reports/" method="post">
+    <form class="form-inline" action="{% url 'reports_index' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
             <label class="mr-sm-2" for="inicio">Data de início</label>

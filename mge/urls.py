@@ -3,7 +3,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("", views.index, name="mge_index"),
     path("startnew/", views.startnew, name="startnew"),
     path("view/<id>/", views.mgeedit, name="mgeedit"),
     path("inscrever/<id>/", views.inscrever, name="inscrever"),

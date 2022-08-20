@@ -3,7 +3,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("", views.index, name="kvk_index"),
     path("createkvk/", views.new_kvk, name="new_kvk"),
     path("edit/<kvkid>/", views.show_kvk, name="show_kvk"),
     path("close/<kvk_id>/", views.close_kvk, name="close_kvk"),

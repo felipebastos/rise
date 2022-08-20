@@ -407,13 +407,13 @@ def top300(request):
 
 
 @login_required
-def falta_status(request, ally_tag):
+def falta_status(request, ally_id):
     status = PlayerStatus.objects.all()
     id_quem_tem = []
     for cada in status:
         if cada.power != 0:
             id_quem_tem.append(cada.player.id)
-    ally = Alliance.objects.filter(tag=ally_tag).first()
+    ally = Alliance.objects.get(pk=ally_id)
     jogadores_sem_status = Player.objects.filter(alliance=ally).exclude(
         id__in=id_quem_tem
     )
@@ -426,7 +426,7 @@ def falta_status(request, ally_tag):
 
 
 @login_required
-def antigos(request, ally_tag):
+def antigos(request, ally_id):
     status = PlayerStatus.objects.all()
     hoje = timezone.now()
     id_quem_tem = []
@@ -434,7 +434,7 @@ def antigos(request, ally_tag):
         diff = hoje - cada.data
         if diff.days < 15:
             id_quem_tem.append(cada.player.id)
-    ally = Alliance.objects.filter(tag=ally_tag).first()
+    ally = Alliance.objects.get(pk=ally_id)
     jogadores_sem_status = Player.objects.filter(alliance=ally).exclude(
         id__in=id_quem_tem
     )
