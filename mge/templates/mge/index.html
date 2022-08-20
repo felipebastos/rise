@@ -13,13 +13,16 @@
 {% endif %}
 <div class="container">
     <h1>MGE's por dia de início</h1>
-    {% for mge in mges %}
-    {% if forloop.counter == 1 %}
-    <a href="/mge/view/{{mge.id}}/" class="btn btn-primary">{{mge}} {{mge.semana}}</a>
-    <hr>
-    {% else %}
-    <a href="/mge/view/{{mge.id}}/" class="btn btn-secondary">{{mge}} {{mge.semana}}</a>
-    {% endif %}
-    {% endfor %}
+    <div class="d-flex flex-wrap gap-1">
+        {% for mge in mges %}
+        {% if forloop.counter == 1 %}
+        <a href="/mge/view/{{mge.id}}/" class="btn btn-primary g-col-6" style="width: 20rem;">{{mge}}
+            {{mge.semana}}</a>
+        {% else %}
+        <a href="/mge/view/{{mge.id}}/" class="btn btn-secondary g-col-6" style="width: 20rem;">{{mge}}
+            {{mge.semana}}</a>
+        {% endif %}
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
