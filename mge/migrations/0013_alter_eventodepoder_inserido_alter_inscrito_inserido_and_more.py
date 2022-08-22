@@ -7,28 +7,36 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mge', '0012_alter_inscrito_kills'),
+        ("mge", "0012_alter_inscrito_kills"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='eventodepoder',
-            name='inserido',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Inserido'),
+            model_name="eventodepoder",
+            name="inserido",
+            field=models.DateTimeField(
+                default=django.utils.timezone.now, verbose_name="Inserido"
+            ),
         ),
         migrations.AlterField(
-            model_name='inscrito',
-            name='inserido',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Inserido'),
+            model_name="inscrito",
+            name="inserido",
+            field=models.DateTimeField(
+                default=django.utils.timezone.now, verbose_name="Inserido"
+            ),
         ),
         migrations.AlterField(
-            model_name='punido',
-            name='inserido',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Inserido'),
+            model_name="punido",
+            name="inserido",
+            field=models.DateTimeField(
+                default=django.utils.timezone.now, verbose_name="Inserido"
+            ),
         ),
         migrations.AlterField(
-            model_name='ranking',
-            name='inserido',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Inserido'),
+            model_name="ranking",
+            name="inserido",
+            field=models.DateTimeField(
+                default=django.utils.timezone.now, verbose_name="Inserido"
+            ),
         ),
     ]

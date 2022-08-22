@@ -43,7 +43,9 @@ def show_kvk(request, kvkid):
     if not final:
         final = timezone.now()
 
-    farms_banidos_e_inativos = Player.objects.filter(status__in=['BANIDO', 'FARM', 'MIGROU', 'INATIVO'])
+    farms_banidos_e_inativos = Player.objects.filter(
+        status__in=["BANIDO", "FARM", "MIGROU", "INATIVO"]
+    )
 
     topkp = (
         PlayerStatus.objects.all()
@@ -100,7 +102,7 @@ def add_zerado(request, player_id):
         zerado.save()
         return redirect(f"/kvk/edit/{running_kvk.id}/")
 
-    return render(request, 'rise/404.html')
+    return render(request, "rise/404.html")
 
 
 @login_required
@@ -115,10 +117,10 @@ def analisedesempenho(request, kvkid, cat):
     kvk = Kvk.objects.get(pk=kvkid)
 
     if cat not in ["kp", "dt"]:
-        return render(request, 'rise/404.html')
+        return render(request, "rise/404.html")
 
     if kvk.id == 4:
-        return render(request, 'rise/404.html')
+        return render(request, "rise/404.html")
 
     final = kvk.final
     if not final:
@@ -128,7 +130,7 @@ def analisedesempenho(request, kvkid, cat):
         "tipo": cat,
     }
 
-    banidos_e_inativos = Player.objects.filter(status__in=['BANIDO', 'INATIVO'])
+    banidos_e_inativos = Player.objects.filter(status__in=["BANIDO", "INATIVO"])
     banidos_inativos_ids = []
     for player in banidos_e_inativos:
         banidos_inativos_ids.append(player.id)
@@ -160,8 +162,6 @@ def analisedesempenho(request, kvkid, cat):
         zerados_lista.append(zerado_pra_lista.player)
         zerados_ids.append(zerado_pra_lista.player.id)
 
-    
-
     context["zerados"] = zerados_ids
     context["banidos_inativos"] = banidos_inativos_ids
 
@@ -178,17 +178,19 @@ def analisedesempenho(request, kvkid, cat):
         players_faixa_original = []
         for stat in faixa_original:
             if stat.player not in players_faixa_original:
-                if (
-                    stat.data.hour == primeiro.data.hour
-                ):
+                if stat.data.hour == primeiro.data.hour:
                     players_faixa_original.append(stat.player)
 
         status = (
-            PlayerStatus.objects
-            .filter(player__in=players_faixa_original)
+            PlayerStatus.objects.filter(player__in=players_faixa_original)
             .filter(data__gte=kvk.inicio)
             .filter(data__lte=final)
-            .values("player", "player__nick", "player__game_id", "player__alliance__tag")
+            .values(
+                "player",
+                "player__nick",
+                "player__game_id",
+                "player__alliance__tag",
+            )
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
                 dt=Max("deaths") - Min("deaths"),
@@ -208,7 +210,9 @@ def analisedesempenho(request, kvkid, cat):
         adicionais = AdicionalDeFarms.objects.filter(kvk=kvk)
         adicionais_dic = {}
         for adicional in adicionais:
-            adicionais_dic[adicional.player.game_id] = int(adicional.t4_deaths*0.25 + adicional.t5_deaths*0.5)
+            adicionais_dic[adicional.player.game_id] = int(
+                adicional.t4_deaths * 0.25 + adicional.t5_deaths * 0.5
+            )
         context["adicionais"] = adicionais_dic
 
         categorizados.append(
@@ -228,53 +232,57 @@ def analisedesempenho(request, kvkid, cat):
 
 @login_required
 def adicionarFarms(request):
-    print('Cheguei na adicionar.')
-    if request.method == 'POST':
+    print("Cheguei na adicionar.")
+    if request.method == "POST":
         for k in request.POST:
-            print(f'{k}: {request.POST[k]}')
-        kvk = Kvk.objects.filter(id=request.POST['kvkid']).first()
+            print(f"{k}: {request.POST[k]}")
+        kvk = Kvk.objects.filter(id=request.POST["kvkid"]).first()
         print(kvk)
-        player = Player.objects.filter(game_id=request.POST['player_id']).first()
+        player = Player.objects.filter(
+            game_id=request.POST["player_id"]
+        ).first()
 
         if kvk and player:
             novo = AdicionalDeFarms()
-            novo.t4_deaths = request.POST['t4']
-            novo.t5_deaths = request.POST['t5']
+            novo.t4_deaths = request.POST["t4"]
+            novo.t5_deaths = request.POST["t5"]
             novo.player = player
             novo.kvk = kvk
             novo.save()
-    return redirect(f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/")
+    return redirect(
+        f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/"
+    )
 
 
 def registrarEtapa(request, kvkid):
-    if request.method == 'POST':
+    if request.method == "POST":
         etapamanualform = EtapaForm(request.POST)
-        print(request.POST['kvk'])
+        print(request.POST["kvk"])
         if etapamanualform.is_valid():
             nova = Etapas()
-            id = request.POST['kvk']
+            id = request.POST["kvk"]
             kvk = Kvk.objects.filter(pk=id).first()
             nova.kvk = kvk
-            nova.date = request.POST['date']
-            nova.descricao = request.POST['descricao']
+            nova.date = request.POST["date"]
+            nova.descricao = request.POST["descricao"]
             nova.save()
-            return redirect(f'/kvk/edit/{kvkid}/')
+            return redirect(f"/kvk/edit/{kvkid}/")
 
     kvk = Kvk.objects.filter(pk=kvkid).first()
-    etapamanualform = EtapaForm(initial={'kvk': kvk})
+    etapamanualform = EtapaForm(initial={"kvk": kvk})
 
     etapas = Etapas.objects.filter(kvk=kvk)
 
     subirplanilhaform = UploadEtapasFileForm()
 
     context = {
-        'form': etapamanualform,
-        'subiretapasform': subirplanilhaform,
-        'etapas': etapas,
-        'kvk': kvk,
+        "form": etapamanualform,
+        "subiretapasform": subirplanilhaform,
+        "etapas": etapas,
+        "kvk": kvk,
     }
 
-    return render(request, 'kvk/etapa.html', context=context)
+    return render(request, "kvk/etapa.html", context=context)
 
 
 @login_required
@@ -289,16 +297,18 @@ def etapas_por_planilha(request, kvkid):
             with open("./etapas.csv", encoding="utf-8") as f:
                 reader = csv.reader(f)
                 for row in reader:
-                # jump header
+                    # jump header
                     if row[0] == "Crônica":
                         continue
                     etapa = Etapas()
                     etapa.kvk = kvk
                     etapa.descricao = row[0]
-                    etapa.date = timezone.make_aware(datetime.fromisoformat(row[1]))
+                    etapa.date = timezone.make_aware(
+                        datetime.fromisoformat(row[1])
+                    )
                     etapa.save()
 
-    return redirect(f'/kvk/etapa/{kvkid}/')
+    return redirect(f"/kvk/etapa/{kvkid}/")
 
 
 @login_required
@@ -309,4 +319,4 @@ def clear_etapas(request, kvkid):
     for etapa in etapas_do_kvk:
         etapa.delete()
 
-    return redirect(f'/kvk/etapa/{kvkid}/')
+    return redirect(f"/kvk/etapa/{kvkid}/")

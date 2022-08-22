@@ -7,19 +7,39 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('players', '0018_alter_player_game_id'),
-        ('kvk', '0004_zerado_kvk_final_delete_desempenho_zerado_kvk_and_more'),
+        ("players", "0018_alter_player_game_id"),
+        ("kvk", "0004_zerado_kvk_final_delete_desempenho_zerado_kvk_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AdicionalDeFarms',
+            name="AdicionalDeFarms",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('t4_deaths', models.IntegerField(default=0)),
-                ('t5_deaths', models.IntegerField(default=0)),
-                ('kvk', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='kvk.kvk')),
-                ('player', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='players.player')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("t4_deaths", models.IntegerField(default=0)),
+                ("t5_deaths", models.IntegerField(default=0)),
+                (
+                    "kvk",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="kvk.kvk",
+                    ),
+                ),
+                (
+                    "player",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="players.player",
+                    ),
+                ),
             ],
         ),
     ]

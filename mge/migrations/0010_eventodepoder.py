@@ -7,17 +7,36 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('players', '0018_alter_player_game_id'),
-        ('mge', '0009_comandante_mge_tipo_mge'),
+        ("players", "0018_alter_player_game_id"),
+        ("mge", "0009_comandante_mge_tipo_mge"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='EventoDePoder',
+            name="EventoDePoder",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('inserido', models.DateTimeField(auto_now_add=True, verbose_name='Inserido')),
-                ('player', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='players.player')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "inserido",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Inserido"
+                    ),
+                ),
+                (
+                    "player",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="players.player",
+                    ),
+                ),
             ],
         ),
     ]

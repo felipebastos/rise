@@ -6,13 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('players', '0019_advertencia'),
+        ("players", "0019_advertencia"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='player',
-            name='status',
-            field=models.CharField(choices=[('PLAYER', 'Player'), ('SECUNDARIA', 'Secundária'), ('FARM', 'Farm'), ('INATIVO', 'Inativo'), ('MIGROU', 'Migrou'), ('VIGIAR', 'Vigiar'), ('BANIDO', 'BANIDO')], default='ATIVO', max_length=100),
+            model_name="player",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("PLAYER", "Player"),
+                    ("SECUNDARIA", "Secundária"),
+                    ("FARM", "Farm"),
+                    ("INATIVO", "Inativo"),
+                    ("MIGROU", "Migrou"),
+                    ("VIGIAR", "Vigiar"),
+                    ("BANIDO", "BANIDO"),
+                ],
+                default="ATIVO",
+                max_length=100,
+            ),
         ),
     ]

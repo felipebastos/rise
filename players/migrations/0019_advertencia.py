@@ -7,18 +7,32 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('players', '0018_alter_player_game_id'),
+        ("players", "0018_alter_player_game_id"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Advertencia',
+            name="Advertencia",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('inicio', models.DateTimeField(auto_now_add=True)),
-                ('duracao', models.IntegerField(default=1)),
-                ('descricao', models.TextField(max_length=500)),
-                ('player', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='players.player')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("inicio", models.DateTimeField(auto_now_add=True)),
+                ("duracao", models.IntegerField(default=1)),
+                ("descricao", models.TextField(max_length=500)),
+                (
+                    "player",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="players.player",
+                    ),
+                ),
             ],
         ),
     ]

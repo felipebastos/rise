@@ -6,18 +6,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mge', '0013_alter_eventodepoder_inserido_alter_inscrito_inserido_and_more'),
+        (
+            "mge",
+            "0013_alter_eventodepoder_inserido_alter_inscrito_inserido_and_more",
+        ),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='mge',
-            name='livre',
+            model_name="mge",
+            name="livre",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='mge',
-            name='temporada',
+            model_name="mge",
+            name="temporada",
             field=models.IntegerField(default=0),
         ),
     ]

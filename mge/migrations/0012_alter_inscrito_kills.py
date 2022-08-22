@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mge', '0011_inscrito_intuito'),
+        ("mge", "0011_inscrito_intuito"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='inscrito',
-            name='kills',
+            model_name="inscrito",
+            name="kills",
             field=models.BigIntegerField(default=0),
         ),
     ]

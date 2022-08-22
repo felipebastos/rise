@@ -10,27 +10,58 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('players', '0022_alter_advertencia_inicio_alter_playerstatus_data'),
+        ("players", "0022_alter_advertencia_inicio_alter_playerstatus_data"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Item',
+            name="Item",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nome', models.CharField(max_length=50, unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nome", models.CharField(max_length=50, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Pedido',
+            name="Pedido",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('quantidade', models.IntegerField()),
-                ('pedido_em', models.DateTimeField(default=django.utils.timezone.now)),
-                ('avaliado', models.BooleanField(default=False)),
-                ('aprovado', models.BooleanField(default=False)),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='items.item')),
-                ('player', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='players.player')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("quantidade", models.IntegerField()),
+                (
+                    "pedido_em",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
+                ("avaliado", models.BooleanField(default=False)),
+                ("aprovado", models.BooleanField(default=False)),
+                (
+                    "item",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="items.item",
+                    ),
+                ),
+                (
+                    "player",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="players.player",
+                    ),
+                ),
             ],
         ),
     ]

@@ -7,13 +7,13 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('kvk', '0008_alter_zerado_date'),
+        ("kvk", "0008_alter_zerado_date"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='zerado',
-            name='date',
+            model_name="zerado",
+            name="date",
             field=models.DateField(default=django.utils.timezone.now),
         ),
     ]

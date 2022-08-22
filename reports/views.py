@@ -197,10 +197,12 @@ def top300rev(request):
 
 def analisedesempenho(request, cat):
     if cat not in ["kp", "dt"]:
-        return render(request, 'rise/404.html')
+        return render(request, "rise/404.html")
 
-    ultima_leitura = PlayerStatus.objects.order_by('-data').first()
-    banidos_e_inativos = Player.objects.filter(status__in=['BANIDO', 'MIGROU', 'INATIVO'])
+    ultima_leitura = PlayerStatus.objects.order_by("-data").first()
+    banidos_e_inativos = Player.objects.filter(
+        status__in=["BANIDO", "MIGROU", "INATIVO"]
+    )
 
     oReino = (
         PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
@@ -224,7 +226,7 @@ def analisedesempenho(request, cat):
     os300 = todos[:300]
 
     mais_fraco_do_top300 = os300[-1:]
-    
+
     context = {
         "tipo": cat,
     }
@@ -242,28 +244,34 @@ def analisedesempenho(request, cat):
 
     categorizados = []
     for faixa in faixas:
-        faixa_original = PlayerStatus.objects.filter(power__gte=mais_fraco_do_top300[0].power).filter(
-            data__year=ultima_leitura.data.year,
-            data__month=ultima_leitura.data.month,
-            data__day=ultima_leitura.data.day,
-            power__gte=faixa[0],
-            power__lte=faixa[1],
-        ).order_by("data")
+        faixa_original = (
+            PlayerStatus.objects.filter(
+                power__gte=mais_fraco_do_top300[0].power
+            )
+            .filter(
+                data__year=ultima_leitura.data.year,
+                data__month=ultima_leitura.data.month,
+                data__day=ultima_leitura.data.day,
+                power__gte=faixa[0],
+                power__lte=faixa[1],
+            )
+            .order_by("data")
+        )
 
         players_faixa_original = []
         for stat in faixa_original:
             if stat.player not in players_faixa_original:
-                if (
-                    stat.data.hour == ultima_leitura.data.hour
-                ):
+                if stat.data.hour == ultima_leitura.data.hour:
                     players_faixa_original.append(stat.player)
 
         status = (
             PlayerStatus.objects.exclude(player__in=banidos_e_inativos)
             .filter(player__in=players_faixa_original)
-            .filter(data__year=ultima_leitura.data.year,
-            data__month=ultima_leitura.data.month,
-            data__day=ultima_leitura.data.day,)
+            .filter(
+                data__year=ultima_leitura.data.year,
+                data__month=ultima_leitura.data.month,
+                data__day=ultima_leitura.data.day,
+            )
             .values("player__nick", "player__game_id", "player__alliance__tag")
             .annotate(
                 kp=Max("killpoints"),

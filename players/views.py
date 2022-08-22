@@ -41,7 +41,7 @@ def index(request, game_id):
         exibirkvk = False
         if temKvk and temKvk.ativo:
             exibirkvk = True
-        
+
         punido = Punido.objects.filter(player=player)
         punidoPoder = EventoDePoder.objects.filter(player=player)
         advertencias = Advertencia.objects.filter(player=player)
@@ -62,7 +62,6 @@ def index(request, game_id):
 
         elementos.sort(reverse=True, key=orderByDate)
 
-
         context = {
             "player": player,
             "status": status,
@@ -74,7 +73,7 @@ def index(request, game_id):
             "elementos": elementos,
         }
     except Player.DoesNotExist:
-        return render(request, 'rise/404.html')
+        return render(request, "rise/404.html")
     return render(request, "players/player.html", context)
 
 
@@ -83,7 +82,7 @@ def edit_player(request, game_id):
     player = Player.objects.filter(game_id=game_id).first()
 
     if not player:
-        return render(request, 'rise/404.html')
+        return render(request, "rise/404.html")
 
     allies = Alliance.objects.all()
 
@@ -148,7 +147,7 @@ def review_players(request, ally_tag):
                 }
                 return render(request, "players/review.html", context)
         except:
-            return render(request, 'rise/404.html')
+            return render(request, "rise/404.html")
     else:
         membros = Player.objects.filter(alliance__tag=ally_tag)
         semalianca = Alliance.objects.filter(tag="PSA").first()
@@ -173,13 +172,15 @@ def findplayer(request):
                     "membros": players,
                     "termo": busca,
                 }
-                return render(request, "players/searchresult.html", context=context)
+                return render(
+                    request, "players/searchresult.html", context=context
+                )
             else:
-                return redirect(f'/players/{player.game_id}/')
+                return redirect(f"/players/{player.game_id}/")
         else:
-            return render(request, 'rise/404.html')
+            return render(request, "rise/404.html")
     else:
-        return render(request, 'rise/404.html')
+        return render(request, "rise/404.html")
 
 
 @login_required
@@ -225,7 +226,7 @@ def add_status(request, game_id):
             return redirect(request.POST["origem"])
         return redirect(f"/players/{game_id}/")
     except Exception as e:
-        return render(request, 'rise/404.html')
+        return render(request, "rise/404.html")
 
 
 @login_required
@@ -378,7 +379,7 @@ def alliance(request, ally_id):
             }
             return render(request, "players/alianca.html", context)
     except Exception:
-        return render(request, 'rise/404.html')
+        return render(request, "rise/404.html")
 
 
 @login_required
@@ -486,10 +487,10 @@ def como_estou(request):
         id = request.POST["game_id"]
         o_player = Player.objects.filter(game_id=id).first()
         status = (
-                PlayerStatus.objects.filter(player=o_player)
-                .filter(data__gte=kvk.inicio, data__lte=final)
-                .order_by("data")
-            )
+            PlayerStatus.objects.filter(player=o_player)
+            .filter(data__gte=kvk.inicio, data__lte=final)
+            .order_by("data")
+        )
 
         zerado = False
         if Zerado.objects.filter(kvk=kvk, player=o_player).first():
@@ -500,7 +501,9 @@ def como_estou(request):
         for zerado_pra_lista in zerados:
             zerados_lista.append(zerado_pra_lista.player)
 
-        banidos_e_inativos = Player.objects.filter(status__in=['BANIDO', 'MIGROU', 'INATIVO'])
+        banidos_e_inativos = Player.objects.filter(
+            status__in=["BANIDO", "MIGROU", "INATIVO"]
+        )
 
         primeiro = status.first()
         ultimo = status.last()
@@ -582,9 +585,7 @@ def como_estou(request):
         players_faixa_original = []
         for stat in faixa_original:
             if stat.player not in players_faixa_original:
-                if (
-                    stat.data.hour == primeiro.data.hour
-                ):
+                if stat.data.hour == primeiro.data.hour:
                     players_faixa_original.append(stat.player)
 
         status_kp_similares = (
@@ -613,20 +614,19 @@ def como_estou(request):
             )
             .order_by("-dt")
         )
-        
 
         todos_kp = len(status_kp_similares)
         pos_kp_faixa = todos_kp
         media_kp = 0
         continue_contando = True
         for stat in status_kp_similares:
-            media_kp = media_kp + stat['kp']
+            media_kp = media_kp + stat["kp"]
             if stat["player__nick"] != ultimo.player.nick:
                 if continue_contando:
                     pos_kp_faixa = pos_kp_faixa - 1
             else:
                 continue_contando = False
-        media_kp = int(media_kp/len(status_kp_similares))
+        media_kp = int(media_kp / len(status_kp_similares))
 
         todos_dt = len(status_dt_similares)
         pos_dt_faixa = todos_dt
@@ -639,7 +639,7 @@ def como_estou(request):
                     pos_dt_faixa = pos_dt_faixa - 1
             else:
                 continue_contando = False
-        media_mortes = int(media_mortes/len(status_dt_similares))
+        media_mortes = int(media_mortes / len(status_dt_similares))
 
         context = {
             "kvk": kvk,
@@ -673,25 +673,27 @@ def como_estou(request):
 
         return render(request, "players/emkvk.html", context=context)
     else:
-        return render(request, 'rise/404.html')
+        return render(request, "rise/404.html")
+
 
 @login_required
 def criar_advertencia(request):
-    player = Player.objects.filter(game_id=request.POST['game_id']).first()
+    player = Player.objects.filter(game_id=request.POST["game_id"]).first()
 
     if player:
         adv = Advertencia()
         adv.player = player
-        adv.descricao = request.POST['descricao']
-        adv.duracao = request.POST['duracao']
+        adv.descricao = request.POST["descricao"]
+        adv.duracao = request.POST["duracao"]
 
         adv.save()
 
-        return redirect('/players/advertencias')
-    return render(request, 'rise/404.html')
+        return redirect("/players/advertencias")
+    return render(request, "rise/404.html")
+
 
 def advertencias(request):
-    advs = Advertencia.objects.all().order_by('-inicio')
+    advs = Advertencia.objects.all().order_by("-inicio")
 
     validas = []
     vencidas = []
@@ -702,8 +704,8 @@ def advertencias(request):
             vencidas.append(adv)
 
     context = {
-        'advertencias': validas,
-        'vencidas': vencidas,
+        "advertencias": validas,
+        "vencidas": vencidas,
     }
 
     return render(request, "players/advertencias.html", context=context)

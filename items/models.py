@@ -9,6 +9,7 @@ class Item(models.Model):
     def __str__(self) -> str:
         return self.nome
 
+
 class Pedido(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
@@ -18,4 +19,4 @@ class Pedido(models.Model):
     aprovado = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return f'{self.player.nick} pediu {self.quantidade} {self.item}(s)'
+        return f"{self.player.nick} pediu {self.quantidade} {self.item}(s)"

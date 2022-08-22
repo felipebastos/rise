@@ -43,8 +43,9 @@ class AllianceSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PlayerStatusSerializer(serializers.HyperlinkedModelSerializer):
-    nick = serializers.CharField(read_only=True, source='player.nick')
-    game_id = serializers.CharField(read_only=True, source='player.game_id')
+    nick = serializers.CharField(read_only=True, source="player.nick")
+    game_id = serializers.CharField(read_only=True, source="player.game_id")
+
     class Meta:
         model = PlayerStatus
         fields = [

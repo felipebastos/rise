@@ -8,13 +8,17 @@ from django.utils.timezone import utc
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('kvk', '0007_alter_etapas_date'),
+        ("kvk", "0007_alter_etapas_date"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='zerado',
-            name='date',
-            field=models.DateField(default=datetime.datetime(2022, 8, 10, 13, 50, 16, 124923, tzinfo=utc)),
+            model_name="zerado",
+            name="date",
+            field=models.DateField(
+                default=datetime.datetime(
+                    2022, 8, 10, 13, 50, 16, 124923, tzinfo=utc
+                )
+            ),
         ),
     ]

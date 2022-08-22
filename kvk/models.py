@@ -29,7 +29,8 @@ class Zerado(models.Model):
     date = models.DateField(default=timezone.now)
 
     def __str__(self) -> str:
-        return f'Player {self.player} no KvK {self.kvk}'
+        return f"Player {self.player} no KvK {self.kvk}"
+
 
 class AdicionalDeFarms(models.Model):
     kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
@@ -38,7 +39,7 @@ class AdicionalDeFarms(models.Model):
     t5_deaths = models.IntegerField(default=0)
 
     def __str__(self) -> str:
-        return f'Adicional de {self.player} no KvK {self.kvk}'
+        return f"Adicional de {self.player} no KvK {self.kvk}"
 
 
 class Etapas(models.Model):
@@ -47,4 +48,4 @@ class Etapas(models.Model):
     descricao = models.CharField(max_length=100)
 
     def __str__(self) -> str:
-        return f'Etapa {self.descricao} do KvK {self.kvk}'
+        return f"Etapa {self.descricao} do KvK {self.kvk}"

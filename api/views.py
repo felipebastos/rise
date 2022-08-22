@@ -38,7 +38,7 @@ class AllianceViewSet(viewsets.ModelViewSet):
 
 
 class PlayerStatusViewSet(viewsets.ModelViewSet):
-    queryset = PlayerStatus.objects.order_by('-data').all()
+    queryset = PlayerStatus.objects.order_by("-data").all()
     serializer_class = PlayerStatusSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["=player__game_id"]
@@ -47,75 +47,76 @@ class PlayerStatusViewSet(viewsets.ModelViewSet):
         if self.request.user.is_authenticated:
             return self.queryset
         else:
-            max_date = self.queryset.aggregate(Max('data'))
-            apenas_dia = str(max_date['data__max'])
+            max_date = self.queryset.aggregate(Max("data"))
+            apenas_dia = str(max_date["data__max"])
             apenas_dia = datetime.fromisoformat(apenas_dia)
             apenas_dia = apenas_dia.replace(hour=0, minute=0, second=0)
 
             queryset = self.queryset.filter(data__gte=apenas_dia)
             return queryset
 
+
 class Top10PowerViewSet(viewsets.ModelViewSet):
-    queryset = PlayerStatus.objects.order_by('-data').all()
+    queryset = PlayerStatus.objects.order_by("-data").all()
     serializer_class = PlayerStatusSerializer
 
     def get_queryset(self):
         ultimo = PlayerStatus.objects.order_by("-data").first()
 
         oReinoPoder = (
-        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-        .exclude(player__status="INATIVO")
-        .exclude(player__status="BANIDO")
-        .filter(
-            data__year=ultimo.data.year,
-            data__month=ultimo.data.month,
-            data__day=ultimo.data.day,
-        )
-        .order_by("-power")
+            PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
+            .exclude(player__status="INATIVO")
+            .exclude(player__status="BANIDO")
+            .filter(
+                data__year=ultimo.data.year,
+                data__month=ultimo.data.month,
+                data__day=ultimo.data.day,
+            )
+            .order_by("-power")
         )
 
         return oReinoPoder[:10]
 
 
 class Top10KillPointsViewSet(viewsets.ModelViewSet):
-    queryset = PlayerStatus.objects.order_by('-data').all()
+    queryset = PlayerStatus.objects.order_by("-data").all()
     serializer_class = PlayerStatusSerializer
 
     def get_queryset(self):
         ultimo = PlayerStatus.objects.order_by("-data").first()
 
         oReinoKillPoints = (
-        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-        .exclude(player__status="INATIVO")
-        .exclude(player__status="BANIDO")
-        .filter(
-            data__year=ultimo.data.year,
-            data__month=ultimo.data.month,
-            data__day=ultimo.data.day,
-        )
-        .order_by("-killpoints")
+            PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
+            .exclude(player__status="INATIVO")
+            .exclude(player__status="BANIDO")
+            .filter(
+                data__year=ultimo.data.year,
+                data__month=ultimo.data.month,
+                data__day=ultimo.data.day,
+            )
+            .order_by("-killpoints")
         )
 
         return oReinoKillPoints[:10]
 
 
 class Top10MortesViewSet(viewsets.ModelViewSet):
-    queryset = PlayerStatus.objects.order_by('-data').all()
+    queryset = PlayerStatus.objects.order_by("-data").all()
     serializer_class = PlayerStatusSerializer
 
     def get_queryset(self):
         ultimo = PlayerStatus.objects.order_by("-data").first()
 
         oReinoMortes = (
-        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-        .exclude(player__status="INATIVO")
-        .exclude(player__status="BANIDO")
-        .filter(
-            data__year=ultimo.data.year,
-            data__month=ultimo.data.month,
-            data__day=ultimo.data.day,
-        )
-        .order_by("-deaths")
+            PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
+            .exclude(player__status="INATIVO")
+            .exclude(player__status="BANIDO")
+            .filter(
+                data__year=ultimo.data.year,
+                data__month=ultimo.data.month,
+                data__day=ultimo.data.day,
+            )
+            .order_by("-deaths")
         )
 
         return oReinoMortes[:10]

@@ -29,9 +29,14 @@ def startnew(request):
         if form.is_valid():
             quais = form.cleaned_data.get("commanders")
             mge = Mge()
-            mge.temporada = Mge.objects.all().aggregate(Max('temporada'))['temporada__max'] + 1
+            mge.temporada = (
+                Mge.objects.all().aggregate(Max("temporada"))["temporada__max"]
+                + 1
+            )
             mge.tipo = quais
-            mge.livre = False if form.cleaned_data.get("controle") == "Sim" else True
+            mge.livre = (
+                False if form.cleaned_data.get("controle") == "Sim" else True
+            )
             mge.save()
 
     return redirect("/mge/")
@@ -85,7 +90,7 @@ def inscrever(request, id):
         inscrito.mge = mge
         inscrito.general = request.POST["general"] or ""
 
-        if 'intuito' in request.POST:
+        if "intuito" in request.POST:
             inscrito.intuito = request.POST["intuito"]
 
         kvk = Kvk.objects.filter(ativo=False).order_by("-inicio").first()
@@ -163,7 +168,9 @@ def punir(request, player_id):
     adv = Advertencia()
     adv.player = player
     adv.duracao = 15
-    adv.descricao = f'Queimou pontuação máxima no {mge} {mge.semana().strftime("%d/%m/%y")}'
+    adv.descricao = (
+        f'Queimou pontuação máxima no {mge} {mge.semana().strftime("%d/%m/%y")}'
+    )
     adv.save()
 
     return redirect(f"/mge/view/{mge.id}/")

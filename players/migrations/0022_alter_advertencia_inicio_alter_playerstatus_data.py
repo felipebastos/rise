@@ -7,18 +7,18 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('players', '0021_alter_playerstatus_killpoints'),
+        ("players", "0021_alter_playerstatus_killpoints"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='advertencia',
-            name='inicio',
+            model_name="advertencia",
+            name="inicio",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AlterField(
-            model_name='playerstatus',
-            name='data',
+            model_name="playerstatus",
+            name="data",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
     ]

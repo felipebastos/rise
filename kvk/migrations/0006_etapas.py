@@ -7,17 +7,31 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('kvk', '0005_adicionaldefarms'),
+        ("kvk", "0005_adicionaldefarms"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Etapas',
+            name="Etapas",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField()),
-                ('descricao', models.CharField(max_length=100)),
-                ('kvk', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='kvk.kvk')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateField()),
+                ("descricao", models.CharField(max_length=100)),
+                (
+                    "kvk",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="kvk.kvk",
+                    ),
+                ),
             ],
         ),
     ]

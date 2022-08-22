@@ -6,21 +6,53 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mge', '0008_mge_tipo'),
+        ("mge", "0008_mge_tipo"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Comandante',
+            name="Comandante",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nome', models.TextField()),
-                ('tipo', models.CharField(choices=[('arc', 'arquearia'), ('cav', 'cavalaria'), ('inf', 'infantaria'), ('lid', 'liderança'), ('ndf', 'não definido')], default='arc', max_length=3)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nome", models.TextField()),
+                (
+                    "tipo",
+                    models.CharField(
+                        choices=[
+                            ("arc", "arquearia"),
+                            ("cav", "cavalaria"),
+                            ("inf", "infantaria"),
+                            ("lid", "liderança"),
+                            ("ndf", "não definido"),
+                        ],
+                        default="arc",
+                        max_length=3,
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='mge',
-            name='tipo_mge',
-            field=models.CharField(choices=[('arc', 'arquearia'), ('cav', 'cavalaria'), ('inf', 'infantaria'), ('lid', 'liderança'), ('ndf', 'não definido')], default='ndf', max_length=3, verbose_name='Tipo de MGE'),
+            model_name="mge",
+            name="tipo_mge",
+            field=models.CharField(
+                choices=[
+                    ("arc", "arquearia"),
+                    ("cav", "cavalaria"),
+                    ("inf", "infantaria"),
+                    ("lid", "liderança"),
+                    ("ndf", "não definido"),
+                ],
+                default="ndf",
+                max_length=3,
+                verbose_name="Tipo de MGE",
+            ),
         ),
     ]

@@ -14,12 +14,15 @@ tipos_comandantes = (
     ("ndf", "não definido"),
 )
 
+
 class Mge(models.Model):
     criado_em = models.DateField("Criado em", default=date.today)
     tipo = models.CharField(
         "Tipo", max_length=2, choices=COMMANDER_CHOICES, default="0"
     )
-    tipo_mge = models.CharField("Tipo de MGE", max_length=3, choices=tipos_comandantes, default="ndf")
+    tipo_mge = models.CharField(
+        "Tipo de MGE", max_length=3, choices=tipos_comandantes, default="ndf"
+    )
 
     temporada = models.IntegerField(default=0)
     livre = models.BooleanField(default=False)
@@ -71,17 +74,19 @@ class Inscrito(models.Model):
     inserido = models.DateTimeField("Inserido", default=timezone.now)
 
     def __str__(self) -> str:
-        return f'{self.player} pediu {self.general} em {self.inserido}'
+        return f"{self.player} pediu {self.general} em {self.inserido}"
 
 
 class Comandante(models.Model):
     nome = models.TextField()
-    tipo = models.CharField(max_length=3, choices=tipos_comandantes, default="arc")
+    tipo = models.CharField(
+        max_length=3, choices=tipos_comandantes, default="arc"
+    )
 
 
 class EventoDePoder(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    
+
     inserido = models.DateTimeField("Inserido", default=timezone.now)
 
     def __str__(self):

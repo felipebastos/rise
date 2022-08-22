@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mge', '0010_eventodepoder'),
+        ("mge", "0010_eventodepoder"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='inscrito',
-            name='intuito',
+            model_name="inscrito",
+            name="intuito",
             field=models.BooleanField(default=False),
         ),
     ]
