@@ -8,7 +8,8 @@ register = template.Library()
 
 @register.filter
 def getPunicoes(insc : Inscrito):
-    return Punido.objects.filter(player=insc.player)
+    limite = timezone.make_aware(datetime.fromisoformat('2022-07-03'))
+    return Punido.objects.filter(inserido__gte=limite).filter(player=insc.player)
 
 @register.filter
 def temPunicoes(insc : Inscrito):
@@ -20,4 +21,5 @@ def temPunicoes(insc : Inscrito):
 
 @register.filter
 def getPunicoesPoder(insc: Inscrito):
-    return EventoDePoder.objects.filter(player=insc.player)
+    limite = timezone.make_aware(datetime.fromisoformat('2022-07-03'))
+    return EventoDePoder.objects.filter(inserido__gte=limite).filter(player=insc.player)
