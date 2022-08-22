@@ -1,19 +1,15 @@
-from players.models import PlayerStatus
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from .forms import LoginForm
-
-
-def ang(request):
-    return render(request, "rise/ang.html")
+from players.models import PlayerStatus
+from rise.forms import LoginForm
 
 
 def index(request):
     ultimo = PlayerStatus.objects.order_by("-data").first()
 
-    oReinoPoder = (
+    o_reino_poder = (
         PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
         .exclude(player__status="INATIVO")
         .exclude(player__status="BANIDO")
@@ -25,7 +21,7 @@ def index(request):
         .order_by("-power")
     )
 
-    oReinokillpoints = (
+    o_reino_killpoints = (
         PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
         .exclude(player__status="INATIVO")
         .exclude(player__status="BANIDO")
@@ -37,7 +33,7 @@ def index(request):
         .order_by("-killpoints")
     )
 
-    oReinomortes = (
+    o_reino_mortes = (
         PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
         .exclude(player__status="INATIVO")
         .exclude(player__status="BANIDO")
@@ -50,9 +46,9 @@ def index(request):
     )
 
     context = {
-        "top10poder": oReinoPoder[:10],
-        "top10kp": oReinokillpoints[:10],
-        "top10dt": oReinomortes[:10],
+        "top10poder": o_reino_poder[:10],
+        "top10kp": o_reino_killpoints[:10],
+        "top10dt": o_reino_mortes[:10],
     }
 
     return render(request, "rise/index.html", context=context)
