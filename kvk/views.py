@@ -229,7 +229,6 @@ def adicionarFarms(request):
     return redirect(f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/")
 
 
-@login_required
 def registrarEtapa(request, kvkid):
     if request.method == 'POST':
         etapamanualform = EtapaForm(request.POST)
