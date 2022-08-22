@@ -88,7 +88,7 @@ def inscrever(request, id):
         if 'intuito' in request.POST:
             inscrito.intuito = request.POST["intuito"]
 
-        kvk = Kvk.objects.order_by("-inicio").first()
+        kvk = Kvk.objects.filter(ativo=False).order_by("-inicio").first()
 
         final = kvk.final
         if not final:
