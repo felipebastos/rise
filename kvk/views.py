@@ -174,11 +174,11 @@ def analisedesempenho(request, kvkid, cat):
                     players_faixa_original.append(stat.player)
 
         status = (
-            PlayerStatus.objects.exclude(player__in=zerados_lista).exclude(player__in=banidos_e_inativos)
+            PlayerStatus.objects
             .filter(player__in=players_faixa_original)
             .filter(data__gte=kvk.inicio)
             .filter(data__lte=final)
-            .values("player__nick", "player__game_id", "player__alliance__tag")
+            .values("player", "player__nick", "player__game_id", "player__alliance__tag")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
                 dt=Max("deaths") - Min("deaths"),
@@ -186,10 +186,14 @@ def analisedesempenho(request, kvkid, cat):
             .order_by(f"-{cat}")
         )
         media = 0
+        contabilizar = 0
         for stat in status:
-            media = media + stat[cat]
+            player = Player.objects.get(pk=stat["player"])
+            if not player in zerados_lista and not player in banidos_e_inativos:
+                media = media + stat[cat]
+                contabilizar = contabilizar + 1
 
-        media = media // len(status)
+        media = media // contabilizar
 
         adicionais = AdicionalDeFarms.objects.filter(kvk=kvk)
         adicionais_dic = {}
