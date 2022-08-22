@@ -128,7 +128,7 @@ def analisedesempenho(request, kvkid, cat):
         "tipo": cat,
     }
 
-    banidos_e_inativos = Player.objects.filter(status__in=['BANIDO', 'MIGROU', 'INATIVO'])
+    banidos_e_inativos = Player.objects.filter(status__in=['BANIDO', 'INATIVO'])
 
     faixas = [
         (100000001, 5000000000, 3000000),
