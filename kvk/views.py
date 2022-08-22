@@ -148,7 +148,7 @@ def analisedesempenho(request, kvkid, cat):
     )
 
     if not primeiro:
-        redirect(f"/kvk/edit/{kvk.id}/")
+        return redirect(f"/kvk/edit/{kvk.id}/")
 
     categorizados = []
     for faixa in faixas:
