@@ -20,4 +20,6 @@ urlpatterns = [
     ),
     path("adicionarfarm/", views.adicionarFarms, name="adicionarFarms"),
     path("etapa/<kvkid>/", views.registrarEtapa, name="registrarEtapa"),
+    path("upload/<kvkid>/", views.etapas_por_planilha, name="registrarEtapasPorPlanilha"),
+    path("clearetapa/<kvkid>/", views.clear_etapas, name="limparetapas"),
 ]

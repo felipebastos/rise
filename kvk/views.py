@@ -1,10 +1,11 @@
-from datetime import date
+import csv
+from datetime import datetime
 
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.db.models.aggregates import Max, Min
 from django.utils import timezone
-from kvk.forms import EtapaForm
+from kvk.forms import EtapaForm, UploadEtapasFileForm
 
 from players.models import Player, PlayerStatus
 
@@ -231,9 +232,9 @@ def adicionarFarms(request):
 @login_required
 def registrarEtapa(request, kvkid):
     if request.method == 'POST':
-        form = EtapaForm(request.POST)
+        etapamanualform = EtapaForm(request.POST)
         print(request.POST['kvk'])
-        if form.is_valid():
+        if etapamanualform.is_valid():
             nova = Etapas()
             id = request.POST['kvk']
             kvk = Kvk.objects.filter(pk=id).first()
@@ -244,14 +245,52 @@ def registrarEtapa(request, kvkid):
             return redirect(f'/kvk/edit/{kvkid}/')
 
     kvk = Kvk.objects.filter(pk=kvkid).first()
-    form = EtapaForm(initial={'kvk': kvk})
+    etapamanualform = EtapaForm(initial={'kvk': kvk})
 
     etapas = Etapas.objects.filter(kvk=kvk)
 
+    subirplanilhaform = UploadEtapasFileForm()
+
     context = {
-        'form': form,
+        'form': etapamanualform,
+        'subiretapasform': subirplanilhaform,
         'etapas': etapas,
         'kvk': kvk,
     }
 
     return render(request, 'kvk/etapa.html', context=context)
+
+
+@login_required
+def etapas_por_planilha(request, kvkid):
+    if request.method == "POST":
+        form = UploadEtapasFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            kvk = Kvk.objects.get(pk=kvkid)
+            with open("etapas.csv", "wb") as destination:
+                for chunk in request.FILES["file"].chunks():
+                    destination.write(chunk)
+            with open("./etapas.csv", encoding="utf-8") as f:
+                reader = csv.reader(f)
+                for row in reader:
+                # jump header
+                    if row[0] == "Crônica":
+                        continue
+                    etapa = Etapas()
+                    etapa.kvk = kvk
+                    etapa.descricao = row[0]
+                    etapa.date = timezone.make_aware(datetime.fromisoformat(row[1]))
+                    etapa.save()
+
+    return redirect(f'/kvk/etapa/{kvkid}/')
+
+
+@login_required
+def clear_etapas(request, kvkid):
+    kvk = Kvk.objects.get(pk=kvkid)
+    etapas_do_kvk = Etapas.objects.filter(kvk=kvk)
+
+    for etapa in etapas_do_kvk:
+        etapa.delete()
+
+    return redirect(f'/kvk/etapa/{kvkid}/')
