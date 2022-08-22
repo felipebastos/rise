@@ -129,6 +129,9 @@ def analisedesempenho(request, kvkid, cat):
     }
 
     banidos_e_inativos = Player.objects.filter(status__in=['BANIDO', 'INATIVO'])
+    banidos_inativos_ids = []
+    for player in banidos_e_inativos:
+        banidos_inativos_ids.append(player.id)
 
     faixas = [
         (100000001, 5000000000, 3000000),
@@ -150,13 +153,20 @@ def analisedesempenho(request, kvkid, cat):
     if not primeiro:
         return redirect(f"/kvk/edit/{kvk.id}/")
 
+    zerados = Zerado.objects.filter(kvk=kvk)
+    zerados_lista = []
+    zerados_ids = []
+    for zerado_pra_lista in zerados:
+        zerados_lista.append(zerado_pra_lista.player)
+        zerados_ids.append(zerado_pra_lista.player.id)
+
+    
+
+    context["zerados"] = zerados_ids
+    context["banidos_inativos"] = banidos_inativos_ids
+
     categorizados = []
     for faixa in faixas:
-        zerados = Zerado.objects.filter(kvk=kvk)
-        zerados_lista = []
-        for zerado_pra_lista in zerados:
-            zerados_lista.append(zerado_pra_lista.player)
-
         faixa_original = PlayerStatus.objects.filter(
             data__year=primeiro.data.year,
             data__month=primeiro.data.month,

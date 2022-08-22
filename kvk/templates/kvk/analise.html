@@ -21,16 +21,16 @@
         <tr class="table-danger">
             <td>Fez menos que 50% da média</td>
         </tr>
-        <tr>
-            <td><span style="color:green;">+numero</span> é o número de mortes nas farms onde T4 vale 0.25 e T5 vale
-                0.5.
-            </td>
-        </tr>
-        <tr>
+        <tr class="table-secondary">
             <td>
                 Zerados pelo adversário e banidos após o KvK encerrar continuam aparecendo mas não são contabilizados
                 para a
                 média do grupo.
+            </td>
+        </tr>
+        <tr>
+            <td><span style="color:green;">+numero</span> é o número de mortes nas farms onde T4 vale 0.25 e T5 vale
+                0.5.
             </td>
         </tr>
     </table>
@@ -64,7 +64,9 @@
                             <tbody>
                                 {% for player in grupo.membros %}
                                 {% if tipo == 'dt' %}
-                                {% if player.dt >= grupo.media %}
+                                {% if player.player in zerados or player.player in banidos_inativos %}
+                                <tr class="table-secondary">
+                                    {% elif player.dt >= grupo.media %}
                                 <tr class="table-success">
                                     {% elif player.dt >= grupo.meiamedia %}
                                 <tr class="table-warning">
@@ -72,7 +74,9 @@
                                 <tr class="table-danger">
                                     {% endif %}
                                     {% else %}
-                                    {% if player.kp >= grupo.media %}
+                                    {% if player.player in zerados or player.player in banidos_inativos %}
+                                <tr class="table-secondary">
+                                    {% elif player.kp >= grupo.media %}
                                 <tr class="table-success">
                                     {% elif player.kp >= grupo.meiamedia %}
                                 <tr class="table-warning">
