@@ -147,6 +147,9 @@ def analisedesempenho(request, kvkid, cat):
         .first()
     )
 
+    if not primeiro:
+        redirect(f"/kvk/edit/{kvk.id}/")
+
     categorizados = []
     for faixa in faixas:
         zerados = Zerado.objects.filter(kvk=kvk)
