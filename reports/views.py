@@ -1,9 +1,9 @@
+from datetime import date, datetime, timedelta, timezone
+
 from django.contrib.auth.decorators import login_required
 from django.db.models.aggregates import Max, Min
 from django.shortcuts import render
 from django.core.paginator import Paginator
-
-from datetime import date, datetime, timedelta, timezone
 
 from players.models import Alliance, PlayerStatus, Player
 from rise.forms import SearchPlayerForm
@@ -19,7 +19,8 @@ def index(request):
     bod_nulos = 0
 
     if request.user.is_authenticated:
-        players_god = Player.objects.filter(alliance__tag="32BR")
+        principal = Alliance.objects.get(pk=1)
+        players_god = Player.objects.filter(alliance=principal)
 
         for player in players_god:
             status = (
@@ -35,7 +36,9 @@ def index(request):
                     god_nulos = god_nulos + 1
             else:
                 god_nulos = god_nulos + 1
-        players_bod = Player.objects.filter(alliance__tag="32br")
+
+        secundaria = Alliance.objects.get(pk=2)
+        players_bod = Player.objects.filter(alliance=secundaria)
 
         for player in players_bod:
             status = (
@@ -75,12 +78,12 @@ def index(request):
             context["inicio"] = date.fromisoformat(inicio)
             context["fim"] = date.fromisoformat(fim)
 
-            ord = ""
+            ordem = ""
             if ordem == "kp":
-                ord = "-kp"
+                ordem = "-kp"
                 context["titulo"] = f"Ranking por Killpoints de {universo}"
             else:
-                ord = "-dt"
+                ordem = "-dt"
                 context["titulo"] = f"Ranking por Mortes de {universo}"
 
             status = None
@@ -94,7 +97,7 @@ def index(request):
                         kp=Max("killpoints") - Min("killpoints"),
                         dt=Max("deaths") - Min("deaths"),
                     )
-                    .order_by(ord)
+                    .order_by(ordem)
                 )
             else:
                 status = (
@@ -107,7 +110,7 @@ def index(request):
                         kp=Max("killpoints") - Min("killpoints"),
                         dt=Max("deaths") - Min("deaths"),
                     )
-                    .order_by(ord)
+                    .order_by(ordem)
                 )
 
             context["rank"] = status

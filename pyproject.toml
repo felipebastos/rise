@@ -23,6 +23,7 @@ pytest = "^6.2.4"
 autopep8 = "^1.5.7"
 black = "^21.12b0"
 requests = "^2.27.1"
+pylint-django = "^2.5.3"
 
 [tool.black]
 line-length = 80
