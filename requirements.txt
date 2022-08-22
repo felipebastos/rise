@@ -29,7 +29,8 @@ django-ranged-response==0.2.0 \
 django-simple-captcha==0.5.17 \
     --hash=sha256:9649e66dab4e71efacbfef02f48b83b91684898352a1ab56f1686ce71033b328 \
     --hash=sha256:f9a07e5e9de264ba4039c9eaad66bc48188a21ceda5fcdc2fa13c5512141c2c9
-django==4.1; python_version >= "3.8"
+django==4.1; python_version >= "3.8" \
+    --hash=sha256:031ccb717782f6af83a0063a1957686e87cb4581ea61b47b3e9addf60687989a
 djangorestframework-simplejwt==5.2.0; python_version >= "3.7" \
     --hash=sha256:bcc4cb74dcb637ca1e17eed35276bd618ab19491f8c53e65dee6271177c355e8 \
     --hash=sha256:a60b09afb27d91ad1d7ac904cc632bd52cecead8f389f0fa1532ceb0fb757a74
