@@ -2,6 +2,7 @@ backup.sql
 dados.csv
 etapas.csv
 .venv
+static/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
