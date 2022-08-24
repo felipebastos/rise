@@ -1,5 +1,5 @@
-from django.db import models
 from datetime import date
+from django.db import models
 
 from django.utils import timezone
 
@@ -11,6 +11,17 @@ kvk_choices = (
     ("HA", "Hino Heróico"),
     ("C8", "Conflito dos 8"),
 )
+
+faixas = [
+    (100000001, 5000000000, 3000000),
+    (90000001, 100000000, 2200000),
+    (80000001, 90000000, 1500000),
+    (70000001, 80000000, 1100000),
+    (60000001, 70000000, 700000),
+    (50000001, 60000000, 600000),
+    (40000001, 50000000, 500000),
+    (0, 40000000, 500000),
+]
 
 
 class Kvk(models.Model):

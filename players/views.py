@@ -1,4 +1,5 @@
 import csv
+from datetime import date
 
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
@@ -7,11 +8,9 @@ from django.utils import timezone
 from django.core.paginator import Paginator
 from django.db.models.aggregates import Max, Min
 
-from datetime import date
-
 from mge.models import EventoDePoder, Punido
 
-from .models import (
+from players.models import (
     Advertencia,
     Player,
     PlayerStatus,
@@ -20,7 +19,8 @@ from .models import (
     player_rank,
     player_spec,
 )
-from .forms import UploadFileForm
+from players.forms import UploadFileForm
+
 from rise.forms import SearchPlayerForm
 from kvk.models import Etapas, Kvk, Zerado
 
@@ -37,14 +37,14 @@ def index(request, game_id):
         for i, (res, verbose) in enumerate(player_spec):
             if player.specialty == res:
                 spec = verbose
-        temKvk = Kvk.objects.order_by("-inicio").first()
+        tem_kvk = Kvk.objects.order_by("-inicio").first()
         exibirkvk = False
-        if temKvk and temKvk.ativo:
+        if tem_kvk and tem_kvk.ativo:
             exibirkvk = True
 
         punido = Punido.objects.filter(player=player)
-        punidoPoder = EventoDePoder.objects.filter(player=player)
-        advertencias = Advertencia.objects.filter(player=player)
+        punido_poder = EventoDePoder.objects.filter(player=player)
+        advertencias_do_player = Advertencia.objects.filter(player=player)
 
         etapas = Etapas.objects.all()
 
@@ -54,13 +54,12 @@ def index(request, game_id):
         for stat in status:
             elementos.append(stat)
 
-        def orderByDate(e):
-            if type(e) is Etapas:
-                return e.date
-            else:
-                return e.data
+        def order_by_date(evento):
+            if isinstance(evento, Etapas):
+                return evento.date
+            return evento.data
 
-        elementos.sort(reverse=True, key=orderByDate)
+        elementos.sort(reverse=True, key=order_by_date)
 
         context = {
             "player": player,
@@ -68,8 +67,8 @@ def index(request, game_id):
             "spec": spec,
             "showkvk": exibirkvk,
             "punicoesMge": punido,
-            "punicoesPoder": punidoPoder,
-            "advertencias": advertencias,
+            "punicoesPoder": punido_poder,
+            "advertencias": advertencias_do_player,
             "elementos": elementos,
         }
     except Player.DoesNotExist:
@@ -134,20 +133,19 @@ def listspecs(request, spec):
 @login_required
 def review_players(request, ally_tag):
     if request.method == "GET":
-        try:
-            ally = Alliance.objects.filter(tag=ally_tag).first()
+        ally = Alliance.objects.filter(tag=ally_tag).first()
 
-            if ally:
-                membros = Player.objects.filter(alliance=ally)
+        if ally:
+            membros = Player.objects.filter(alliance=ally)
 
-                context = {
-                    "membros": membros,
-                    "ally": ally,
-                    "total": len(membros),
-                }
-                return render(request, "players/review.html", context)
-        except:
-            return render(request, "rise/404.html")
+            context = {
+                "membros": membros,
+                "ally": ally,
+                "total": len(membros),
+            }
+            return render(request, "players/review.html", context)
+
+        return render(request, "rise/404.html")
     else:
         membros = Player.objects.filter(alliance__tag=ally_tag)
         semalianca = Alliance.objects.filter(tag="PSA").first()
@@ -175,12 +173,9 @@ def findplayer(request):
                 return render(
                     request, "players/searchresult.html", context=context
                 )
-            else:
-                return redirect(f"/players/{player.game_id}/")
-        else:
-            return render(request, "rise/404.html")
-    else:
+            return redirect(f"/players/{player.game_id}/")
         return render(request, "rise/404.html")
+    return render(request, "rise/404.html")
 
 
 @login_required
@@ -191,11 +186,11 @@ def add_status(request, game_id):
             poder = request.POST["poder"].replace(".", "")
         else:
             poder = request.POST["poder"]
-        kp = ""
+        killpoints = ""
         if "." in request.POST["killpoints"]:
-            kp = request.POST["killpoints"].replace(".", "")
+            killpoints = request.POST["killpoints"].replace(".", "")
         else:
-            kp = request.POST["killpoints"]
+            killpoints = request.POST["killpoints"]
         deaths = ""
         if "." in request.POST["mortes"]:
             deaths = request.POST["mortes"].replace(".", "")
@@ -206,12 +201,12 @@ def add_status(request, game_id):
         novo_status = PlayerStatus()
         novo_status.player = player
         novo_status.power = poder
-        novo_status.killpoints = kp
+        novo_status.killpoints = killpoints
         novo_status.deaths = deaths
         novo_status.save()
 
         kvk = Kvk.objects.order_by("-inicio").first()
-        # print(kvk)
+
         if kvk and kvk.ativo:
             honra = request.POST["honra"]
             zerado = 0
@@ -245,8 +240,8 @@ def upload_csv(request):
 
 @login_required
 def populate(request):
-    with open("./dados.csv", encoding="utf-8") as f:
-        reader = csv.reader(f)
+    with open("./dados.csv", encoding="utf-8") as dados_csv:
+        reader = csv.reader(dados_csv)
         for row in reader:
             # jump header
             if row[0] == "Governor ID":
@@ -292,19 +287,19 @@ def populate(request):
             kills = []
             kills_t1 = row[5]
             if row[5] == "":
-                kill_t1 = 0
+                kills_t1 = 0
             kills.append(kills_t1)
             kills_t2 = row[6]
             if row[6] == "":
-                kill_t2 = 0
+                kills_t2 = 0
             kills.append(kills_t2)
             kills_t3 = row[7]
             if row[7] == "":
-                kill_t3 = 0
+                kills_t3 = 0
             kills.append(kills_t3)
             kills_t4 = row[8]
             if row[8] == "":
-                kill_t4 = 0
+                kills_t4 = 0
             kills.append(kills_t4)
             kills_t5 = row[9]
             if row[9] == "":
@@ -327,12 +322,12 @@ def populate(request):
 
             statusnovo = PlayerStatus()
             statusnovo.player = jogador
-            if type(poder) == str:
+            if isinstance(poder, str):
                 statusnovo.power = poder.replace(".", "")
             else:
                 statusnovo.power = poder
             statusnovo.killpoints = killpoints
-            if type(death) == str:
+            if isinstance(death, str):
                 statusnovo.deaths = death.replace(".", "")
             else:
                 statusnovo.deaths = death
@@ -343,48 +338,46 @@ def populate(request):
 
 @login_required
 def alliance(request, ally_id):
-    try:
-        ally = Alliance.objects.get(pk=ally_id)
 
-        if ally:
-            membros = Player.objects.filter(alliance=ally)
+    ally = Alliance.objects.get(pk=ally_id)
 
-            paginator = Paginator(membros, 25)
+    if ally:
+        membros = Player.objects.filter(alliance=ally)
 
-            page_number = request.GET.get("page")
+        paginator = Paginator(membros, 25)
 
-            pagina = paginator.get_page(page_number)
+        page_number = request.GET.get("page")
 
-            kills = 0
-            deaths = 0
-            power = 0
-            for membro in membros:
-                status = (
-                    PlayerStatus.objects.filter(player=membro)
-                    .order_by("-data")
-                    .first()
-                )
-                if status:
-                    kills = kills + status.killpoints
-                    deaths = deaths + status.deaths
-                    power = power + status.power
-            context = {
-                "membros": pagina,
-                "ally": ally,
-                "total": len(membros),
-                "kills": kills,
-                "power": power,
-                "death": deaths,
-                "range": range(1, pagina.paginator.num_pages + 1),
-            }
-            return render(request, "players/alianca.html", context)
-    except Exception:
-        return render(request, "rise/404.html")
+        pagina = paginator.get_page(page_number)
+
+        kills = 0
+        deaths = 0
+        power = 0
+        for membro in membros:
+            status = (
+                PlayerStatus.objects.filter(player=membro)
+                .order_by("-data")
+                .first()
+            )
+            if status:
+                kills = kills + status.killpoints
+                deaths = deaths + status.deaths
+                power = power + status.power
+        context = {
+            "membros": pagina,
+            "ally": ally,
+            "total": len(membros),
+            "kills": kills,
+            "power": power,
+            "death": deaths,
+            "range": range(1, pagina.paginator.num_pages + 1),
+        }
+        return render(request, "players/alianca.html", context)
+    return render(request, "rise/404.html")
 
 
 @login_required
 def top300(request):
-    # jogadores = PlayerStatus.objects.all().exclude(player__alliance__tag='MIGR').order_by('-power')[:300]
     jogadores = []
     noreino = Player.objects.exclude(alliance__tag="MIGR")
     for jogador in noreino:
@@ -397,12 +390,12 @@ def top300(request):
     jogadores.sort(
         key=lambda x: x.power if (x is not None) else 0, reverse=True
     )
-    poderTotal = 0
+    poder_total = 0
     for jogador in jogadores[:300]:
-        poderTotal = poderTotal + jogador.power
+        poder_total = poder_total + jogador.power
     context = {
         "jogadores": jogadores[:300],
-        "poder": poderTotal,
+        "poder": poder_total,
     }
     return render(request, "players/top300.html", context=context)
 
@@ -448,7 +441,7 @@ def antigos(request, ally_id):
 
 
 @login_required
-def editaStatus(request, status_id):
+def edita_status(request, status_id):
     if request.method == "POST":
         status = PlayerStatus.objects.all().filter(id=status_id).first()
         if status.editavel():
@@ -484,8 +477,8 @@ def como_estou(request):
         if not final:
             final = timezone.now()
 
-        id = request.POST["game_id"]
-        o_player = Player.objects.filter(game_id=id).first()
+        player_id = request.POST["game_id"]
+        o_player = Player.objects.filter(game_id=player_id).first()
         status = (
             PlayerStatus.objects.filter(player=o_player)
             .filter(data__gte=kvk.inicio, data__lte=final)
@@ -542,38 +535,30 @@ def como_estou(request):
                 break
         faixa_inicio = 0
         faixa_fim = 10000000000
-        meta = 0
+
         if primeiro.power > 100000000:
             faixa_inicio = 100000000
-            meta = 3000000
         elif 90000000 < primeiro.power < 100000000:
             faixa_inicio = 90000000
             faixa_fim = 100000000
-            meta = 2200000
         elif 80000000 < primeiro.power < 90000000:
             faixa_inicio = 80000000
             faixa_fim = 90000000
-            meta = 1500000
         elif 70000000 < primeiro.power < 80000000:
             faixa_inicio = 70000000
             faixa_fim = 80000000
-            meta = 1100000
         elif 60000000 < primeiro.power < 70000000:
             faixa_inicio = 60000000
             faixa_fim = 70000000
-            meta = 700000
         elif 50000000 < primeiro.power < 60000000:
             faixa_inicio = 50000000
             faixa_fim = 60000000
-            meta = 600000
         elif 40000000 < primeiro.power < 50000000:
             faixa_inicio = 40000000
             faixa_fim = 50000000
-            meta = 500000
         else:
             faixa_inicio = 0
             faixa_fim = 40000000
-            meta = 500000
 
         faixa_original = PlayerStatus.objects.filter(
             data__year=primeiro.data.year,
@@ -672,8 +657,7 @@ def como_estou(request):
         }
 
         return render(request, "players/emkvk.html", context=context)
-    else:
-        return render(request, "rise/404.html")
+    return render(request, "rise/404.html")
 
 
 @login_required

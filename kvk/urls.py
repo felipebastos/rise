@@ -18,8 +18,8 @@ urlpatterns = [
         views.analisedesempenho,
         name="analisedesempenho",
     ),
-    path("adicionarfarm/", views.adicionarFarms, name="adicionarFarms"),
-    path("etapa/<kvkid>/", views.registrarEtapa, name="registrarEtapa"),
+    path("adicionarfarm/", views.adicionar_farms, name="adicionarFarms"),
+    path("etapa/<kvkid>/", views.registrar_etapa, name="registrarEtapa"),
     path(
         "upload/<kvkid>/",
         views.etapas_por_planilha,

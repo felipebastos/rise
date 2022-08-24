@@ -1,5 +1,5 @@
-from django.db import models
 from datetime import date, timedelta
+from django.db import models
 
 from players.models import Player
 
@@ -33,6 +33,7 @@ class Semana(models.Model):
         for (cod, val) in resources:
             if cod == self.recurso:
                 return val
+        return None
 
     def __str__(self):
         return f"Semana de {self.inicio()} a {self.final()} - {self.recurso_da_semana()}"

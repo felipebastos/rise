@@ -1,6 +1,8 @@
-from django.db import models
 from datetime import date, timedelta
+
+from django.db import models
 from django.utils import timezone
+
 from mge.forms import COMMANDER_CHOICES
 
 from players.models import Player
@@ -39,8 +41,7 @@ class Mge(models.Model):
     def __str__(self):
         if self.tipo != 0:
             return f"Temporada {self.temporada} - {COMMANDER_CHOICES[int(self.tipo)][1]} [{'LIVRE' if self.livre else 'CONTROLADO'}] iniciado em"
-        else:
-            return f"Temporada {self.temporada} - {tipos_comandantes[self.tipo_mge][1]} [{'LIVRE' if self.livre else 'CONTROLADO'}] iniciado em"
+        return f"Temporada {self.temporada} - {tipos_comandantes[self.tipo_mge][1]} [{'LIVRE' if self.livre else 'CONTROLADO'}] iniciado em"
 
 
 class Punido(models.Model):
@@ -90,4 +91,4 @@ class EventoDePoder(models.Model):
     inserido = models.DateTimeField("Inserido", default=timezone.now)
 
     def __str__(self):
-        return f"Punido no evento de poder de"
+        return "Punido no evento de poder de"

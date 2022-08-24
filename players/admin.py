@@ -8,7 +8,8 @@ class PlayerAdmin(admin.ModelAdmin):
     list_display = ["nick", "game_id", "specialty", "status"]
     search_fields = ["nick", "game_id"]
 
-    # define filter columns list, then a filter widget will be shown at right side of Department list page.
+    # define filter columns list, then a filter widget will be
+    # shown at right side of Department list page.
     list_filter = ["rank", "status", "specialty"]
     # define which field will be pre populated.
     prepopulated_fields = {"game_id": ("game_id",)}

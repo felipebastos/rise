@@ -5,11 +5,11 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.db.models.aggregates import Max, Min
 from django.utils import timezone
-from kvk.forms import EtapaForm, UploadEtapasFileForm
 
 from players.models import Player, PlayerStatus
 
-from .models import Etapas, Kvk, Zerado, AdicionalDeFarms
+from kvk.forms import EtapaForm, UploadEtapasFileForm
+from kvk.models import Etapas, Kvk, Zerado, AdicionalDeFarms, faixas
 
 # Create your views here.
 
@@ -108,7 +108,8 @@ def add_zerado(request, player_id):
 @login_required
 def removezerado(request, kvk, zerado_id):
     zerado = Zerado.objects.get(pk=zerado_id)
-    zerado.delete()
+    if kvk == zerado.kvk.id:
+        zerado.delete()
 
     return redirect(f"/kvk/edit/{zerado.kvk.id}/")
 
@@ -134,17 +135,6 @@ def analisedesempenho(request, kvkid, cat):
     banidos_inativos_ids = []
     for player in banidos_e_inativos:
         banidos_inativos_ids.append(player.id)
-
-    faixas = [
-        (100000001, 5000000000, 3000000),
-        (90000001, 100000000, 2200000),
-        (80000001, 90000000, 1500000),
-        (70000001, 80000000, 1100000),
-        (60000001, 70000000, 700000),
-        (50000001, 60000000, 600000),
-        (40000001, 50000000, 500000),
-        (0, 40000000, 500000),
-    ]
 
     primeiro = (
         PlayerStatus.objects.filter(data__gte=kvk.inicio)
@@ -231,7 +221,7 @@ def analisedesempenho(request, kvkid, cat):
 
 
 @login_required
-def adicionarFarms(request):
+def adicionar_farms(request):
     print("Cheguei na adicionar.")
     if request.method == "POST":
         for k in request.POST:
@@ -254,14 +244,14 @@ def adicionarFarms(request):
     )
 
 
-def registrarEtapa(request, kvkid):
+def registrar_etapa(request, kvkid):
     if request.method == "POST":
         etapamanualform = EtapaForm(request.POST)
         print(request.POST["kvk"])
         if etapamanualform.is_valid():
             nova = Etapas()
-            id = request.POST["kvk"]
-            kvk = Kvk.objects.filter(pk=id).first()
+            kvk_id = request.POST["kvk"]
+            kvk = Kvk.objects.filter(pk=kvk_id).first()
             nova.kvk = kvk
             nova.date = request.POST["date"]
             nova.descricao = request.POST["descricao"]
@@ -294,8 +284,8 @@ def etapas_por_planilha(request, kvkid):
             with open("etapas.csv", "wb") as destination:
                 for chunk in request.FILES["file"].chunks():
                     destination.write(chunk)
-            with open("./etapas.csv", encoding="utf-8") as f:
-                reader = csv.reader(f)
+            with open("./etapas.csv", encoding="utf-8") as etapas_file:
+                reader = csv.reader(etapas_file)
                 for row in reader:
                     # jump header
                     if row[0] == "Crônica":

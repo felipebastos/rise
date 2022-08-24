@@ -1,11 +1,15 @@
+from datetime import date, timedelta
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models.aggregates import Max, Min
-from datetime import date, timedelta
-from mge.forms import COMMANDERS, CriaMGE
+
 from players.models import Advertencia, Player, PlayerStatus
-from .models import Comandante, EventoDePoder, Mge, Punido, Ranking, Inscrito
+
+from mge.forms import COMMANDERS, CriaMGE
+from mge.models import Comandante, EventoDePoder, Mge, Punido, Ranking, Inscrito
+
 from kvk.models import Kvk
 
 # Create your views here.
@@ -34,16 +38,14 @@ def startnew(request):
                 + 1
             )
             mge.tipo = quais
-            mge.livre = (
-                False if form.cleaned_data.get("controle") == "Sim" else True
-            )
+            mge.livre = not form.cleaned_data.get("controle") == "Sim"
             mge.save()
 
     return redirect("/mge/")
 
 
-def mgeedit(request, id):
-    mge = Mge.objects.filter(id=id).first()
+def mgeedit(request, mge_id):
+    mge = Mge.objects.get(pk=mge_id)
 
     opcoes = None
     if 0 < int(mge.tipo) < 5:
@@ -79,8 +81,8 @@ def mgeedit(request, id):
     return render(request, "mge/mge.html", context=context)
 
 
-def inscrever(request, id):
-    mge = Mge.objects.filter(id=id).first()
+def inscrever(request, mge_id):
+    mge = Mge.objects.get(pk=mge_id)
 
     player = Player.objects.filter(game_id=request.POST["player_id"]).first()
 
@@ -119,40 +121,40 @@ def inscrever(request, id):
             inscrito.deaths = -1
 
         inscrito.save()
-    return redirect(f"/mge/view/{id}/")
+    return redirect(f"/mge/view/{mge_id}/")
 
 
 @login_required
-def desinscrever(request, id, player_id):
-    mge = Mge.objects.filter(id=id).first()
+def desinscrever(request, mge_id, player_id):
+    mge = Mge.objects.get(pk=mge_id)
     player = Player.objects.filter(game_id=player_id).first()
 
     aremover = Inscrito.objects.filter(mge=mge).filter(player=player).first()
     aremover.delete()
 
-    return redirect(f"/mge/view/{id}/")
+    return redirect(f"/mge/view/{mge_id}/")
 
 
 @login_required
-def addtorank(request, id, player_id):
-    mge = Mge.objects.filter(id=id).first()
+def addtorank(request, mge_id, player_id):
+    mge = Mge.objects.get(pk=mge_id)
     player = Player.objects.filter(game_id=player_id).first()
     ranking = Ranking()
     ranking.player = player
     ranking.mge = mge
     ranking.save()
-    return redirect(f"/mge/view/{id}/")
+    return redirect(f"/mge/view/{mge_id}/")
 
 
 @login_required
-def removefromrank(request, id, player_id):
-    mge = Mge.objects.filter(id=id).first()
+def removefromrank(request, mge_id, player_id):
+    mge = Mge.objects.get(pk=mge_id)
     player = Player.objects.filter(game_id=player_id).first()
 
     remover = Ranking.objects.filter(mge=mge).filter(player=player).first()
     remover.delete()
 
-    return redirect(f"/mge/view/{id}/")
+    return redirect(f"/mge/view/{mge_id}/")
 
 
 @login_required
@@ -177,19 +179,19 @@ def punir(request, player_id):
 
 
 @login_required
-def despunir(request, id, player_id):
-    mge = Mge.objects.filter(id=id).first()
+def despunir(request, mge_id, player_id):
+    mge = Mge.objects.get(pk=mge_id)
     player = Player.objects.filter(game_id=player_id).first()
 
-    despunir = Punido.objects.filter(mge=mge).filter(player=player).first()
-    despunir.delete()
+    punicao = Punido.objects.filter(mge=mge).filter(player=player).first()
+    punicao.delete()
 
-    return redirect(f"/mge/view/{id}/")
+    return redirect(f"/mge/view/{mge_id}/")
 
 
 @login_required
-def punirEventoDePoder(request, playerId):
-    player = Player.objects.filter(game_id=playerId).first()
+def punir_evento_de_poder(request, player_id):
+    player = Player.objects.filter(game_id=player_id).first()
 
     punicao = EventoDePoder()
     punicao.player = player
@@ -201,4 +203,4 @@ def punirEventoDePoder(request, playerId):
     adv.descricao = f'Quebrou ranking do evento de poder em {timezone.now().strftime("%d/%m/%y")}'
     adv.save()
 
-    return redirect(f"/players/{playerId}/")
+    return redirect(f"/players/{player_id}/")

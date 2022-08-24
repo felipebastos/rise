@@ -1,7 +1,9 @@
-from django.contrib.auth.models import User
+from datetime import date, datetime, timedelta, timezone
+
+from django.contrib.auth import get_user_model
 from django.utils import timezone as tz
 from django.db import models
-from datetime import date, datetime, timedelta, timezone
+
 
 # Create your models here.
 player_status = (
@@ -57,7 +59,9 @@ class Player(models.Model):
     )
 
     alterado_em = models.DateField("Alterado em", default=date.today)
-    alterado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    alterado_por = models.ForeignKey(
+        get_user_model(), on_delete=models.SET_NULL, null=True
+    )
 
     def __str__(self):
         return f"{self.nick}"
@@ -75,11 +79,11 @@ class PlayerStatus(models.Model):
 
     def editavel(self):
         passou = datetime.now(timezone(-timedelta(hours=3))) - self.data
-        return True if passou < timedelta(hours=1) else False
+        return passou < timedelta(hours=1)
 
     def revisavel(self):
         passou = datetime.now(timezone(-timedelta(hours=3))) - self.data
-        return False if passou < timedelta(days=2) else True
+        return not passou < timedelta(days=2)
 
     def get_id(self):
         return str(self.id)
@@ -98,4 +102,4 @@ class Advertencia(models.Model):
         return self.inicio + timedelta(days=self.duracao)
 
     def is_restrito(self):
-        return True if tz.now() < self.final() else False
+        return tz.now() < self.final()
