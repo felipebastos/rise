@@ -82,5 +82,8 @@ def register_week(request, weekid):
             if doador.player.game_id in request.POST:
                 doador.donated = True
                 doador.save()
+            else:
+                doador.donated = False
+                doador.save()
 
     return redirect(f"/bank/week/{weekid}")
