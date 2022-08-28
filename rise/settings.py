@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "mge.apps.MgeConfig",
     "reports.apps.ReportsConfig",
     "items.apps.ItemsConfig",
+    "osiris.apps.OsirisConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
