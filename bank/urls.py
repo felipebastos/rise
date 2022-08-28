@@ -8,4 +8,9 @@ urlpatterns = [
     path("week/<weekid>/", views.week, name="week"),
     path("donated/<donationid>/", views.donated, name="donated"),
     path("report/", views.donations_report, name="report"),
+    path(
+        "register/donations/<weekid>/",
+        views.register_week,
+        name="registrar_doacao",
+    ),
 ]

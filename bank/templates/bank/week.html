@@ -4,33 +4,38 @@
 <div class="container">
     <h1>Semana de {{semana.inicio}} a {{semana.final}}</h1>
     <h2>Nesta semana a doação é {{semana.recurso_da_semana}}.</h2>
-    <table class="table table-stripped table-hover">
-        <thead>
-            <th>ID do Jogador</th>
-            <th>Player</th>
-            <th>Doou?</th>
-            <th>Ações</th>
-        </thead>
-        <tbody>
-            {% for doador in doadores %}
-            <tr>
-                <td>{{doador.player.game_id}}</td>
-                <td>{{doador}}</td>
-                <td>
-                    {% if doador.donated %}
-                    Doou
-                    {% else %}
-                    DEVENDO
-                    {% endif %}
-                </td>
-                {% if not doador.donated %}
-                <td><a class="btn btn-success" href="/bank/donated/{{doador.getid}}"><i class="fas fa-plus"></i> Registrar doação</a></td>
-                {% else %}
-                <td><a class="btn btn-danger" href="/bank/donated/{{doador.getid}}"><i class="fas fa-minus"></i> Remover doação</a></td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <form action="{% url 'registrar_doacao' semana.id %}" method="post">
+        {% csrf_token %}
+        <table class="table table-stripped table-hover">
+            <thead>
+                <th>ID do Jogador</th>
+                <th>Player</th>
+                <th>Doou?</th>
+            </thead>
+            <tbody>
+                {% for doador in doadores %}
+                <tr>
+                    <td>{{doador.player.game_id}}</td>
+                    <td>{{doador}}</td>
+                    <td>
+                        <div class="form-check form-switch">
+                            {% if doador.donated %}
+                            <input class="form-check-input" type="checkbox" role="switch"
+                                id="flexSwitchCheck{{forloop.count}}" name="{{doador.player.game_id}}"
+                                value="{{doador.id}}" checked>
+                            {% else %}
+                            <input class="form-check-input" type="checkbox" role="switch"
+                                id="flexSwitchCheck{{forloop.count}}" name="{{doador.player.game_id}}"
+                                value="{{doador.id}}">
+                            {% endif %}
+                            <label class="form-check-label" for="flexSwitchCheck{{forloop.count}}">Devedor</label>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button class="btn btn-primary" type="submit">Salvar</button>
+    </form>
 </div>
 {% endblock %}

@@ -42,9 +42,7 @@ def create_week(request, tag, resource):
 def week(request, weekid):
     semana = Semana.objects.get(id=weekid)
 
-    doadores = Donation.objects.filter(semana=semana).order_by(
-        "player__game_id"
-    )
+    doadores = Donation.objects.filter(semana=semana).order_by("donated")
 
     context = {
         "semana": semana,
@@ -71,3 +69,18 @@ def donations_report(request):
         "devedores": Donation.objects.filter(donated=False).order_by("player")
     }
     return render(request, "bank/report.html", context=context)
+
+
+@login_required
+def register_week(request, weekid):
+    if request.method == "POST":
+        semana = Semana.objects.get(id=weekid)
+
+        doadores = Donation.objects.filter(semana=semana)
+
+        for doador in doadores:
+            if doador.player.game_id in request.POST:
+                doador.donated = True
+                doador.save()
+
+    return redirect(f"/bank/week/{weekid}")
