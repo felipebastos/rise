@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path("<int:game_id>/", views.index, name="player_profile"),
     path("upload/", views.upload_csv, name="upload_csv"),
+    path("confirm/populate/", views.confirm_populate, name="confirm_populate"),
     path("populate/", views.populate, name="populate"),
     path("alliance/<str:ally_id>/", views.alliance, name="alliance"),
     path("edit/<game_id>/", views.edit_player, name="edit_player"),

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+{% load risefilters %}
 
 <head>
     <meta charset="UTF-8">
@@ -68,9 +69,9 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="{% url 'alliance' 8 %}">Banidos</a></li>
-                            <li><a class="dropdown-item" href="{% url 'alliance' 9 %}">Migraram</a></li>
-                            <li><a class="dropdown-item" href="{% url 'alliance' 11 %}">Sem aliança</a></li>
+                            {% for ally in ''|alliances %}
+                            <li><a class="dropdown-item" href="{% url 'alliance' ally.id %}">{{ally.tag}}</a></li>
+                            {% endfor %}
                             {% endif %}
                         </ul>
                     </li>

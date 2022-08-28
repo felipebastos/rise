@@ -1,0 +1,36 @@
+{% extends 'rise/base.html' %}
+{% block title %}Confirme{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Revise antes de confirmar os dados</h1>
+    <p>Os itens em amarelo são de especial interesse, pois podem
+        ser jogadores novos ou algum que o ID tenha sido lido
+        com algum.
+    </p>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Antigo</th>
+                <th>Novo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in comparison %}
+            {% if item.tipo == 'atualização' %}
+            <tr>
+                <td>[{{item.original.alliance.tag}}]{{item.original.nick}}</td>
+                <td>[{{item.novo.ally}}]{{item.novo.nick}}</td>
+            </tr>
+            {% else %}
+            <tr class="table-warning">
+                <td><b>Criando:</b></td>
+                <td>[{{item.novo.ally}}]{{item.novo.nick}}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="/players/upload/" class="btn btn-danger">Cancelar</a>
+    <a href="/players/populate/" class="btn btn-primary">Confirmar</a>
+</div>
+{% endblock %}

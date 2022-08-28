@@ -232,10 +232,50 @@ def upload_csv(request):
             with open("dados.csv", "wb") as destination:
                 for chunk in request.FILES["file"].chunks():
                     destination.write(chunk)
-            return HttpResponseRedirect("/players/populate/")
+            return HttpResponseRedirect("/players/confirm/populate/")
     else:
         form = UploadFileForm()
     return render(request, "players/upload.html", {"form": form})
+
+
+@login_required
+def confirm_populate(request):
+    comparison = []
+    with open("./dados.csv", encoding="utf-8") as dados_csv:
+        reader = csv.reader(dados_csv)
+        for row in reader:
+            if row[0] == "Governor ID":
+                continue
+            jogador = Player.objects.filter(game_id=row[0]).first()
+            if jogador:
+                comparison.append(
+                    {
+                        "tipo": "atualização",
+                        "original": jogador,
+                        "novo": {
+                            "game_id": row[0],
+                            "nick": row[2],
+                            "ally": row[4],
+                        },
+                    }
+                )
+            else:
+                comparison.append(
+                    {
+                        "tipo": "adição",
+                        "novo": {
+                            "game_id": row[0],
+                            "nick": row[2],
+                            "ally": row[4],
+                        },
+                    }
+                )
+
+    context = {
+        "comparison": comparison,
+    }
+
+    return render(request, "players/confirm.html", context=context)
 
 
 @login_required
@@ -282,8 +322,10 @@ def populate(request):
                 if ally is not None:
                     jogador.alliance = ally
                 else:
-                    psa = Alliance.objects.filter(tag="PSA").first()
-                    jogador.alliance = psa
+                    nova = Alliance.objects.create(tag=row[4], nome=row[4])
+                    nova.save()
+                    if not jogador.alliance.tag in ["BNDS", "MIGR"]:
+                        jogador.alliance = nova
                 jogador.save()
 
             poder = row[3]
