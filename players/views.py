@@ -271,7 +271,14 @@ def populate(request):
                         jogador.observacao = (
                             f"Mudança de nick: {oldnick} > {row[2]}"
                         )
-                ally = Alliance.objects.filter(tag=row[4]).first()
+                if not row[4] in ["32br", "32BR"]:
+                    ally = Alliance.objects.filter(tag=row[4]).first()
+                elif row[4] == "32br":
+                    ally = Alliance.objects.get(pk=2)
+                elif row[4] == "32BR":
+                    ally = Alliance.objects.get(pk=1)
+                else:
+                    ally = None
                 if ally is not None:
                     jogador.alliance = ally
                 else:
