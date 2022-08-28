@@ -13,9 +13,10 @@ TIPO_MARCHA = (
 
 TAREFA = (
     ("open", "Open field"),
-    ("guar", "Guarnição"),
+    ("guar", "Líder de Guarnição"),
+    ("guae", "Encher Guarnição"),
     ("rall", "Líder de Rally"),
-    ("rall", "Encher Rally"),
+    ("rale", "Encher Rally"),
     ("swad", "Swarm defensivo"),
     ("swao", "Swarm ofensivo"),
 )
