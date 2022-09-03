@@ -9,6 +9,7 @@ from items.forms import PedidoForm
 # Create your views here.
 def home(request):
     form = PedidoForm(request.POST or None)
+    confirma = ""
     if request.method == "POST":
         if form.is_valid():
             player = Player.objects.filter(
@@ -20,6 +21,7 @@ def home(request):
                 novo.item = form.cleaned_data["item"]
                 novo.quantidade = form.cleaned_data["quantidade"]
                 novo.save()
+                confirma = "Seu pedido foi registrado com sucesso!"
 
     form = PedidoForm()
     pedidos_pendentes = Pedido.objects.filter(avaliado=False).order_by(
@@ -32,6 +34,7 @@ def home(request):
         "form": form,
         "pendentes": pedidos_pendentes,
         "avaliados": pedidos_avaliados,
+        "confirma": confirma,
     }
     return render(request, "items/index.html", context=context)
 
