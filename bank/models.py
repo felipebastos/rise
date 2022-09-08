@@ -59,7 +59,7 @@ class Credito(models.Model):
         Alliance, verbose_name="Aliança", on_delete=models.CASCADE
     )
     timestamp = models.DateTimeField(default=timezone.now)
-    quantidade = models.BigIntegerField("Quantidade em milhões", blank=False)
+    quantidade = models.FloatField("Quantidade em milhões", blank=False)
 
     def __str__(self) -> str:
         return f"[{self.ally.tag}] tem {self.quantidade}"
