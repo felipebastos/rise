@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from bank.models import Donation, Semana
+from bank.forms import CreditoForm
+
+from bank.models import Credito, Donation, Semana
 from players.models import Player, Alliance
 
 
@@ -87,3 +89,28 @@ def register_week(request, weekid):
                 doador.save()
 
     return redirect(f"/bank/week/{weekid}")
+
+
+@login_required
+def add_credits(request):
+    form = CreditoForm(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+
+    form = CreditoForm()
+
+    creditos = Credito.objects.order_by("-timestamp")
+
+    ultimos = {}
+
+    for credito in creditos:
+        if not credito.ally.id in ultimos:
+            ultimos[credito.ally.id] = credito
+
+    context = {
+        "form": form,
+        "creditos": ultimos,
+    }
+
+    return render(request, "bank/credits.html", context=context)

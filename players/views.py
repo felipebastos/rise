@@ -10,6 +10,8 @@ from django.db.models.aggregates import Max, Min
 
 from mge.models import EventoDePoder, Punido
 
+from bank.models import Credito
+
 from players.models import (
     Advertencia,
     Player,
@@ -412,6 +414,9 @@ def alliance(request, ally_id):
                 kills = kills + status.killpoints
                 deaths = deaths + status.deaths
                 power = power + status.power
+
+        creditos = Credito.objects.filter(ally=ally).order_by("-timestamp")
+
         context = {
             "membros": pagina,
             "ally": ally,
@@ -420,6 +425,7 @@ def alliance(request, ally_id):
             "power": power,
             "death": deaths,
             "range": range(1, pagina.paginator.num_pages + 1),
+            "creditos": creditos,
         }
         return render(request, "players/alianca.html", context)
     return render(request, "rise/404.html")

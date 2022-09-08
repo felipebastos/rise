@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Donation, Semana
+from .models import Donation, Semana, Credito
 
 
 class DonationAdmin(admin.ModelAdmin):
@@ -12,3 +12,4 @@ class DonationAdmin(admin.ModelAdmin):
 
 admin.site.register(Semana)
 admin.site.register(Donation, DonationAdmin)
+admin.site.register(Credito)

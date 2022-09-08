@@ -1,0 +1,35 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Creditos de Aliança{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Registre uma atualização de créditos</h2>
+    <p>Na página da aliança, abaixo da lista de jogadores, haverá um histórico dos créditos dela.</p>
+    <p>Nesta página você encontrará os últimos valores registrados.</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.as_ul}}
+        <button class="btn btn-primary" type="submit">Registrar</button>
+    </form>
+</div>
+<hr>
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Aliança</th>
+                <th>Créditos</th>
+                <th>Data da anotação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for credito in creditos.values %}
+            <tr>
+                <td>{{credito.ally}}</td>
+                <td>{{credito.quantidade}}M</td>
+                <td>{{credito.timestamp}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

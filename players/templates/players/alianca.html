@@ -79,4 +79,30 @@
         </tbody>
     </table>
 </div>
+{% if user.is_authenticated %}
+<div class="container">
+    <h2>Histórico de Créditos da Aliança</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Data da anotação</th>
+                <th>Créditos</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for credito in creditos %}
+            <tr>
+                <td>{{credito.timestamp}}</td>
+                <td>{{credito.quantidade}}M</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td></td>
+                <td>Não há créditos registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
 {% endblock %}

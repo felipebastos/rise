@@ -13,4 +13,5 @@ urlpatterns = [
         views.register_week,
         name="registrar_doacao",
     ),
+    path("creditos/", views.add_credits, name="creditos"),
 ]

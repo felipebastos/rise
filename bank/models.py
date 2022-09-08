@@ -1,7 +1,8 @@
 from datetime import date, timedelta
 from django.db import models
+from django.utils import timezone
 
-from players.models import Player
+from players.models import Alliance, Player
 
 # Create your models here.
 resources = (
@@ -51,3 +52,14 @@ class Donation(models.Model):
 
     def __str__(self):
         return f"Doação de {self.player.alliance.tag} {self.player.nick}"
+
+
+class Credito(models.Model):
+    ally = models.ForeignKey(
+        Alliance, verbose_name="Aliança", on_delete=models.CASCADE
+    )
+    timestamp = models.DateTimeField(default=timezone.now)
+    quantidade = models.BigIntegerField("Quantidade em milhões", blank=False)
+
+    def __str__(self) -> str:
+        return f"[{self.ally.tag}] tem {self.quantidade}"
