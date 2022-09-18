@@ -558,7 +558,7 @@ def como_estou(request):
 
         status_kp = (
             PlayerStatus.objects.filter(data__gte=kvk.inicio, data__lte=final)
-            .values("player__nick")
+            .values("player__nick", "player__game_id")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
                 dt=Max("deaths") - Min("deaths"),
@@ -567,7 +567,7 @@ def como_estou(request):
         )
         pos_kp = 1
         for stat in status_kp:
-            if stat["player__nick"] != ultimo.player.nick:
+            if stat["player__game_id"] != ultimo.player.game_id:
                 pos_kp = pos_kp + 1
             else:
                 break
@@ -575,7 +575,7 @@ def como_estou(request):
         status_dt = (
             PlayerStatus.objects.exclude(player__in=zerados_lista)
             .filter(data__gte=kvk.inicio, data__lte=final)
-            .values("player__nick")
+            .values("player__nick", "player__game_id")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
                 dt=Max("deaths") - Min("deaths"),
@@ -584,7 +584,7 @@ def como_estou(request):
         )
         pos_dt = 1
         for stat in status_dt:
-            if stat["player__nick"] != ultimo.player.nick:
+            if stat["player__game_id"] != ultimo.player.game_id:
                 pos_dt = pos_dt + 1
             else:
                 break
@@ -634,7 +634,7 @@ def como_estou(request):
             .exclude(player__in=zerados_lista)
             .filter(player__in=players_faixa_original)
             .filter(data__gte=kvk.inicio, data__lte=final)
-            .values("player__nick")
+            .values("player__nick", "player__game_id")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
                 dt=Max("deaths") - Min("deaths"),
@@ -647,7 +647,7 @@ def como_estou(request):
             .exclude(player__in=zerados_lista)
             .filter(player__in=players_faixa_original)
             .filter(data__gte=kvk.inicio, data__lte=final)
-            .values("player__nick")
+            .values("player__nick", "player__game_id")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
                 dt=Max("deaths") - Min("deaths"),
@@ -661,7 +661,7 @@ def como_estou(request):
         continue_contando = True
         for stat in status_kp_similares:
             media_kp = media_kp + stat["kp"]
-            if stat["player__nick"] != ultimo.player.nick:
+            if stat["player__game_id"] != ultimo.player.game_id:
                 if continue_contando:
                     pos_kp_faixa = pos_kp_faixa - 1
             else:
@@ -674,7 +674,7 @@ def como_estou(request):
         continue_contando = True
         for stat in status_dt_similares:
             media_mortes = media_mortes + stat["dt"]
-            if stat["player__nick"] != ultimo.player.nick:
+            if stat["player__game_id"] != ultimo.player.game_id:
                 if continue_contando:
                     pos_dt_faixa = pos_dt_faixa - 1
             else:
