@@ -33,6 +33,11 @@
                 0.5.
             </td>
         </tr>
+        <tr>
+            <td><span style="color:red;">-numero</span> são os pontos abatidos por ter tido ranking em MGE controlado.
+                Estes pontos também não são considerados para calcular a média do grupo.
+            </td>
+        </tr>
     </table>
     <div class="accordion" id="accordionExample">
         {% for grupo in categorizados %}
@@ -88,7 +93,11 @@
                                     <td>{{player.player__game_id}} - <a
                                             href="/players/{{player.player__game_id}}/">[{{player.player__alliance__tag}}]
                                             {{player.player__nick}}</a></td>
-                                    <td>{{player.kp}}</td>
+                                    <td>{{player.kp}}
+                                        {% if player.player__game_id in abateMGE %}
+                                        <span style="color:red;">- {{abateMGE|get:player.player__game_id}}</span>
+                                        {% endif %}
+                                    </td>
                                     <td>{{player.dt}}
                                         {% if player.player__game_id in adicionais %}
                                         <span style="color:green;">+ {{adicionais|get:player.player__game_id}}</span>
@@ -100,7 +109,13 @@
                                             data-bs-cat="{{tipo}}"
                                             data-bs-playerid="{{player.player__game_id}}">Adicionar
                                             dados das
-                                            farms</button></td>
+                                            farms</button>
+                                        <button class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#modalAbater" data-bs-nick="{{player.player__nick}}"
+                                            data-bs-kvkid="{{kvk}}" data-bs-cat="{{tipo}}"
+                                            data-bs-playerid="{{player.player__game_id}}">Abater
+                                            MGE controlado</button>
+                                    </td>
                                     {% endif %}
                                 </tr>
                                 {% endfor %}
@@ -151,6 +166,36 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalAbater" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabelAbater">
+                    Abater pontos em MGE controlado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modalAbater" aria-label="Close"></button>
+            </div>
+            <form action="/kvk/adicionarmge/" method="post">
+                <div class="modal-body">
+                    Jogador: <span id="nickAbates"></span><br>
+                    {% csrf_token %}
+                    <input type="hidden" name="cat" id="categAbates" value="">
+                    <input type="hidden" name="kvkid" id="kvkidAbates" value="">
+                    <input type="hidden" name="player_id" id="playeridAbates" value="">
+                    <div class="mb-3">
+                        <label for="pontos" class="form-label">Pontos</label>
+                        <input id="pontos" class="form-control" type="text" name="pontos" placeholder="pontos" value="0"
+                            pattern="^(0|[1-9][0-9]*)$">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modalAbater">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     const modal = document.getElementById('modal')
     modal.addEventListener('show.bs.modal', event => {
@@ -173,6 +218,26 @@
         modalPlayerIdInput.value = playerid
     })
 
+    const modalAbates = document.getElementById('modalAbater')
+    modalAbates.addEventListener('show.bs.modal', event => {
+
+        const button = event.relatedTarget
+
+        const nick = button.getAttribute('data-bs-nick')
+        const cat = button.getAttribute('data-bs-cat')
+        const kvkid = button.getAttribute('data-bs-kvkid')
+        const playerid = button.getAttribute('data-bs-playerid')
+
+        const modalnick = modalAbates.querySelector('#nickAbates')
+        const modalCatInput = modalAbates.querySelector('#categAbates')
+        const modalKvkIdInput = modalAbates.querySelector('#kvkidAbates')
+        const modalPlayerIdInput = modalAbates.querySelector('#playeridAbates')
+
+        modalnick.textContent = nick
+        modalCatInput.value = cat
+        modalKvkIdInput.value = kvkid
+        modalPlayerIdInput.value = playerid
+    })
 </script>
 
 {% endblock %}

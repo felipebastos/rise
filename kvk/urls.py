@@ -19,6 +19,7 @@ urlpatterns = [
         name="analisedesempenho",
     ),
     path("adicionarfarm/", views.adicionar_farms, name="adicionarFarms"),
+    path("adicionarmge/", views.adicionar_mge_controlado, name="adicionarMGE"),
     path("etapa/<kvkid>/", views.registrar_etapa, name="registrarEtapa"),
     path(
         "upload/<kvkid>/",

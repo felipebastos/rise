@@ -53,6 +53,15 @@ class AdicionalDeFarms(models.Model):
         return f"Adicional de {self.player} no KvK {self.kvk}"
 
 
+class PontosDeMGE(models.Model):
+    kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    pontos = models.IntegerField(default=0)
+
+    def __str__(self) -> str:
+        return f"Pontos de MGE de {self.player} no KvK {self.kvk}"
+
+
 class Etapas(models.Model):
     kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
     date = models.DateTimeField()

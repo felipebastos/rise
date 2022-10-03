@@ -24,7 +24,7 @@ from players.models import (
 from players.forms import UploadFileForm
 
 from rise.forms import SearchPlayerForm
-from kvk.models import Etapas, Kvk, Zerado
+from kvk.models import Etapas, Kvk, PontosDeMGE, Zerado
 
 # Create your views here.
 
@@ -212,12 +212,10 @@ def add_status(request, game_id):
         if kvk and kvk.ativo:
             honra = request.POST["honra"]
             zerado = 0
-            try:
-                if request.POST["zerado"]:
-                    zerado = 1
-            except:
-                zerado = 0
-            # print(zerado)
+
+            if "zerado" in request.POST:
+                zerado = 1
+
             return redirect(f"/kvk/update/{kvk.id}/{game_id}/{honra}/{zerado}/")
         if "origem" in request.POST:
             return redirect(request.POST["origem"])
@@ -660,7 +658,14 @@ def como_estou(request):
         media_kp = 0
         continue_contando = True
         for stat in status_kp_similares:
-            media_kp = media_kp + stat["kp"]
+            quem_eh = Player.objects.filter(
+                game_id=stat["player__game_id"]
+            ).first()
+            abate_mge = PontosDeMGE.objects.filter(kvk=kvk, player=quem_eh)
+            abater = 0
+            for pontos in abate_mge:
+                abater = abater + pontos.pontos
+            media_kp = media_kp + stat["kp"] - abater
             if stat["player__game_id"] != ultimo.player.game_id:
                 if continue_contando:
                     pos_kp_faixa = pos_kp_faixa - 1

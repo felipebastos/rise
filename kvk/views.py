@@ -9,7 +9,14 @@ from django.utils import timezone
 from players.models import Player, PlayerStatus
 
 from kvk.forms import EtapaForm, UploadEtapasFileForm
-from kvk.models import Etapas, Kvk, Zerado, AdicionalDeFarms, faixas
+from kvk.models import (
+    Etapas,
+    Kvk,
+    PontosDeMGE,
+    Zerado,
+    AdicionalDeFarms,
+    faixas,
+)
 
 # Create your views here.
 
@@ -192,7 +199,11 @@ def analisedesempenho(request, kvkid, cat):
         for stat in status:
             player = Player.objects.get(pk=stat["player"])
             if not player in zerados_lista and not player in banidos_e_inativos:
-                media = media + stat[cat]
+                abate_mge = PontosDeMGE.objects.filter(kvk=kvk, player=player)
+                abater = 0
+                for pontos in abate_mge:
+                    abater = abater + pontos.pontos
+                media = media + stat[cat] - abater
                 contabilizar = contabilizar + 1
 
         media = media // contabilizar
@@ -204,6 +215,17 @@ def analisedesempenho(request, kvkid, cat):
                 adicional.t4_deaths * 0.25 + adicional.t5_deaths * 0.5
             )
         context["adicionais"] = adicionais_dic
+
+        mge_controlado = PontosDeMGE.objects.filter(kvk=kvk)
+        abate_mge_dic = {}
+        for pontos in mge_controlado:
+            if pontos.player.game_id not in abate_mge_dic:
+                abate_mge_dic[pontos.player.game_id] = int(pontos.pontos)
+            else:
+                abate_mge_dic[pontos.player.game_id] = abate_mge_dic[
+                    pontos.player.game_id
+                ] + int(pontos.pontos)
+        context["abateMGE"] = abate_mge_dic
 
         categorizados.append(
             {
@@ -222,10 +244,7 @@ def analisedesempenho(request, kvkid, cat):
 
 @login_required
 def adicionar_farms(request):
-    print("Cheguei na adicionar.")
     if request.method == "POST":
-        for k in request.POST:
-            print(f"{k}: {request.POST[k]}")
         kvk = Kvk.objects.filter(id=request.POST["kvkid"]).first()
         print(kvk)
         player = Player.objects.filter(
@@ -236,6 +255,26 @@ def adicionar_farms(request):
             novo = AdicionalDeFarms()
             novo.t4_deaths = request.POST["t4"]
             novo.t5_deaths = request.POST["t5"]
+            novo.player = player
+            novo.kvk = kvk
+            novo.save()
+    return redirect(
+        f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/"
+    )
+
+
+@login_required
+def adicionar_mge_controlado(request):
+    if request.method == "POST":
+        kvk = Kvk.objects.filter(id=request.POST["kvkid"]).first()
+        print(kvk)
+        player = Player.objects.filter(
+            game_id=request.POST["player_id"]
+        ).first()
+
+        if kvk and player:
+            novo = PontosDeMGE()
+            novo.pontos = request.POST["pontos"]
             novo.player = player
             novo.kvk = kvk
             novo.save()
