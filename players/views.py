@@ -220,7 +220,7 @@ def add_status(request, game_id):
         if "origem" in request.POST:
             return redirect(request.POST["origem"])
         return redirect(f"/players/{game_id}/")
-    except Exception as e:
+    except Exception as exception:
         return render(request, "rise/404.html")
 
 
