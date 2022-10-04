@@ -1,27 +1,28 @@
 ************* Module kvk.views
-kvk\views.py:117:0: R0914: Too many local variables (25/15) (too-many-locals)
-kvk\views.py:117:0: R0912: Too many branches (13/12) (too-many-branches)
+kvk\views.py:124:0: R0914: Too many local variables (30/15) (too-many-locals)
+kvk\views.py:124:0: R0912: Too many branches (17/12) (too-many-branches)
+kvk\views.py:124:0: R0915: Too many statements (51/50) (too-many-statements)
 ************* Module mge.models
 mge\models.py:43:0: C0301: Line too long (145/100) (line-too-long)
 mge\models.py:44:0: C0301: Line too long (140/100) (line-too-long)
+************* Module osiris.tests
+osiris\tests.py:1:0: W0611: Unused TestCase imported from django.test (unused-import)
 ************* Module players.views
-players\views.py:30:0: R0914: Too many local variables (19/15) (too-many-locals)
-players\views.py:37:12: W0612: Unused variable 'i' (unused-variable)
-players\views.py:120:8: W0612: Unused variable 'i' (unused-variable)
-players\views.py:135:4: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+players\views.py:32:0: R0914: Too many local variables (19/15) (too-many-locals)
+players\views.py:39:12: W0612: Unused variable 'i' (unused-variable)
+players\views.py:122:8: W0612: Unused variable 'i' (unused-variable)
+players\views.py:137:4: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
 players\views.py:223:11: W0703: Catching too general exception Exception (broad-except)
-players\views.py:216:12: W0702: No exception type(s) specified (bare-except)
-players\views.py:223:4: C0103: Variable name "e" doesn't conform to snake_case naming style (invalid-name)
-players\views.py:223:4: W0612: Unused variable 'e' (unused-variable)
-players\views.py:242:0: R0914: Too many local variables (20/15) (too-many-locals)
-players\views.py:311:12: C0200: Consider using enumerate instead of iterating with range and len (consider-using-enumerate)
-players\views.py:242:0: R0912: Too many branches (23/12) (too-many-branches)
-players\views.py:242:0: R0915: Too many statements (75/50) (too-many-statements)
-players\views.py:470:0: R0914: Too many local variables (32/15) (too-many-locals)
-players\views.py:648:26: R1719: The if expression can be replaced with 'test' (simplifiable-if-expression)
-players\views.py:652:22: R1719: The if expression can be replaced with 'test' (simplifiable-if-expression)
-players\views.py:470:0: R0912: Too many branches (30/12) (too-many-branches)
-players\views.py:470:0: R0915: Too many statements (87/50) (too-many-statements)
+players\views.py:223:4: W0612: Unused variable 'exception' (unused-variable)
+players\views.py:282:0: R0914: Too many local variables (21/15) (too-many-locals)
+players\views.py:360:12: C0200: Consider using enumerate instead of iterating with range and len (consider-using-enumerate)
+players\views.py:282:0: R0912: Too many branches (28/12) (too-many-branches)
+players\views.py:282:0: R0915: Too many statements (84/50) (too-many-statements)
+players\views.py:523:0: R0914: Too many local variables (36/15) (too-many-locals)
+players\views.py:708:26: R1719: The if expression can be replaced with 'test' (simplifiable-if-expression)
+players\views.py:712:22: R1719: The if expression can be replaced with 'test' (simplifiable-if-expression)
+players\views.py:523:0: R0912: Too many branches (31/12) (too-many-branches)
+players\views.py:523:0: R0915: Too many statements (91/50) (too-many-statements)
 ************* Module reports.views
 reports\views.py:13:0: R0914: Too many local variables (20/15) (too-many-locals)
 reports\views.py:13:0: R0912: Too many branches (16/12) (too-many-branches)
@@ -33,22 +34,22 @@ rise\views.py:64:12: R1705: Unnecessary "else" after "return", remove the "else"
 rise\wsgi.py:1:0: R0801: Similar lines in 2 files
 ==api.views:[61:75]
 ==rise.views:[9:23]
-        ultimo = PlayerStatus.objects.order_by("-data").first()
+    ultimo = PlayerStatus.objects.order_by("-data").first()
 
-        o_reino_poder = (
-            PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-            .exclude(player__status="INATIVO")
-            .exclude(player__status="BANIDO")
-            .filter(
-                data__year=ultimo.data.year,
-                data__month=ultimo.data.month,
-                data__day=ultimo.data.day,
-            )
-            .order_by("-power")
+    o_reino_poder = (
+        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
+        .exclude(player__status="INATIVO")
+        .exclude(player__status="BANIDO")
+        .filter(
+            data__year=ultimo.data.year,
+            data__month=ultimo.data.month,
+            data__day=ultimo.data.day,
         )
+        .order_by("-power")
+    )
  (duplicate-code)
 rise\wsgi.py:1:0: R0801: Similar lines in 2 files
-==kvk.views:[207:217]
+==kvk.views:[229:239]
 ==reports.views:[260:271]
         categorizados.append(
             {
@@ -78,17 +79,6 @@ faixas = [
 rise\wsgi.py:1:0: R0801: Similar lines in 2 files
 ==api.views:[86:94]
 ==rise.views:[12:20]
-        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-        .exclude(player__status="INATIVO")
-        .exclude(player__status="BANIDO")
-        .filter(
-            data__year=ultimo.data.year,
-            data__month=ultimo.data.month,
-            data__day=ultimo.data.day,
-        ) (duplicate-code)
-rise\wsgi.py:1:0: R0801: Similar lines in 2 files
-==api.views:[64:72]
-==rise.views:[24:32]
             PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
             .exclude(player__status="INATIVO")
             .exclude(player__status="BANIDO")
@@ -98,19 +88,30 @@ rise\wsgi.py:1:0: R0801: Similar lines in 2 files
                 data__day=ultimo.data.day,
             ) (duplicate-code)
 rise\wsgi.py:1:0: R0801: Similar lines in 2 files
+==api.views:[64:72]
+==rise.views:[24:32]
+        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
+        .exclude(player__status="INATIVO")
+        .exclude(player__status="BANIDO")
+        .filter(
+            data__year=ultimo.data.year,
+            data__month=ultimo.data.month,
+            data__day=ultimo.data.day,
+        ) (duplicate-code)
+rise\wsgi.py:1:0: R0801: Similar lines in 2 files
 ==api.views:[67:75]
 ==reports.views:[126:134]
-            .filter(
-                data__year=ultimo.data.year,
-                data__month=ultimo.data.month,
-                data__day=ultimo.data.day,
-            )
-            .order_by("-power")
+        .filter(
+            data__year=ultimo.data.year,
+            data__month=ultimo.data.month,
+            data__day=ultimo.data.day,
         )
+        .order_by("-power")
+    )
  (duplicate-code)
 rise\wsgi.py:1:0: R0801: Similar lines in 2 files
-==kvk.views:[165:173]
-==players.views:[568:575]
+==kvk.views:[172:180]
+==players.views:[621:628]
         ).order_by("data")
         players_faixa_original = []
         for stat in faixa_original:
@@ -149,111 +150,6 @@ rise\wsgi.py:1:0: R0801: Similar lines in 2 files
         )
  (duplicate-code)
 
-
-Report
-======
-1389 statements analysed.
-
-Statistics by type
-------------------
-
-+---------+-------+-----------+-----------+------------+---------+
-|type     |number |old number |difference |%documented |%badname |
-+=========+=======+===========+===========+============+=========+
-|module   |61     |61         |=          |36.07       |0.00     |
-+---------+-------+-----------+-----------+------------+---------+
-|class    |70     |70         |=          |0.00        |0.00     |
-+---------+-------+-----------+-----------+------------+---------+
-|method   |32     |32         |=          |65.62       |0.00     |
-+---------+-------+-----------+-----------+------------+---------+
-|function |54     |54         |=          |1.85        |0.00     |
-+---------+-------+-----------+-----------+------------+---------+
-
-
-
-3142 lines have been analyzed
-
-Raw metrics
------------
-
-+----------+-------+------+---------+-----------+
-|type      |number |%     |previous |difference |
-+==========+=======+======+=========+===========+
-|code      |2166   |68.94 |2168     |-2.00      |
-+----------+-------+------+---------+-----------+
-|docstring |288    |9.17  |288      |=          |
-+----------+-------+------+---------+-----------+
-|comment   |73     |2.32  |73       |=          |
-+----------+-------+------+---------+-----------+
-|empty     |615    |19.57 |614      |+1.00      |
-+----------+-------+------+---------+-----------+
-
-
-
-Duplication
------------
-
-+-------------------------+------+---------+-----------+
-|                         |now   |previous |difference |
-+=========================+======+=========+===========+
-|nb duplicated lines      |0     |0        |0          |
-+-------------------------+------+---------+-----------+
-|percent duplicated lines |0.000 |0.000    |=          |
-+-------------------------+------+---------+-----------+
-
-
-
-Messages by category
---------------------
-
-+-----------+-------+---------+-----------+
-|type       |number |previous |difference |
-+===========+=======+=========+===========+
-|convention |4      |4        |4          |
-+-----------+-------+---------+-----------+
-|refactor   |26     |27       |27         |
-+-----------+-------+---------+-----------+
-|warning    |5      |6        |6          |
-+-----------+-------+---------+-----------+
-|error      |0      |0        |0          |
-+-----------+-------+---------+-----------+
-
-
-
-Messages
---------
-
-+---------------------------+------------+
-|message id                 |occurrences |
-+===========================+============+
-|duplicate-code             |9           |
-+---------------------------+------------+
-|too-many-locals            |6           |
-+---------------------------+------------+
-|too-many-branches          |4           |
-+---------------------------+------------+
-|unused-variable            |3           |
-+---------------------------+------------+
-|too-many-statements        |3           |
-+---------------------------+------------+
-|simplifiable-if-expression |2           |
-+---------------------------+------------+
-|no-else-return             |2           |
-+---------------------------+------------+
-|line-too-long              |2           |
-+---------------------------+------------+
-|invalid-name               |1           |
-+---------------------------+------------+
-|consider-using-enumerate   |1           |
-+---------------------------+------------+
-|broad-except               |1           |
-+---------------------------+------------+
-|bare-except                |1           |
-+---------------------------+------------+
-
-
-
-
 ------------------------------------------------------------------
-Your code has been rated at 9.75/10 (previous run: 9.73/10, +0.01)
+Your code has been rated at 9.78/10 (previous run: 9.78/10, +0.00)
 
