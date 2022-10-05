@@ -92,7 +92,14 @@
                                     <th scope="row">{{forloop.counter}}</th>
                                     <td>{{player.player__game_id}} - <a
                                             href="/players/{{player.player__game_id}}/">[{{player.player__alliance__tag}}]
-                                            {{player.player__nick}}</a></td>
+                                            {{player.player__nick}}</a>
+                                        {% if player.player__nick|foi_guarnicao:kvk == 'gua' %}
+                                        <i class="fas fa-shield-alt" style="color:blue;" title="Guarnição"></i>
+                                        {% endif %}
+                                        {% if player.player__nick|foi_rali:kvk == 'ral' %}
+                                        <i class="fas fa-meteor" style="color:red;" title="Rali"></i>
+                                        {% endif %}
+                                    </td>
                                     <td>{{player.kp}}
                                         {% if player.player__game_id in abateMGE %}
                                         <span style="color:red;">- {{abateMGE|get:player.player__game_id}}</span>

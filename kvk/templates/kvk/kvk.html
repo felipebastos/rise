@@ -1,6 +1,7 @@
 {% extends 'rise/base.html' %}
 {% block title %}- KvK{% endblock %}
 {% block content %}
+{% load filters %}
 <div class="container">
     <h1>Kvk iniciado em {{kvk.inicio}}</h1>
     {% if user.is_authenticated %}
@@ -13,6 +14,7 @@
     <a href="/kvk/etapa/{{kvk.id}}/" class="btn btn-primary">Etapas</a>
     <a class="btn btn-primary" href="/kvk/analise/{{kvk.id}}/kp/">Análise de desempenho por Killpoints</a>
     <a class="btn btn-primary" href="/kvk/analise/{{kvk.id}}/dt/">Análise de desempenho por Mortes</a>
+    <a class="btn btn-primary" href="/kvk/cargos/{{kvk.id}}/">Adicionar um cargo</a>
     <h1>TOP 10 - Killpoints</h1>
     <table class="table table-hover table-striped">
         <thead>
@@ -26,7 +28,14 @@
             {% for item in topkp %}
             <tr>
                 <th scope="row">{{forloop.counter}}</th>
-                <td><a href="/players/{{item.player__game_id}}/">{{item.player__nick}}</a></td>
+                <td><a href="/players/{{item.player__game_id}}/">{{item.player__nick}}</a>
+                    {% if item.player__nick|foi_guarnicao:kvk.id == 'gua' %}
+                    <i class="fas fa-shield-alt" style="color:blue;" title="Guarnição"></i>
+                    {% endif %}
+                    {% if item.player__nick|foi_rali:kvk.id == 'ral' %}
+                    <i class="fas fa-meteor" style="color:red;" title="Rali"></i>
+                    {% endif %}
+                </td>
                 <td>{{item.kp}}</td>
             </tr>
             {% endfor %}
@@ -45,7 +54,15 @@
             {% for item in topdt %}
             <tr>
                 <th scope="row">{{forloop.counter}}</th>
-                <td><a href="/players/{{item.player__game_id}}/">{{item.player__nick}}</a></td>
+                <td><a href="/players/{{item.player__game_id}}/">{{item.player__nick}}
+                    </a>
+                    {% if item.player__nick|foi_guarnicao:kvk.id == 'gua' %}
+                    <i class="fas fa-shield-alt" style="color:blue;" title="Guarnição"></i>
+                    {% endif %}
+                    {% if item.player__nick|foi_rali:kvk.id == 'ral' %}
+                    <i class="fas fa-meteor" style="color:red;" title="Rali"></i>
+                    {% endif %}
+                </td>
                 <td>{{item.dt}}</td>
             </tr>
             {% endfor %}

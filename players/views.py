@@ -24,7 +24,7 @@ from players.models import (
 from players.forms import UploadFileForm
 
 from rise.forms import SearchPlayerForm
-from kvk.models import Etapas, Kvk, PontosDeMGE, Zerado
+from kvk.models import Cargo, Etapas, Kvk, PontosDeMGE, Zerado
 
 # Create your views here.
 
@@ -63,6 +63,8 @@ def index(request, game_id):
 
         elementos.sort(reverse=True, key=order_by_date)
 
+        cargos = Cargo.objects.filter(player=player)
+
         context = {
             "player": player,
             "status": status,
@@ -72,6 +74,7 @@ def index(request, game_id):
             "punicoesPoder": punido_poder,
             "advertencias": advertencias_do_player,
             "elementos": elementos,
+            "cargos": cargos,
         }
     except Player.DoesNotExist:
         return render(request, "rise/404.html")

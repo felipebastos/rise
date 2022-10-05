@@ -69,3 +69,14 @@ class Etapas(models.Model):
 
     def __str__(self) -> str:
         return f"Etapa {self.descricao} do KvK {self.kvk}"
+
+
+FUNCAO_CHOICES = (("ral", "Rali"), ("gua", "Guarnição"))
+
+
+class Cargo(models.Model):
+    kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    funcao = models.CharField(
+        max_length=3, choices=FUNCAO_CHOICES, default="ral"
+    )
