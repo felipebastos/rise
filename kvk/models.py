@@ -80,3 +80,6 @@ class Cargo(models.Model):
     funcao = models.CharField(
         max_length=3, choices=FUNCAO_CHOICES, default="ral"
     )
+
+    def __str__(self) -> str:
+        return f"{self.funcao} - {self.player.nick} em {self.kvk}"
