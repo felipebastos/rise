@@ -359,13 +359,26 @@ def cargos_view(request, kvkid):
 
         if form.is_valid():
             form.save()
-            return redirect(f"/kvk/edit/{kvkid}/")
 
     kvk = Kvk.objects.get(pk=kvkid)
     form = CargoForm(initial={"kvk": kvk})
     form.fields["player"].queryset = Player.objects.filter(alliance__in=[1, 2])
+
+    cargos_neste_kvk = Cargo.objects.filter(kvk=kvk)
+
     context = {
         "form": form,
+        "cargos": cargos_neste_kvk,
     }
 
     return render(request, "kvk/cargo.html", context=context)
+
+
+@login_required
+def remove_cargo(request, cargoid):
+    cargo = Cargo.objects.get(pk=cargoid)
+    kvkid = cargo.kvk.id
+    if cargo:
+        cargo.delete()
+
+    return redirect(f"/kvk/edit/{kvkid}/")
