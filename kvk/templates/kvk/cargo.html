@@ -9,6 +9,7 @@
         <button class="btn btn-primary" type="submit">Configurar cargo</button>
     </form>
 </div>
+<hr>
 <div class="container">
     <h2>Cargos</h2>
     <table class="table table-striped">
@@ -23,7 +24,7 @@
             {% for cargo in cargos %}
             <tr>
                 <td>{{cargo.player.nick}}</td>
-                <td>{{cargo.funcao}}</td>
+                <td>{{cargo.get_funcao_display}}</td>
                 <td><a href="{% url 'remove_cargo' cargo.id %}" class="btn btn-danger">Remover cargo</a></td>
             </tr>
             {% endfor %}
