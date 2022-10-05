@@ -3,10 +3,27 @@
 {% block content %}
 {% load l10n %}
 {% load i18n %}
+{% load filters %}
 <div class="bg-light p-3 text-center">
     <div class="container">
         <h1 class="display-4">{{player.game_id}} - {{player.nick}} <span
                 class="badge bg-secondary">{{player.status}}</span></h1>
+        <div class="medalhas">
+            {% for cargo in cargos %}
+            <a href="{% url 'show_kvk' cargo.kvk.id %}">
+                <div class="badge bg-primary medalha">
+                    {% if cargo.funcao == 'gua' %}
+                    <i class="fas fa-shield-alt" title="Guarnição"></i>
+                    Guarnição | {{ cargo.kvk.inicio }}
+                    {% endif %}
+                    {% if cargo.funcao == 'ral' %}
+                    <i class="fas fa-meteor" title="Rali"></i>
+                    Rali | {{ cargo.kvk.inicio }}
+                    {% endif %}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
         <h2><a href="/players/alliance/{{player.alliance.id}}/">{{player.alliance.tag}}</a> - {{spec}}</h2>
         {% if user.is_authenticated %}
         <p class="lead"><b>Observações:</b> {{player.observacao}}</p>

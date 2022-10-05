@@ -1,6 +1,6 @@
 from django import forms
 
-from kvk.models import Kvk
+from kvk.models import Kvk, Cargo
 
 
 class EtapaForm(forms.Form):
@@ -28,3 +28,17 @@ class UploadEtapasFileForm(forms.Form):
         widget=forms.FileInput(attrs={"class": "form-control"}),
         required=True,
     )
+
+
+class CargoForm(forms.ModelForm):
+    class Meta:
+        model = Cargo
+        fields = "__all__"
+        widgets = {
+            "kvk": forms.Select(attrs={"class": "form-select"}),
+            "player": forms.Select(attrs={"class": "form-select"}),
+            "funcao": forms.Select(attrs={"class": "form-select"}),
+        }
+        labels = {
+            "funcao": "Função",
+        }

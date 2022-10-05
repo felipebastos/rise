@@ -8,8 +8,9 @@ from django.utils import timezone
 
 from players.models import Player, PlayerStatus
 
-from kvk.forms import EtapaForm, UploadEtapasFileForm
+from kvk.forms import CargoForm, EtapaForm, UploadEtapasFileForm
 from kvk.models import (
+    Cargo,
     Etapas,
     Kvk,
     PontosDeMGE,
@@ -349,3 +350,22 @@ def clear_etapas(request, kvkid):
         etapa.delete()
 
     return redirect(f"/kvk/etapa/{kvkid}/")
+
+
+@login_required
+def cargos_view(request, kvkid):
+    if request.method == "POST":
+        form = CargoForm(request.POST or None)
+
+        if form.is_valid():
+            form.save()
+            return redirect(f"/kvk/edit/{kvkid}/")
+
+    kvk = Kvk.objects.get(pk=kvkid)
+    form = CargoForm(initial={"kvk": kvk})
+    form.fields["player"].queryset = Player.objects.filter(alliance__in=[1, 2])
+    context = {
+        "form": form,
+    }
+
+    return render(request, "kvk/cargo.html", context=context)
