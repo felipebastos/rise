@@ -200,10 +200,13 @@ def analisedesempenho(request, kvkid, cat):
         for stat in status:
             player = Player.objects.get(pk=stat["player"])
             if not player in zerados_lista and not player in banidos_e_inativos:
-                abate_mge = PontosDeMGE.objects.filter(kvk=kvk, player=player)
                 abater = 0
-                for pontos in abate_mge:
-                    abater = abater + pontos.pontos
+                if cat == "kp":
+                    abate_mge = PontosDeMGE.objects.filter(
+                        kvk=kvk, player=player
+                    )
+                    for pontos in abate_mge:
+                        abater = abater + pontos.pontos
                 media = media + stat[cat] - abater
                 contabilizar = contabilizar + 1
 
