@@ -24,7 +24,7 @@ from players.models import (
 from players.forms import UploadFileForm
 
 from rise.forms import SearchPlayerForm
-from kvk.models import Cargo, Etapas, Kvk, PontosDeMGE, Zerado
+from kvk.models import Cargo, Etapas, Kvk, PontosDeMGE, Zerado, get_minha_faixa
 
 # Create your views here.
 
@@ -589,32 +589,8 @@ def como_estou(request):
                 pos_dt = pos_dt + 1
             else:
                 break
-        faixa_inicio = 0
-        faixa_fim = 10000000000
 
-        if primeiro.power > 100000000:
-            faixa_inicio = 100000000
-        elif 90000000 < primeiro.power < 100000000:
-            faixa_inicio = 90000000
-            faixa_fim = 100000000
-        elif 80000000 < primeiro.power < 90000000:
-            faixa_inicio = 80000000
-            faixa_fim = 90000000
-        elif 70000000 < primeiro.power < 80000000:
-            faixa_inicio = 70000000
-            faixa_fim = 80000000
-        elif 60000000 < primeiro.power < 70000000:
-            faixa_inicio = 60000000
-            faixa_fim = 70000000
-        elif 50000000 < primeiro.power < 60000000:
-            faixa_inicio = 50000000
-            faixa_fim = 60000000
-        elif 40000000 < primeiro.power < 50000000:
-            faixa_inicio = 40000000
-            faixa_fim = 50000000
-        else:
-            faixa_inicio = 0
-            faixa_fim = 40000000
+        faixa_inicio, faixa_fim = get_minha_faixa(primeiro.power)
 
         faixa_original = PlayerStatus.objects.filter(
             data__year=primeiro.data.year,
@@ -709,11 +685,11 @@ def como_estou(request):
             "posdtfaixa": pos_dt_faixa,
             "comparadoa": players_faixa_original,
             "metamortes": True
-            if media_mortes < ultimo.deaths - primeiro.deaths
+            if media_mortes <= ultimo.deaths - primeiro.deaths
             else False,
             "mediamortes": media_mortes,
             "metakp": True
-            if media_kp < ultimo.killpoints - primeiro.killpoints
+            if media_kp <= ultimo.killpoints - primeiro.killpoints
             else False,
             "mediakp": media_kp,
             "zerado": zerado,

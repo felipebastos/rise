@@ -210,7 +210,8 @@ def analisedesempenho(request, kvkid, cat):
                 media = media + stat[cat] - abater
                 contabilizar = contabilizar + 1
 
-        media = media // contabilizar
+        if contabilizar:
+            media = media // contabilizar
 
         adicionais = AdicionalDeFarms.objects.filter(kvk=kvk)
         adicionais_dic = {}

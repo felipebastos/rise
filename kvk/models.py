@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Tuple
 from django.db import models
 
 from django.utils import timezone
@@ -13,7 +14,9 @@ kvk_choices = (
 )
 
 faixas = [
-    (100000001, 5000000000, 3000000),
+    (150000001, 2000000000, 3000000),
+    (125000001, 150000000, 3000000),
+    (100000001, 125000000, 3000000),
     (90000001, 100000000, 2200000),
     (80000001, 90000000, 1500000),
     (70000001, 80000000, 1100000),
@@ -22,6 +25,13 @@ faixas = [
     (40000001, 50000000, 500000),
     (0, 40000000, 500000),
 ]
+
+
+def get_minha_faixa(poder: int) -> Tuple[int, int]:
+    for minimo, maximo, _ in faixas:
+        if minimo < poder < maximo:
+            return minimo, maximo
+    return 0, 2000000000
 
 
 class Kvk(models.Model):
