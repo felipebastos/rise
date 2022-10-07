@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 
 from players.models import Alliance, PlayerStatus, Player
+from kvk.models import faixas
 from rise.forms import SearchPlayerForm
 
 # Create your views here.
@@ -202,17 +203,6 @@ def analisedesempenho(request, cat):
     context = {
         "tipo": cat,
     }
-
-    faixas = [
-        (100000001, 5000000000, 3000000),
-        (90000001, 100000000, 2200000),
-        (80000001, 90000000, 1500000),
-        (70000001, 80000000, 1100000),
-        (60000001, 70000000, 700000),
-        (50000001, 60000000, 600000),
-        (40000001, 50000000, 500000),
-        (0, 40000000, 500000),
-    ]
 
     categorizados = []
     for faixa in faixas:

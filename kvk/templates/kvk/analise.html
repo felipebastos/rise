@@ -125,6 +125,14 @@
                                     </td>
                                     {% endif %}
                                 </tr>
+                                {% empty %}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Este grupo não possui jogadores.</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
