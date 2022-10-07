@@ -3,6 +3,8 @@ from datetime import datetime
 
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 from django.db.models.aggregates import Max, Min
 from django.utils import timezone
 
@@ -137,112 +139,126 @@ def analisedesempenho(request, kvkid, cat):
 
     context = {
         "tipo": cat,
+        "kvk": kvkid,
     }
 
-    banidos_e_inativos = Player.objects.filter(status__in=["BANIDO", "INATIVO"])
-    banidos_inativos_ids = []
-    for player in banidos_e_inativos:
-        banidos_inativos_ids.append(player.id)
+    if cat == "kp":
+        context = cache.get("context_kp") or context
+    else:
+        context = cache.get("context_dt") or context
 
-    primeiro = (
-        PlayerStatus.objects.filter(data__gte=kvk.inicio)
-        .order_by("data")
-        .first()
-    )
+    print(context)
 
-    if not primeiro:
-        return redirect(f"/kvk/edit/{kvk.id}/")
-
-    zerados = Zerado.objects.filter(kvk=kvk)
-    zerados_lista = []
-    zerados_ids = []
-    for zerado_pra_lista in zerados:
-        zerados_lista.append(zerado_pra_lista.player)
-        zerados_ids.append(zerado_pra_lista.player.id)
-
-    context["zerados"] = zerados_ids
-    context["banidos_inativos"] = banidos_inativos_ids
-
-    categorizados = []
-    for faixa in faixas:
-        faixa_original = PlayerStatus.objects.filter(
-            data__year=primeiro.data.year,
-            data__month=primeiro.data.month,
-            data__day=primeiro.data.day,
-            power__gte=faixa[0],
-            power__lte=faixa[1],
-        ).order_by("data")
-
-        players_faixa_original = []
-        for stat in faixa_original:
-            if stat.player not in players_faixa_original:
-                if stat.data.hour == primeiro.data.hour:
-                    players_faixa_original.append(stat.player)
-
-        status = (
-            PlayerStatus.objects.filter(player__in=players_faixa_original)
-            .filter(data__gte=kvk.inicio)
-            .filter(data__lte=final)
-            .values(
-                "player",
-                "player__nick",
-                "player__game_id",
-                "player__alliance__tag",
-            )
-            .annotate(
-                kp=Max("killpoints") - Min("killpoints"),
-                dt=Max("deaths") - Min("deaths"),
-            )
-            .order_by(f"-{cat}")
+    if "zerados" not in context:
+        banidos_e_inativos = Player.objects.filter(
+            status__in=["BANIDO", "INATIVO"]
         )
-        media = 0
-        contabilizar = 0
-        for stat in status:
-            player = Player.objects.get(pk=stat["player"])
-            if not player in zerados_lista and not player in banidos_e_inativos:
-                abater = 0
-                if cat == "kp":
-                    abate_mge = PontosDeMGE.objects.filter(
-                        kvk=kvk, player=player
-                    )
-                    for pontos in abate_mge:
-                        abater = abater + pontos.pontos
-                media = media + stat[cat] - abater
-                contabilizar = contabilizar + 1
+        banidos_inativos_ids = []
+        for player in banidos_e_inativos:
+            banidos_inativos_ids.append(player.id)
 
-        if contabilizar:
-            media = media // contabilizar
-
-        adicionais = AdicionalDeFarms.objects.filter(kvk=kvk)
-        adicionais_dic = {}
-        for adicional in adicionais:
-            adicionais_dic[adicional.player.game_id] = int(
-                adicional.t4_deaths * 0.25 + adicional.t5_deaths * 0.5
-            )
-        context["adicionais"] = adicionais_dic
-
-        mge_controlado = PontosDeMGE.objects.filter(kvk=kvk)
-        abate_mge_dic = {}
-        for pontos in mge_controlado:
-            if pontos.player.game_id not in abate_mge_dic:
-                abate_mge_dic[pontos.player.game_id] = int(pontos.pontos)
-            else:
-                abate_mge_dic[pontos.player.game_id] = abate_mge_dic[
-                    pontos.player.game_id
-                ] + int(pontos.pontos)
-        context["abateMGE"] = abate_mge_dic
-
-        categorizados.append(
-            {
-                "faixa0": faixa[0],
-                "faixa1": faixa[1],
-                "media": media,
-                "meiamedia": media * 0.5,
-                "membros": status,
-            }
+        primeiro = (
+            PlayerStatus.objects.filter(data__gte=kvk.inicio)
+            .order_by("data")
+            .first()
         )
-        context["categorizados"] = categorizados
-        context["kvk"] = kvkid
+
+        if not primeiro:
+            return redirect(f"/kvk/edit/{kvk.id}/")
+
+        zerados = Zerado.objects.filter(kvk=kvk)
+        zerados_lista = []
+        zerados_ids = []
+        for zerado_pra_lista in zerados:
+            zerados_lista.append(zerado_pra_lista.player)
+            zerados_ids.append(zerado_pra_lista.player.id)
+
+        context["zerados"] = zerados_ids
+        context["banidos_inativos"] = banidos_inativos_ids
+
+        categorizados = []
+        for faixa in faixas:
+            faixa_original = PlayerStatus.objects.filter(
+                data__year=primeiro.data.year,
+                data__month=primeiro.data.month,
+                data__day=primeiro.data.day,
+                power__gte=faixa[0],
+                power__lte=faixa[1],
+            ).order_by("data")
+
+            players_faixa_original = []
+            for stat in faixa_original:
+                if stat.player not in players_faixa_original:
+                    if stat.data.hour == primeiro.data.hour:
+                        players_faixa_original.append(stat.player)
+
+            status = (
+                PlayerStatus.objects.filter(player__in=players_faixa_original)
+                .filter(data__gte=kvk.inicio)
+                .filter(data__lte=final)
+                .values(
+                    "player",
+                    "player__nick",
+                    "player__game_id",
+                    "player__alliance__tag",
+                )
+                .annotate(
+                    kp=Max("killpoints") - Min("killpoints"),
+                    dt=Max("deaths") - Min("deaths"),
+                )
+                .order_by(f"-{cat}")
+            )
+            media = 0
+            contabilizar = 0
+            for stat in status:
+                player = Player.objects.get(pk=stat["player"])
+                if (
+                    not player in zerados_lista
+                    and not player in banidos_e_inativos
+                ):
+                    abater = 0
+                    if cat == "kp":
+                        abate_mge = PontosDeMGE.objects.filter(
+                            kvk=kvk, player=player
+                        )
+                        for pontos in abate_mge:
+                            abater = abater + pontos.pontos
+                    media = media + stat[cat] - abater
+                    contabilizar = contabilizar + 1
+
+            if contabilizar:
+                media = media // contabilizar
+
+            adicionais = AdicionalDeFarms.objects.filter(kvk=kvk)
+            adicionais_dic = {}
+            for adicional in adicionais:
+                adicionais_dic[adicional.player.game_id] = int(
+                    adicional.t4_deaths * 0.25 + adicional.t5_deaths * 0.5
+                )
+            context["adicionais"] = adicionais_dic
+
+            mge_controlado = PontosDeMGE.objects.filter(kvk=kvk)
+            abate_mge_dic = {}
+            for pontos in mge_controlado:
+                if pontos.player.game_id not in abate_mge_dic:
+                    abate_mge_dic[pontos.player.game_id] = int(pontos.pontos)
+                else:
+                    abate_mge_dic[pontos.player.game_id] = abate_mge_dic[
+                        pontos.player.game_id
+                    ] + int(pontos.pontos)
+            context["abateMGE"] = abate_mge_dic
+
+            categorizados.append(
+                {
+                    "faixa0": faixa[0],
+                    "faixa1": faixa[1],
+                    "media": media,
+                    "meiamedia": media * 0.5,
+                    "membros": status,
+                }
+            )
+            context["categorizados"] = categorizados
+            cache.set(f"context_{cat}", context, 60)
 
     return render(request, "kvk/analise.html", context=context)
 
