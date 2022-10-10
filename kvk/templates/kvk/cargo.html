@@ -3,6 +3,8 @@
 {% block content %}
 {% if user.is_authenticated %}
 <div class="container">
+    <h2>Configure um cargo de rali ou guarnição</h2>
+    <a href="/kvk/edit/{{kvk.id}}/" class="btn btn-secondary">Voltar</a>
     <form method="post">
         {% csrf_token %}
         {{form.as_p}}

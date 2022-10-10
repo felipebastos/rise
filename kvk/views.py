@@ -142,12 +142,7 @@ def analisedesempenho(request, kvkid, cat):
         "kvk": kvkid,
     }
 
-    if cat == "kp":
-        context = cache.get("context_kp") or context
-    else:
-        context = cache.get("context_dt") or context
-
-    print(context)
+    context = cache.get(f"context_{cat}_{kvk.id}") or context
 
     if "zerados" not in context:
         banidos_e_inativos = Player.objects.filter(
@@ -258,7 +253,7 @@ def analisedesempenho(request, kvkid, cat):
                 }
             )
             context["categorizados"] = categorizados
-            cache.set(f"context_{cat}", context, 60 * 60)
+            cache.set(f"context_{cat}_{kvk.id}", context, 60 * 60)
 
     return render(request, "kvk/analise.html", context=context)
 
@@ -387,6 +382,7 @@ def cargos_view(request, kvkid):
     cargos_neste_kvk = Cargo.objects.filter(kvk=kvk)
 
     context = {
+        "kvk": kvk,
         "form": form,
         "cargos": cargos_neste_kvk,
     }
