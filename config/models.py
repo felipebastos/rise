@@ -28,3 +28,12 @@ class SiteConfig(models.Model):
     encerra_ranking = models.IntegerField(
         "Prazo para travar o ranking do MGE", choices=PRAZO_RANKING, default=4
     )
+    banner = models.TextField(default="")
+
+
+class Destaque(models.Model):
+    config = models.ForeignKey(
+        SiteConfig, related_name="destaques", on_delete=models.CASCADE
+    )
+
+    texto = models.CharField("Texto do destaque", max_length=144)

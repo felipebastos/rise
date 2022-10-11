@@ -6,25 +6,14 @@
         <div class="bg-light p-3 text-center">
             <h1 class="display-4">Reino 1032 Granada</h1>
             <p class="lead">
-                Reino de língua portuguesa, predominantemente de nacionalidade brasileira, sendo a maior parte low
-                spender e f2p <i>(exploradores de baú que não jogam pra valer, podem parar de ler por aqui).</i>
+                {{config.banner}}
             </p>
         </div>
         <div class="bg-light p-3">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Focado em <b>kxk</b>, tendo como vitória os kxk 3, 5(luz e trevas), 6, 8, 9
-                    e 10
-                    (HA).</li>
-                <li class="list-group-item">Contamos com <b>Bot de títulos</b> via discord 24/7.</li>
-                <li class="list-group-item"><b>MGE é controlado, fora de kxk</b>, sendo priorizado comandantes de rally
-                    ou guarnição, e sendo
-                    usado
-                    como criterio de escolha os resultados do kxk anterior (mortes e pontos de abate).</li>
-                <li class="list-group-item"><b>MGE livre durante kxk</b>, para etapas de KE.</li>
-                <li class="list-group-item"><b>Sistema automatizado de captura de informações</b> (Poder, Mortes, Pontos
-                    de abate), evitando
-                    erro
-                    humano ou adulteração de informações.</li>
+                {% for destaque in config.destaques.all %}
+                <li class="list-group-item">{{destaque.texto}}</li>
+                {% endfor %}
             </ul>
         </div>
     </div>
