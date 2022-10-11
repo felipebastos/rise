@@ -38,6 +38,7 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+    "config.apps.ConfigConfig",
     "players.apps.PlayersConfig",
     "bank.apps.BankConfig",
     "kvk.apps.KvkConfig",

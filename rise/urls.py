@@ -31,6 +31,7 @@ urlpatterns = [
     path("items/", include("items.urls")),
     path("reports/", include("reports.urls")),
     path("osiris/", include("osiris.urls")),
+    path("config/", include("config.urls")),
     path("captcha/", include("captcha.urls")),
     path("api/v1/", include("api.urls")),
     path("api-auth/", include("rest_framework.urls")),
