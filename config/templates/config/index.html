@@ -1,0 +1,12 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Configurações{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Configurações gerais para o site</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="btn btn-primary">Salvar</button>
+    </form>
+</div>
+{% endblock %}

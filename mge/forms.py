@@ -20,13 +20,7 @@ COMMANDERS = [
         "Zenobia",
         "Flavius",
     ],
-    [
-        "Chandra",
-        "Attila",
-        "Bertrand",
-        "Saladin",
-        "Jadwiga",
-    ],
+    ["Chandra", "Attila", "Bertrand", "Saladin", "Jadwiga", "Zika"],
     [
         "Tomirys",
         "Artemísia",

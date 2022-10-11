@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models.aggregates import Max, Min
+from config.models import SiteConfig
 
 from players.models import Advertencia, Player, PlayerStatus
 
@@ -62,11 +63,12 @@ def mgeedit(request, mge_id):
     rank = Ranking.objects.filter(mge=mge).order_by("inserido")
     punidos = Punido.objects.filter(mge=mge).order_by("inserido")
     insc_encerradas = False
-    if date.today() > mge.semana() - timedelta(days=3):
+    config = SiteConfig.objects.get(pk=1)
+    if date.today() > mge.semana() - timedelta(days=config.prazo_inscricao_mge):
         # passou da quinta feira
         insc_encerradas = True
     rank_fechado = False
-    if date.today() > mge.semana() + timedelta(days=4):
+    if date.today() > mge.semana() + timedelta(days=config.encerra_ranking):
         rank_fechado = True
     context = {
         "mge": mge,
