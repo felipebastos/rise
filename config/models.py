@@ -36,4 +36,4 @@ class Destaque(models.Model):
         SiteConfig, related_name="destaques", on_delete=models.CASCADE
     )
 
-    texto = models.CharField("Texto do destaque", max_length=144)
+    texto = models.CharField("Texto do destaque", max_length=500)
