@@ -6,6 +6,11 @@
     <form method="post">
         {% csrf_token %}
         {{form.as_p}}
+        <h2>Destaques do reino</h2>
+        {{ destaqueform.management_form }}
+        {% for form in destaqueform %}
+        {{ form.as_p }}
+        {% endfor %}
         <button class="btn btn-primary">Salvar</button>
     </form>
 </div>

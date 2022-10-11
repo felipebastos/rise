@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from players.models import PlayerStatus
+from config.models import SiteConfig
 from rise.forms import LoginForm
 
 
@@ -45,10 +46,13 @@ def index(request):
         .order_by("-deaths")
     )
 
+    config = SiteConfig.objects.all().first()
+
     context = {
         "top10poder": o_reino_poder[:10],
         "top10kp": o_reino_killpoints[:10],
         "top10dt": o_reino_mortes[:10],
+        "config": config,
     }
 
     return render(request, "rise/index.html", context=context)
