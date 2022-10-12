@@ -154,7 +154,7 @@ LOGGING = {
     "handlers": {
         "file": {
             "class": "logging.FileHandler",
-            "filename": "general.log",
+            "filename": BASE_DIR / "general.log",
             "formatter": "verbose",
         },
     },
