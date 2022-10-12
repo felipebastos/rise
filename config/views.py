@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render
 
 from django.contrib.auth.decorators import login_required
@@ -5,11 +6,14 @@ from django.contrib.auth.decorators import login_required
 from config.models import SiteConfig
 from config.forms import ConfigForm, DestaqueFormSet
 
+logger = logging.getLogger("k32")
+
 # Create your views here.
 @login_required
 def home(request):
     config = SiteConfig.objects.all().first()
     if not config:
+        logger.debug("Configuração inicial criada.")
         config = SiteConfig.objects.create()
 
     if request.method == "POST":
@@ -18,9 +22,13 @@ def home(request):
 
         if form.is_valid():
             form.save()
+            logger.debug(
+                f"{request.user.username} alterou configuracoes gerais"
+            )
 
         if formset.is_valid():
             formset.save()
+            logger.debug("{request.user.username} alterou destaques do site")
 
     form = ConfigForm(instance=config)
     formset = DestaqueFormSet(instance=config)

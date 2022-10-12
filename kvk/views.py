@@ -1,4 +1,5 @@
 import csv
+import logging
 from datetime import datetime
 
 from django.shortcuts import redirect, render
@@ -22,6 +23,7 @@ from kvk.models import (
 )
 
 # Create your views here.
+logger = logging.getLogger("k32")
 
 
 def index(request):
@@ -37,6 +39,7 @@ def new_kvk(request):
     novo = Kvk()
     novo.inicio = request.POST["inicio"]
     novo.save()
+    logger.debug(f"{request.user.username} criou novo kvk: {novo}")
 
     return redirect("/kvk/")
 
@@ -97,6 +100,7 @@ def close_kvk(request, kvk_id):
     kvk = Kvk.objects.get(pk=kvk_id)
     kvk.ativo = not kvk.ativo
     kvk.save()
+    logger.debug(f"{request.user.username} abriu/fechou {kvk}")
     return redirect(f"/kvk/edit/{kvk_id}/")
 
 
@@ -110,6 +114,9 @@ def add_zerado(request, player_id):
         zerado.player = quem
         zerado.kvk = running_kvk
         zerado.save()
+        logger.debug(
+            f"{request.user.username} marcou {quem.game_id} como zerado em {running_kvk}"
+        )
         return redirect(f"/kvk/edit/{running_kvk.id}/")
 
     return render(request, "rise/404.html")
@@ -119,7 +126,11 @@ def add_zerado(request, player_id):
 def removezerado(request, kvk, zerado_id):
     zerado = Zerado.objects.get(pk=zerado_id)
     if kvk == zerado.kvk.id:
+        player = zerado.player
         zerado.delete()
+        logger.debug(
+            f"{request.user.username} removeu {player.game_id} dos zerados."
+        )
 
     return redirect(f"/kvk/edit/{zerado.kvk.id}/")
 
@@ -274,6 +285,9 @@ def adicionar_farms(request):
             novo.player = player
             novo.kvk = kvk
             novo.save()
+            logger.debug(
+                f"{request.user.username} adicionou dados de farm para {player.game_id} no {kvk}"
+            )
     return redirect(
         f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/"
     )
@@ -294,6 +308,9 @@ def adicionar_mge_controlado(request):
             novo.player = player
             novo.kvk = kvk
             novo.save()
+            logger.debug(
+                f"{request.user.username} adicionou pontos de MGE para {player.game_id} no {kvk}"
+            )
     return redirect(
         f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/"
     )
@@ -374,6 +391,9 @@ def cargos_view(request, kvkid):
 
         if form.is_valid():
             form.save()
+            logger.debug(
+                f"{request.user.username} adicionou cargos no kvk {kvkid}"
+            )
 
     kvk = Kvk.objects.get(pk=kvkid)
     form = CargoForm(initial={"kvk": kvk})

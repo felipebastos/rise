@@ -1,3 +1,4 @@
+import logging
 from datetime import date, timedelta
 
 from django.shortcuts import render, redirect
@@ -14,6 +15,7 @@ from mge.models import Comandante, EventoDePoder, Mge, Punido, Ranking, Inscrito
 from kvk.models import Kvk
 
 # Create your views here.
+logger = logging.getLogger("k32")
 
 
 def index(request):
@@ -41,6 +43,7 @@ def startnew(request):
             mge.tipo = quais
             mge.livre = not form.cleaned_data.get("controle") == "Sim"
             mge.save()
+            logger.debug(f"{request.user.username} criou novo MGE {mge}")
 
     return redirect("/mge/")
 
@@ -63,7 +66,7 @@ def mgeedit(request, mge_id):
     rank = Ranking.objects.filter(mge=mge).order_by("inserido")
     punidos = Punido.objects.filter(mge=mge).order_by("inserido")
     insc_encerradas = False
-    config = SiteConfig.objects.get(pk=1)
+    config = SiteConfig.objects.all().first()
     if date.today() > mge.semana() - timedelta(days=config.prazo_inscricao_mge):
         # passou da quinta feira
         insc_encerradas = True
@@ -123,6 +126,7 @@ def inscrever(request, mge_id):
             inscrito.deaths = -1
 
         inscrito.save()
+        logger.debug(f"Inscrito: {player.game_id} no MGE: {mge}")
     return redirect(f"/mge/view/{mge_id}/")
 
 
@@ -145,6 +149,9 @@ def addtorank(request, mge_id, player_id):
     ranking.player = player
     ranking.mge = mge
     ranking.save()
+    logger.debug(
+        f"{request.user.username} adicionou {player.game_id} ao ranking de {mge}"
+    )
     return redirect(f"/mge/view/{mge_id}/")
 
 
@@ -155,6 +162,9 @@ def removefromrank(request, mge_id, player_id):
 
     remover = Ranking.objects.filter(mge=mge).filter(player=player).first()
     remover.delete()
+    logger.debug(
+        f"{request.user.username} removeu {player.game_id} do ranking de {mge}"
+    )
 
     return redirect(f"/mge/view/{mge_id}/")
 
@@ -168,6 +178,7 @@ def punir(request, player_id):
     apunir.mge = mge
     apunir.player = player
     apunir.save()
+    logger.debug(f"{request.user.username} puniu {player.game_id} no {mge}")
 
     adv = Advertencia()
     adv.player = player
@@ -187,6 +198,9 @@ def despunir(request, mge_id, player_id):
 
     punicao = Punido.objects.filter(mge=mge).filter(player=player).first()
     punicao.delete()
+    logger.debug(
+        f"{request.user.username} retirou a punicao de {player.game_id} em {mge}"
+    )
 
     return redirect(f"/mge/view/{mge_id}/")
 
@@ -198,6 +212,9 @@ def punir_evento_de_poder(request, player_id):
     punicao = EventoDePoder()
     punicao.player = player
     punicao.save()
+    logger.debug(
+        f"{request.user.username} adicionou punicao a {player.game_id} para evento de poder"
+    )
 
     adv = Advertencia()
     adv.player = player

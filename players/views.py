@@ -1,4 +1,5 @@
 import csv
+import logging
 from datetime import date
 
 from django.shortcuts import redirect, render
@@ -27,6 +28,7 @@ from rise.forms import SearchPlayerForm
 from kvk.models import Cargo, Etapas, Kvk, PontosDeMGE, Zerado, get_minha_faixa
 
 # Create your views here.
+logger = logging.getLogger("k32")
 
 
 def index(request, game_id):
@@ -107,6 +109,7 @@ def edit_player(request, game_id):
     player.alliance = Alliance.objects.filter(tag=request.POST["ally"]).first()
     player.alterado_por = request.user
     player.save()
+    logger.debug(f"{request.user.username} editou {player.game_id}")
     context = {
         "player": player,
         "status_list": player_status,
@@ -160,6 +163,7 @@ def review_players(request, ally_tag):
                 membro.alterado_por = request.user
                 membro.alterado_em = date.today()
                 membro.save()
+                logger.debug(f"{request.user.username} editou {membro.game_id}")
         return redirect(f"/players/review/{ally_tag}/")
 
 
@@ -209,6 +213,9 @@ def add_status(request, game_id):
         novo_status.killpoints = killpoints
         novo_status.deaths = deaths
         novo_status.save()
+        logger.debug(
+            f"{request.user.username} adicionou status {novo_status.player.game_id}"
+        )
 
         kvk = Kvk.objects.order_by("-inicio").first()
 
@@ -506,6 +513,9 @@ def edita_status(request, status_id):
             status.deaths = request.POST["deaths"]
             status.data = timezone.now()
             status.save()
+            logger.debug(
+                f"{request.user.username} editou {status.player.game_id}"
+            )
 
         return redirect(f"/players/{status.player.game_id}")
 
@@ -518,7 +528,9 @@ def edita_status(request, status_id):
 def delete_status(request, status_id):
     status = PlayerStatus.objects.all().filter(id=status_id).first()
     if status.editavel():
+        game_id = status.player.game_id
         status.delete()
+        logger.debug(f"{request.user.username} deletou status de {game_id}")
 
     return redirect(f"/players/{status.player.game_id}")
 
@@ -710,6 +722,7 @@ def criar_advertencia(request):
         adv.duracao = request.POST["duracao"]
 
         adv.save()
+        logger.debug(f"{request.user.username} advertiu {adv.player.game_id}")
 
         return redirect("/players/advertencias")
     return render(request, "rise/404.html")
