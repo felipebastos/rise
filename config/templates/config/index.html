@@ -9,6 +9,9 @@
         <h2>Destaques do reino</h2>
         {{ destaqueform.management_form }}
         {% for form in destaqueform %}
+        {% if forloop.last %}
+        <h3>Adicione um novo destaque</h3>
+        {% endif %}
         {{ form.as_p }}
         {% endfor %}
         <button class="btn btn-primary">Salvar</button>
