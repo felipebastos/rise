@@ -21,4 +21,5 @@ DestaqueFormSet = inlineformset_factory(
     fields=("texto",),
     widgets={"texto": forms.TextInput(attrs={"class": "form-control"})},
     extra=1,
+    can_delete_extra=False,
 )
