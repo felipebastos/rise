@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col" style="padding-bottom: 5px;">
             <p><b>Você pode adicionar uma etapa manualmente.</b></p>
-            <form action="/kvk/etapa/{{kvk.id}}/" method="post">
+            <form action="{% url 'registrarEtapa' kvk.id %}" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <br>
@@ -16,7 +16,7 @@
         </div>
         <div class="col" style="border-left: 1px solid black; padding-bottom: 5px;">
             <p><b>Você pode subir uma planilha com as etapas.</b></p>
-            <form action="/kvk/upload/{{kvk.id}}/" method="post" enctype="multipart/form-data">
+            <form action="{% url 'registrarEtapasPorPlanilha' kvk.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ subiretapasform.as_p }}
                 <br>
@@ -26,7 +26,7 @@
     </div>
     <div class="row" style="border-top: 1px solid black; padding-top: 5px;">
         <div class="col">
-            <a href="/kvk/clearetapa/{{kvk.id}}/" class="btn btn-danger">Limpar etapas</a>
+            <a href="{% url 'limparetapas' kvk.id %}" class="btn btn-danger">Limpar etapas</a>
         </div>
     </div>
 </div>
@@ -34,7 +34,7 @@
 {% endif %}
 <div class="container">
     <h2>Etapas do KvK iniciado em {{kvk.inicio}}</h2>
-    <a href="/kvk/edit/{{kvk.id}}/" class="btn btn-secondary">Voltar</a>
+    <a href="{% url 'show_kvk' kvk.id %}" class="btn btn-secondary">Voltar</a>
     <table class="table table-striped">
         <thead>
             <th>Data</th>

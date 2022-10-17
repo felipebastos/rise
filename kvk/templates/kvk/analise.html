@@ -9,7 +9,7 @@
     {% else %}
     <h1>Análise por Mortes</h1>
     {% endif %}
-    <a href="/kvk/edit/{{kvk}}/" class="btn btn-secondary">Voltar</a>
+    <a href="{% url 'show_kvk' kvk %}" class="btn btn-secondary">Voltar</a>
     <table class="table">
         <th>Legenda</th>
         <tr class="table-success">
@@ -91,7 +91,7 @@
                                     {% endif %}
                                     <th scope="row">{{forloop.counter}}</th>
                                     <td>{{player.player__game_id}} - <a
-                                            href="/players/{{player.player__game_id}}/">[{{player.player__alliance__tag}}]
+                                            href="{% url 'player_profile' player.player__game_id %}">[{{player.player__alliance__tag}}]
                                             {{player.player__nick}}</a>
                                         {% if player.player__nick|foi_guarnicao:kvk == 'gua' %}
                                         <i class="fas fa-shield-alt" style="color:blue;" title="Guarnição"></i>
@@ -154,7 +154,7 @@
                     Adicionar dados das farms</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/kvk/adicionarfarm/" method="post">
+            <form action="{% url 'adicionarFarms' %}" method="post">
                 <div class="modal-body">
                     Jogador: <span id="nick"></span><br>
                     {% csrf_token %}
@@ -187,9 +187,9 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="modalLabelAbater">
                     Abater pontos em MGE controlado</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modalAbater" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/kvk/adicionarmge/" method="post">
+            <form action="{% url 'adicionarMGE' %}" method="post">
                 <div class="modal-body">
                     Jogador: <span id="nickAbates"></span><br>
                     {% csrf_token %}
@@ -203,7 +203,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modalAbater">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Adicionar</button>
                 </div>
             </form>

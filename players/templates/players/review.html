@@ -4,7 +4,7 @@
 <div class="container">
     <h1>Revisão de Membros da {{ally.tag}}</h1>
     <h3>Compare a lista com a lista do jogo e vá desselecionando os que estão na aliança.</h3>
-    <form action="/players/review/{{ally.tag}}/" method="post">
+    <form action="{% url 'reviewplayers' ally.tag %}" method="post">
         {% csrf_token %}
         {% for membro in membros %}
         <div class="form-check">

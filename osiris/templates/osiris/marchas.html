@@ -6,7 +6,7 @@
         {% csrf_token %}
         {{marchaform.as_p}}
         <button type="submit" class="btn btn-primary">Adicionar marcha</button>
-        <a href="/osiris/time/{{time}}/" class="btn btn-secondary">Voltar para o time</a>
+        <a href="{% url 'editar_time' time %}" class="btn btn-secondary">Voltar para o time</a>
     </form>
 </div>
 <div class="container">
@@ -19,7 +19,7 @@
                 <li>Tarefa: {{marcha.get_tarefa_display}}</li>
                 <li>Estrutura: {{marcha.get_estrutura_display}}</li>
                 <li>Tarefa especial: {{marcha.get_tarefa_especial_display}}</li>
-                <li><a href="/osiris/marcha/remove/{{marcha.id}}/" class="btn btn-danger">Remover esta marcha</a></li>
+                <li><a href="{% url 'marcha_remove' marcha.id %}" class="btn btn-danger">Remover esta marcha</a></li>
             </ul>
         </li>
         {% endfor %}

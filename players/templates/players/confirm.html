@@ -30,7 +30,7 @@
             {% endfor %}
         </tbody>
     </table>
-    <a href="/players/upload/" class="btn btn-danger">Cancelar</a>
-    <a href="/players/populate/" class="btn btn-primary">Confirmar</a>
+    <a href="{% url 'upload_csv' %}" class="btn btn-danger">Cancelar</a>
+    <a href="{% url 'populate' %}" class="btn btn-primary">Confirmar</a>
 </div>
 {% endblock %}

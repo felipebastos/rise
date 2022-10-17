@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
     <h2>Faça seu pedido</h2>
-    <form action="/items/" method="post">
+    <form action="{% url 'itemshome' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Pedir</button>
@@ -34,8 +34,8 @@
                 <td>{{ pedido.quantidade }} {{ pedido.item }}(s)</td>
                 <td>{{ pedido.pedido_em }}</td>
                 <td>
-                    <a class="btn btn-primary" href="/items/aprovar/{{pedido.id}}">Aprovar</a>
-                    <a class="btn btn-warning" href="/items/reprovar/{{pedido.id}}">Reprovar</a>
+                    <a class="btn btn-primary" href="{% url 'aprovarpedido' pedido.id %}">Aprovar</a>
+                    <a class="btn btn-warning" href="{% url 'reprovarpedido' pedido.id %}">Reprovar</a>
                 </td>
             </tr>
             {% endfor %}
@@ -74,7 +74,7 @@
                 {% endif %}
                 {% if user.is_authenticated %}
                 <td>
-                    <a href="/items/cancelar/{{pedido.id}}/" class="btn btn-danger">Reavaliar</a>
+                    <a href="{% url 'cancelaravaliacao' pedido.id%}" class="btn btn-danger">Reavaliar</a>
                     </th>
                     {% endif %}
             </tr>

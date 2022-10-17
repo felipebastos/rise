@@ -5,7 +5,7 @@
     <h2>
         Você está corrigindo o status de {{status.player.nick}}
     </h2>
-    <form action="/players/statusedit/{{status.get_id}}/" method="post">
+    <form action="{% url 'edit_status' status.get_id %}" method="post">
         {% csrf_token %}
         <div class="form-group">
             <label for="poder">Poder</label>
@@ -24,7 +24,7 @@
         </div>
         <div>
             <button class="btn btn-info" type="submit">Corrigir</button>
-            <a class="btn btn-warning" href="/players/{{status.player.game_id}}">Cancelar</a>
+            <a class="btn btn-warning" href="{% url 'player_profile' status.player.game_id %}">Cancelar</a>
         </div>
     </form>
 </div>

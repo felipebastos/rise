@@ -51,8 +51,8 @@
                 {% endfor %}
                 {% if user.is_authenticated %}
                 <td>
-                    <a href="/osiris/marchas/{{funcao.id}}/" class="btn btn-warning">Configurar marchas</a>
-                    <a href="/osiris/time/remove/{{funcao.id}}/" class="btn btn-danger">Remover do time</a>
+                    <a href="{% url 'configurar_marchas' funcao.id %}" class="btn btn-warning">Configurar marchas</a>
+                    <a href="{% url 'remove_do_time' funcao.id %}" class="btn btn-danger">Remover do time</a>
                 </td>
                 {% endif %}
             </tr>
@@ -109,8 +109,8 @@
                 {% endfor %}
                 {% if user.is_authenticated %}
                 <td>
-                    <a href="/osiris/marchas/{{funcao.id}}/" class="btn btn-warning">Configurar marchas</a>
-                    <a href="/osiris/time/remove/{{funcao.id}}/" class="btn btn-danger">Remover do time</a>
+                    <a href="{% url 'configurar_marchas' funcao.id %}" class="btn btn-warning">Configurar marchas</a>
+                    <a href="{% url 'remove_do_time' funcao.id %}" class="btn btn-danger">Remover do time</a>
                 </td>
                 {% endif %}
             </tr>

@@ -8,8 +8,8 @@
     <h4 title="Todos os jogadores, mesmo fora do top 300, menos: banidos e farms">Já o poder de batalha do reino é de
         {{p_batalha}}</h4>
     <h4>O poder de sacrifício é de {{p_sacrificio}}</h4>
-    <a href="/reports/analise/kp/" class="btn btn-primary">Análise por killpoints</a>
-    <a href="/reports/analise/dt/" class="btn btn-primary">Análise por mortes</a>
+    <a href="{% url 'analisedesempenho300' 'kp' %}" class="btn btn-primary">Análise por killpoints</a>
+    <a href="{% url 'analisedesempenho300' 'dt' %}" class="btn btn-primary">Análise por mortes</a>
     <hr>
     <nav aria-label="Paginação entre membros">
         <ul class="pagination justify-content-center">
@@ -61,7 +61,7 @@
         {% for jogador in jogadores %}
         <tr>
             <th scope="row">{{forloop.counter|add:slice}}</th>
-            <td><a href="/players/{{jogador.player.game_id}}">{{jogador.player.nick}}</a></td>
+            <td><a href="{% url 'player_profile' jogador.player.game_id %}">{{jogador.player.nick}}</a></td>
             <td>{{jogador.player.alliance.tag}}</td>
             <td>{{jogador.power}}</td>
             <td>{{jogador.killpoints}}</td>

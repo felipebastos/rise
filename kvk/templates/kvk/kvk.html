@@ -6,15 +6,15 @@
     <h1>Kvk iniciado em {{kvk.inicio}}</h1>
     {% if user.is_authenticated %}
     {% if kvk.ativo %}
-    <a class="btn btn-warning" href="/kvk/close/{{kvk.id}}/">Fechar registros</a>
+    <a class="btn btn-warning" href="{% url 'close_kvk' kvk.id %}">Fechar registros</a>
     {% else %}
-    <a class="btn btn-success" href="/kvk/close/{{kvk.id}}/">Abrir registros</a>
+    <a class="btn btn-success" href="{% url 'close_kvk' kvk.id %}">Abrir registros</a>
     {% endif %}
     {% endif %}
-    <a href="/kvk/etapa/{{kvk.id}}/" class="btn btn-primary">Etapas</a>
-    <a class="btn btn-primary" href="/kvk/analise/{{kvk.id}}/kp/">Análise de desempenho por Killpoints</a>
-    <a class="btn btn-primary" href="/kvk/analise/{{kvk.id}}/dt/">Análise de desempenho por Mortes</a>
-    <a class="btn btn-primary" href="/kvk/cargos/{{kvk.id}}/">Configurar cargos</a>
+    <a href="{% url 'registrarEtapa' kvk.id %}" class="btn btn-primary">Etapas</a>
+    <a class="btn btn-primary" href="{% url 'analisedesempenho' kvk.id 'kp' %}">Análise de desempenho por Killpoints</a>
+    <a class="btn btn-primary" href="{% url 'analisedesempenho' kvk.id 'dt' %}">Análise de desempenho por Mortes</a>
+    <a class="btn btn-primary" href="{% url 'cargos_view' kvk.id %}">Configurar cargos</a>
     <h1>TOP 10 - Killpoints</h1>
     <table class="table table-hover table-striped">
         <thead>
@@ -28,7 +28,7 @@
             {% for item in topkp %}
             <tr>
                 <th scope="row">{{forloop.counter}}</th>
-                <td><a href="/players/{{item.player__game_id}}/">{{item.player__nick}}</a>
+                <td><a href="{% url 'player_profile' item.player__game_id %}">{{item.player__nick}}</a>
                     {% if item.player__nick|foi_guarnicao:kvk.id == 'gua' %}
                     <i class="fas fa-shield-alt" style="color:blue;" title="Guarnição"></i>
                     {% endif %}
@@ -54,7 +54,7 @@
             {% for item in topdt %}
             <tr>
                 <th scope="row">{{forloop.counter}}</th>
-                <td><a href="/players/{{item.player__game_id}}/">{{item.player__nick}}
+                <td><a href="{% url 'player_profile' item.player__game_id %}">{{item.player__nick}}
                     </a>
                     {% if item.player__nick|foi_guarnicao:kvk.id == 'gua' %}
                     <i class="fas fa-shield-alt" style="color:blue;" title="Guarnição"></i>
@@ -83,12 +83,13 @@
         <tbody>
             {% for zerado in zerados %}
             <tr>
-                <th scope="row"><a href="/players/{{zerado.player.game_id}}/">{{zerado.player.game_id}}</a></th>
+                <th scope="row"><a href="{% url 'player_profile' zerado.player.game_id %}">{{zerado.player.game_id}}</a>
+                </th>
                 <td>{{zerado.player.nick}}</td>
                 <td>{{zerado.date}}</td>
                 {% if kvk.ativo and user.is_authenticated %}
                 <td>
-                    <a href="/kvk/removezerado/kvk.id/{{zerado.id}}" class="btn btn-success">Não foi zerado</a>
+                    <a href="{% url 'removezerado' kvk.id zerado.id %}" class="btn btn-success">Não foi zerado</a>
                 </td>
                 {% endif %}
             </tr>

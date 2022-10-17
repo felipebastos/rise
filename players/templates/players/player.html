@@ -24,7 +24,7 @@
             </a>
             {% endfor %}
         </div>
-        <h2><a href="/players/alliance/{{player.alliance.id}}/">{{player.alliance.tag}}</a> - {{spec}}</h2>
+        <h2><a href="{% url 'alliance' player.alliance.id %}">{{player.alliance.tag}}</a> - {{spec}}</h2>
         {% if user.is_authenticated %}
         <p class="lead"><b>Observações:</b> {{player.observacao}}</p>
         {% endif %}
@@ -33,12 +33,12 @@
         <div class="row">
 
             <div class="col"><b>Alterado em:</b> {{player.alterado_em}} <b>por</b> {{player.alterado_por}}</div>
-            <div class="col"><a href="/players/edit/{{player.game_id}}" class="btn btn-warning"><i
+            <div class="col"><a href="{% url 'edit_player' player.game_id %}" class="btn btn-warning"><i
                         class="fas fa-user-edit"></i></a>
-                <a href="/mge/punir/{{player.game_id}}/" class="btn btn-danger">Punir MGE</a>
-                <a href="/mge/punirPoder/{{player.game_id}}/" class="btn btn-warning">Punir Evento de Poder</a>
+                <a href="{% url 'punir' player.game_id %}" class="btn btn-danger">Punir MGE</a>
+                <a href="{% url 'punirPoder' player.game_id %}" class="btn btn-warning">Punir Evento de Poder</a>
                 {% if showkvk %}
-                <a class="btn btn-danger" href="/kvk/zerado/{{player.game_id}}/">Zerado</a>
+                <a class="btn btn-danger" href="{% url 'add_zerado' player.game_id %}">Zerado</a>
                 {% endif %}
             </div>
 
@@ -72,8 +72,8 @@
 
                 <td>
                     {% if item.editavel %}
-                    <a class="btn btn-warning" href="/players/statusedit/{{item.get_id}}">Editar</a>
-                    <a class="btn btn-danger" href="/players/statusdelete/{{item.get_id}}">Deletar</a>
+                    <a class="btn btn-warning" href="{% url 'edit_status' item.get_id %}">Editar</a>
+                    <a class="btn btn-danger" href="{% url 'delete_status' item.get_id %}">Deletar</a>
                     {% endif %}
                 </td>
 

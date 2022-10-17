@@ -4,7 +4,7 @@
 {% if user.is_authenticated %}
 <div class="container">
     <h1>Gestão de MGE</h1>
-    <form action="/mge/startnew/" method="post">
+    <form action="{% url 'startnew' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button class="btn btn-success" type="submit">Criar</button>
@@ -16,10 +16,10 @@
     <div class="d-flex flex-wrap gap-1">
         {% for mge in mges %}
         {% if forloop.counter == 1 %}
-        <a href="/mge/view/{{mge.id}}/" class="btn btn-primary g-col-6" style="width: 20rem;">{{mge}}
+        <a href="{% url 'mgeedit' mge.id %}" class="btn btn-primary g-col-6" style="width: 20rem;">{{mge}}
             {{mge.semana}}</a>
         {% else %}
-        <a href="/mge/view/{{mge.id}}/" class="btn btn-secondary g-col-6" style="width: 20rem;">{{mge}}
+        <a href="{% url 'mgeedit' mge.id %}" class="btn btn-secondary g-col-6" style="width: 20rem;">{{mge}}
             {{mge.semana}}</a>
         {% endif %}
         {% endfor %}
