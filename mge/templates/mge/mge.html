@@ -47,7 +47,7 @@
 {% if user.is_authenticated and not rank_fechado and insc_encerradas %}
 <div class="container">
     <h3>Inserir rankeado da coleta</h3>
-    <form action="/mge/inscrever/{{mge.id}}/" method="post">
+    <form action="{% url 'inscrever' mge.id %}" method="post">
         {% csrf_token %}
         <div class="input-group">
             <input class="form-control" type="text" name="player_id" id="player_id" placeholder="ID do jogador"
@@ -91,7 +91,7 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownPunicoes">
                             {% for punicao in inscrito|getPunicoes %}
-                            <li><a class="dropdown-item" href="/mge/view/{{punicao.mge.id}}/">{{punicao}}
+                            <li><a class="dropdown-item" href="{% url 'mgeedit' punicao.mge.id %}">{{punicao}}
                                     {{punicao.mge.semana}}</a>
                             </li>
                             {% endfor %}
@@ -117,9 +117,9 @@
                 <td>{{inscrito.general}}{% if inscrito.intuito %} <span class="badge bg-success">Apenas
                         liberar</span>{% endif %}</td>
                 {% if user.is_authenticated and not rank_fechado %}
-                <td><a href="/mge/addtorank/{{mge.id}}/{{inscrito.player.game_id}}/" class="btn btn-info">Adicionar
+                <td><a href="{% url 'addtorank' mge.id inscrito.player.game_id %}" class="btn btn-info">Adicionar
                         ao
-                        rank</a><a href="/mge/desinscrever/{{mge.id}}/{{inscrito.player.game_id}}/"
+                        rank</a><a href="{% url 'desinscrever' mge.id inscrito.player.game_id %}"
                         class="btn btn-warning">Cancelar</a></td>
                 {% endif %}
             </tr>
@@ -156,7 +156,7 @@
                 <th scope="row">{{forloop.counter}}</th>
                 <td>{{ranked.player.nick}}</td>
                 {% if user.is_authenticated and not rank_fechado %}
-                <td><a href="/mge/removefromrank/{{mge.id}}/{{ranked.player.game_id}}/" class="btn btn-danger">Remover
+                <td><a href="{% url 'removefromrank' mge.id ranked.player.game_id %}" class="btn btn-danger">Remover
                         do rank</a></td>
                 {% endif %}
             </tr>
@@ -191,7 +191,7 @@
                 <th scope="row">{{punido.player.game_id}}</th>
                 <td>{{punido.player.nick}}</td>
                 {% if user.is_authenticated %}
-                <td><a href="/mge/despunir/{{mge.id}}/{{punido.player.game_id}}/" class="btn btn-warning">Remover</a>
+                <td><a href="{% url 'despunir' mge.id punido.player.game_id %}" class="btn btn-warning">Remover</a>
                 </td>
                 {% endif %}
             </tr>

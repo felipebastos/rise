@@ -7,7 +7,7 @@
 <div class="container">
     {% if user.is_authenticated %}
     <h3>Inserir uma advertência</h3>
-    <form action="/players/adv_add/" method="post">
+    <form action="{% url 'adv_add' %}" method="post">
         {% csrf_token %}
         <label for="gameid">ID</label>
         <input class="form-control" type="text" name="game_id" id="gameid" pattern="^[0-9]*$" required>

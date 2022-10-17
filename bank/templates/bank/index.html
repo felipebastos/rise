@@ -5,17 +5,17 @@
     <h1>Criar semanas de trabalho</h1>
     <h2>Cuidado, ainda estou implementando, se clicar várias vezes, vai criar várias.</h2>
     <div>
-        <a class="btn btn-success" href="/bank/createweek/32BR/COM/">32BR - Comida</a>
-        <a class="btn btn-success" href="/bank/createweek/32BR/MAD/">32BR - Madeira</a>
-        <a class="btn btn-success" href="/bank/createweek/32BR/PED/">32BR - Pedra</a>
-        <a class="btn btn-success" href="/bank/createweek/32BR/OUR/">32BR - Ouro</a>
-        <a class="btn btn-info" href="/bank/report/">Relatório de devedores</a>
+        <a class="btn btn-success" href="{% url 'create_week' '32BR' 'COM' %}">32BR - Comida</a>
+        <a class="btn btn-success" href="{% url 'create_week' '32BR' 'MAD' %}">32BR - Madeira</a>
+        <a class="btn btn-success" href="{% url 'create_week' '32BR' 'PED' %}">32BR - Pedra</a>
+        <a class="btn btn-success" href="{% url 'create_week' '32BR' 'OUR' %}">32BR - Ouro</a>
+        <a class="btn btn-info" href="{% url 'report' %}">Relatório de devedores</a>
     </div>
     <h1>Semanas de trabalho da 32BR</h1>
     <div class="semanas">
         <!-- for semana in semanas... link pra membros / botão pra fechar a semana -->
         {% for semana in semanas %}
-        <a class="btn btn-info" href="/bank/week/{{semana.id}}">{{semana.inicio}}</a>
+        <a class="btn btn-info" href="{% url 'week' semana.id %}">{{semana.inicio}}</a>
         {% endfor %}
     </div>
 </div>

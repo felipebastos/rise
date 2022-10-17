@@ -18,7 +18,7 @@
         {% for jogador in jogadores %}
         <tr>
             <td>{{forloop.counter}}</td>
-            <td><a href="/players/{{jogador.player.game_id}}">{{jogador.player.nick}}</a></td>
+            <td><a href="{% url 'player_profile' jogador.player.game_id %}">{{jogador.player.nick}}</a></td>
             <td>{{jogador.player.alliance.tag}}</td>
             <td>{{jogador.power}}</td>
             <td>{{jogador.killpoints}}</td>

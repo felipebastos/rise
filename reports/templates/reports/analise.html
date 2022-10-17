@@ -9,7 +9,7 @@
     {% else %}
     <h1>Análise por Mortes</h1>
     {% endif %}
-    <a href="/reports/300/" class="btn btn-secondary">Voltar</a>
+    <a href="{% url 'top300' %}" class="btn btn-secondary">Voltar</a>
     <table class="table">
         <th>Legenda</th>
         <tr class="table-success">
@@ -67,7 +67,7 @@
                                     {% endif %}
                                     <th scope="row">{{forloop.counter}}</th>
                                     <td>{{player.player__game_id}} - <a
-                                            href="/players/{{player.player__game_id}}/">[{{player.player__alliance__tag}}]
+                                            href="{% url 'player_profile' player.game_id %}">[{{player.player__alliance__tag}}]
                                             {{player.player__nick}}</a></td>
                                     <td>{{player.kp}}</td>
                                     <td>{{player.dt}}</td>

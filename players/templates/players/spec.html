@@ -15,7 +15,7 @@
         <tbody>
             {% for player in players %}
             <tr>
-                <th scope="row"><a href="/players/{{player.game_id}}">{{player.game_id}}</a></th>
+                <th scope="row"><a href="{% url 'player_profile' player.game_id %}">{{player.game_id}}</a></th>
                 <td>{{player.nick}}</td>
                 <td>{{player.alliance.tag}}</td>
             </tr>

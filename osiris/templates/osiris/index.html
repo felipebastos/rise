@@ -17,7 +17,7 @@
 {% endif %}
 <div class="container">
     {% for time in times %}
-    <a href="/osiris/time/{{time.id}}/" class="btn btn-secondary">Arca na {{time.ally.tag}}</a>
+    <a href="{% url 'editar_time' time.id %}" class="btn btn-secondary">Arca na {{time.ally.tag}}</a>
     {% endfor %}
 </div>
 {% endblock %}
