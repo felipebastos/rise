@@ -3,8 +3,6 @@ from datetime import date, timedelta
 from django.db import models
 from django.utils import timezone
 
-from mge.forms import COMMANDER_CHOICES
-
 from players.models import Player
 
 # Create your models here.
@@ -16,9 +14,46 @@ tipos_comandantes = (
     ("ndf", "não definido"),
 )
 
+COMMANDER_CHOICES = (
+    ("0", "Não definido"),
+    ("1", "Infantaria"),
+    ("2", "Cavalaria"),
+    ("3", "Arquearia"),
+    ("4", "Liderança"),
+    ("5", "Infantaria + Lançamento"),
+    ("6", "Cavalaria + Lançamento"),
+    ("7", "Arqueria + Lançamento"),
+    ("8", "Liderança + Lançamento"),
+)
+
+COMMANDERS = [
+    [
+        "Constantino",
+        "Pakal",
+        "Leônidas",
+        "Zenobia",
+        "Flavius",
+    ],
+    ["Chandra", "Attila", "Bertrand", "Saladin", "Jadwiga", "Zika"],
+    [
+        "Tomirys",
+        "Artemísia",
+        "Amanitore",
+        "Nabuco",
+        "Henry",
+    ],
+    [
+        "Wu Zetian",
+        "Theodora",
+        "Monteczuma",
+        "Suleiman",
+    ],
+]
+
 
 class Mge(models.Model):
     criado_em = models.DateField("Criado em", default=date.today)
+    inicio_das_inscricoes = models.DateField("Início das inscrições", null=True)
     tipo = models.CharField(
         "Tipo", max_length=2, choices=COMMANDER_CHOICES, default="0"
     )
@@ -33,9 +68,15 @@ class Mge(models.Model):
         ordering = ["criado_em"]
 
     def semana(self):
-        dia_da_semana = self.criado_em.weekday() + 1
-        diferenca = timedelta(days=(7 - dia_da_semana))
-        domingo = self.criado_em + diferenca
+        domingo = None
+        if not self.inicio_das_inscricoes:
+            dia_da_semana = self.criado_em.weekday() + 1
+            diferenca = timedelta(days=(7 - dia_da_semana))
+            domingo = self.criado_em + diferenca
+        else:
+            dia_da_semana = self.inicio_das_inscricoes.weekday() + 1
+            diferenca = timedelta(days=(7 - dia_da_semana))
+            domingo = self.inicio_das_inscricoes + diferenca
         return domingo
 
     def __str__(self):

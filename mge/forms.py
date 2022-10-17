@@ -1,40 +1,6 @@
 from django import forms
 
-COMMANDER_CHOICES = (
-    ("0", "Não definido"),
-    ("1", "Infantaria"),
-    ("2", "Cavalaria"),
-    ("3", "Arquearia"),
-    ("4", "Liderança"),
-    ("5", "Infantaria + Lançamento"),
-    ("6", "Cavalaria + Lançamento"),
-    ("7", "Arqueria + Lançamento"),
-    ("8", "Liderança + Lançamento"),
-)
-
-COMMANDERS = [
-    [
-        "Constantino",
-        "Pakal",
-        "Leônidas",
-        "Zenobia",
-        "Flavius",
-    ],
-    ["Chandra", "Attila", "Bertrand", "Saladin", "Jadwiga", "Zika"],
-    [
-        "Tomirys",
-        "Artemísia",
-        "Amanitore",
-        "Nabuco",
-        "Henry",
-    ],
-    [
-        "Wu Zetian",
-        "Theodora",
-        "Monteczuma",
-        "Suleiman",
-    ],
-]
+from mge.models import Mge, COMMANDER_CHOICES
 
 
 class CriaMGE(forms.Form):
@@ -50,3 +16,19 @@ class CriaMGE(forms.Form):
         widget=forms.Select(attrs={"class": "form-select"}),
         initial="1",
     )
+
+
+class NovoCriaMGEForm(forms.ModelForm):
+    class Meta:
+        model = Mge
+        fields = ["tipo", "inicio_das_inscricoes", "livre"]
+        labels = {
+            "livre": "O MGE é livre?",
+        }
+        widgets = {
+            "tipo": forms.Select(attrs={"class": "form-select"}),
+            "inicio_das_inscricoes": forms.DateInput(
+                attrs={"type": "date", "class": "form-control"},
+            ),
+            "livre": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        }

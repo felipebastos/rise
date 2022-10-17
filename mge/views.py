@@ -9,8 +9,16 @@ from config.models import SiteConfig
 
 from players.models import Advertencia, Player, PlayerStatus
 
-from mge.forms import COMMANDERS, CriaMGE
-from mge.models import Comandante, EventoDePoder, Mge, Punido, Ranking, Inscrito
+from mge.forms import CriaMGE, NovoCriaMGEForm
+from mge.models import (
+    Comandante,
+    EventoDePoder,
+    Mge,
+    Punido,
+    Ranking,
+    Inscrito,
+    COMMANDERS,
+)
 
 from kvk.models import Kvk
 
@@ -20,7 +28,7 @@ logger = logging.getLogger("k32")
 
 def index(request):
     mges = Mge.objects.all().order_by("-criado_em")
-    form = CriaMGE()
+    form = NovoCriaMGEForm()
     context = {
         "mges": mges,
         "form": form,
@@ -30,18 +38,15 @@ def index(request):
 
 @login_required
 def startnew(request):
-    form = CriaMGE(request.POST or None)
+    form = NovoCriaMGEForm(request.POST or None)
 
     if request.method == "POST":
         if form.is_valid():
-            quais = form.cleaned_data.get("commanders")
-            mge = Mge()
+            mge = form.save()
             mge.temporada = (
                 Mge.objects.all().aggregate(Max("temporada"))["temporada__max"]
                 + 1
             )
-            mge.tipo = quais
-            mge.livre = not form.cleaned_data.get("controle") == "Sim"
             mge.save()
             logger.debug(f"{request.user.username} criou novo MGE {mge}")
 
