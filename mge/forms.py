@@ -28,7 +28,11 @@ class NovoCriaMGEForm(forms.ModelForm):
         widgets = {
             "tipo": forms.Select(attrs={"class": "form-select"}),
             "inicio_das_inscricoes": forms.DateInput(
-                attrs={"type": "date", "class": "form-control"},
+                attrs={
+                    "type": "date",
+                    "class": "form-control",
+                    "required": "true",
+                },
             ),
             "livre": forms.CheckboxInput(attrs={"class": "form-check-input"}),
         }
