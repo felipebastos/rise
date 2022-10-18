@@ -9,7 +9,7 @@ from config.models import SiteConfig
 
 from players.models import Advertencia, Player, PlayerStatus
 
-from mge.forms import CriaMGE, NovoCriaMGEForm
+from mge.forms import NovoCriaMGEForm
 from mge.models import (
     Comandante,
     EventoDePoder,

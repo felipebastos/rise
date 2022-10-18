@@ -7,6 +7,7 @@ from django.core.paginator import Paginator
 
 from players.models import Alliance, PlayerStatus, Player
 from kvk.models import faixas
+from reports.forms import FiltroForm
 from rise.forms import SearchPlayerForm
 
 # Create your views here.
@@ -116,6 +117,45 @@ def index(request):
         context["rank"] = status
 
     return render(request, "reports/index.html", context=context)
+
+
+@login_required
+def busca_especial(request):
+    form = FiltroForm(initial={"poder_max": "200000000"})
+    minimo = 0
+    maximo = 2000000000
+    order = "power"
+    aliancas = Alliance.objects.all()
+    ultimo_dia = PlayerStatus.objects.all().order_by("-data").first().data
+    if request.method == "POST":
+        form = FiltroForm(request.POST or None)
+
+        if form.is_valid():
+            if int(form.cleaned_data.get("poder_max")) > int(
+                form.cleaned_data.get("poder_min")
+            ):
+                minimo = int(form.cleaned_data.get("poder_min"))
+                maximo = int(form.cleaned_data.get("poder_max"))
+                order = form.cleaned_data.get("order")
+                if form.cleaned_data.get("alianca"):
+                    aliancas = form.cleaned_data.get("alianca")
+
+    ultimos = (
+        PlayerStatus.objects.filter(
+            data__year=ultimo_dia.year,
+            data__month=ultimo_dia.month,
+            data__day=ultimo_dia.day,
+        )
+        .filter(player__alliance__in=aliancas)
+        .filter(power__gte=minimo, power__lte=maximo)
+        .order_by(f"-{order}")
+    )
+
+    contexto = {
+        "form": form,
+        "resultado": ultimos,
+    }
+    return render(request, "reports/buscaespecial.html", context=contexto)
 
 
 @login_required

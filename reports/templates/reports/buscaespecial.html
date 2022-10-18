@@ -1,0 +1,49 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Análise{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Filtragem do top 500</h1>
+    <p>Dê atenção aos detalhes abaixo:</p>
+    <ul>
+        <li>Selecione um poder máximo maior que o mínimo (não funciona para iguais)</li>
+        <li>Para selecionar alianças, segure o "ctrl" do teclado e clique uma por vez</li>
+        <li>Para selecionar os sem aliança, há um item com apenas um tracinho</li>
+        <li>O top 500 nunca dá 500 ao todo, porque o bot lê até o 500 e descarta os inativos</li>
+    </ul>
+</div>
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="btn btn-primary">Filtrar</button>
+    </form>
+</div>
+<hr>
+<div class="container">
+    <table class="table table-stripped">
+        <thead>
+            <tr>
+                <td>Ord.</td>
+                <th>ID</th>
+                <th>NICK</th>
+                <th>Poder</th>
+                <th>Killpoints</th>
+                <th>Mortes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for status in resultado %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td><a href="{% url 'player_profile' status.player.game_id %}">{{status.player.game_id}}</a></td>
+                <td>[{{status.player.alliance.tag}}] {{status.player.nick}} <span
+                        class="badge bg-info">{{status.player.status}}</span></td>
+                <td>{{status.power}}</td>
+                <td>{{status.killpoints}}</td>
+                <td>{{status.deaths}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
