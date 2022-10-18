@@ -18,7 +18,7 @@ from players.models import (
     Player,
     PlayerStatus,
     Alliance,
-    player_status,
+    PLAYER_STATUS,
     player_rank,
     player_spec,
 )
@@ -95,7 +95,7 @@ def edit_player(request, game_id):
     if request.method == "GET":
         context = {
             "player": player,
-            "status_list": player_status,
+            "status_list": PLAYER_STATUS,
             "ranks_list": player_rank,
             "specialty_list": player_spec,
             "alliances": allies,
@@ -112,7 +112,7 @@ def edit_player(request, game_id):
     logger.debug(f"{request.user.username} editou {player.game_id}")
     context = {
         "player": player,
-        "status_list": player_status,
+        "status_list": PLAYER_STATUS,
         "ranks_list": player_rank,
         "specialty_list": player_spec,
         "alliances": allies,

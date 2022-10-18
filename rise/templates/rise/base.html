@@ -43,14 +43,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/">Início</a>
                     </li>
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin">Painel Administrativo</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'config' %}" class="nav-link">Configurações gerais</a>
-                    </li>
-                    {% endif %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbardrop1" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -71,6 +63,13 @@
                             <li><a href="{% url 'busca_especial' %}" class="dropdown-item">Busca especial</a></li>
                             <li><a href="{% url 'reports_index' %}" class="dropdown-item">Relatório</a></li>
                             <li><a href="{% url 'upload_csv' %}" class="dropdown-item">Subir planilha</a></li>
+                            <li>
+                                <a class="dropdown-item" href="/admin">Painel Administrativo</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'config' %}" class="dropdown-item">Configurações gerais</a>
+                            </li>
+
                             {% endif %}
                         </ul>
                     </li>

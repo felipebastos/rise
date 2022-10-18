@@ -6,7 +6,7 @@ from django.db import models
 
 
 # Create your models here.
-player_status = (
+PLAYER_STATUS = (
     ("PLAYER", "Player"),
     ("SECUNDARIA", "Secundária"),
     ("FARM", "Farm"),
@@ -49,7 +49,7 @@ class Player(models.Model):
         max_length=30, choices=player_spec, default="end"
     )
     status = models.CharField(
-        max_length=100, default="PLAYER", choices=player_status
+        max_length=100, default="PLAYER", choices=PLAYER_STATUS
     )
     observacao = models.TextField(
         max_length=500, blank=True, null=True, default=""

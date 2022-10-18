@@ -1,6 +1,6 @@
 from django import forms
 
-from players.models import Alliance
+from players.models import PLAYER_STATUS, Alliance
 
 FILTRA_PODER = (
     ("0", "0"),
@@ -46,4 +46,11 @@ class FiltroForm(forms.Form):
     alianca = forms.ModelMultipleChoiceField(
         queryset=Alliance.objects.all().order_by("tag"),
         widget=forms.SelectMultiple(attrs={"class": "form-select"}),
+    )
+
+    status = forms.MultipleChoiceField(
+        choices=PLAYER_STATUS,
+        label="Status",
+        widget=forms.SelectMultiple(attrs={"class": "form-select"}),
+        required=False,
     )

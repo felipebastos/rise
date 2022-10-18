@@ -5,7 +5,7 @@ from django.db.models.aggregates import Max, Min
 from django.shortcuts import render
 from django.core.paginator import Paginator
 
-from players.models import Alliance, PlayerStatus, Player
+from players.models import PLAYER_STATUS, Alliance, PlayerStatus, Player
 from kvk.models import faixas
 from reports.forms import FiltroForm
 from rise.forms import SearchPlayerForm
@@ -126,6 +126,7 @@ def busca_especial(request):
     maximo = 2000000000
     order = "power"
     aliancas = Alliance.objects.all()
+    status = [item[0] for item in PLAYER_STATUS]
     ultimo_dia = PlayerStatus.objects.all().order_by("-data").first().data
     if request.method == "POST":
         form = FiltroForm(request.POST or None)
@@ -136,9 +137,15 @@ def busca_especial(request):
             ):
                 minimo = int(form.cleaned_data.get("poder_min"))
                 maximo = int(form.cleaned_data.get("poder_max"))
+            if "order" in form.cleaned_data:
                 order = form.cleaned_data.get("order")
-                if form.cleaned_data.get("alianca"):
-                    aliancas = form.cleaned_data.get("alianca")
+
+            if form.cleaned_data.get("alianca"):
+                aliancas = form.cleaned_data.get("alianca")
+
+            if form.cleaned_data.get("status"):
+                status = form.cleaned_data.get("status")
+            print(status)
 
     ultimos = (
         PlayerStatus.objects.filter(
@@ -147,6 +154,7 @@ def busca_especial(request):
             data__day=ultimo_dia.day,
         )
         .filter(player__alliance__in=aliancas)
+        .filter(player__status__in=status)
         .filter(power__gte=minimo, power__lte=maximo)
         .order_by(f"-{order}")
     )
