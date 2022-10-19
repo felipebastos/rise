@@ -145,7 +145,6 @@ def busca_especial(request):
 
             if form.cleaned_data.get("status"):
                 status = form.cleaned_data.get("status")
-            print(status)
 
     ultimos = (
         PlayerStatus.objects.filter(

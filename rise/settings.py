@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "reports.apps.ReportsConfig",
     "items.apps.ItemsConfig",
     "osiris.apps.OsirisConfig",
+    "tasks.apps.TasksConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -216,6 +217,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = "/home/k32/rise/static"
+
+TASK_DIR = os.listdir(os.path.join(BASE_DIR, "tasks", "scripts"))
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

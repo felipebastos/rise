@@ -1,0 +1,50 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Tarefas{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Tarefas</h1>
+    {% if mensagem %}
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        Resultado de <strong>{{mensagem.nome}}({{mensagem.uuid}}):</strong> {{mensagem.mensagem}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Última execução</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{task.nome_da_task}}</td>
+                <td>{{task.descricao}}</td>
+                {% if task.ultima_execucao %}
+                <td>{{task.ultima_execucao}}</td>
+                {% else %}
+                <td>Nunca executada</td>
+                {% endif %}
+                <td>
+                    <a href="{% url 'execute_task' task.uuid %}" class="btn btn-primary">Executar</a>
+                    <a href="{% url 'remove_task' task.uuid %}" class="btn btn-danger">Remover</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% if form %}
+<div class="container">
+    <h2>Configure uma task</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="btn btn-primary" type="submit">Configurar</button>
+    </form>
+</div>
+{% endif %}
+{% endblock %}
