@@ -6,20 +6,18 @@ from tasks.models import Task
 SCRIPTS = (
     (filename, filename)
     for filename in settings.TASK_DIR
-    if filename != "__pycache__"
+    if filename not in ["__pycache__", "script.py"]
 )
 
 
 class ConfiguraTask(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ["uuid", "nome_da_task", "descricao", "script"]
+        fields = ["uuid", "script"]
         widgets = {
             "uuid": forms.TextInput(
                 attrs={"class": "form-control", "readonly": "true"}
             ),
-            "nome_da_task": forms.TextInput(attrs={"class": "form-control"}),
-            "descricao": forms.TextInput(attrs={"class": "form-control"}),
             "script": forms.Select(
                 attrs={"class": "form-select"}, choices=SCRIPTS
             ),

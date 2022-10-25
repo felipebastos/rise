@@ -5,6 +5,8 @@ from uuid import uuid4
 from django.db import models
 from django.utils import timezone
 
+from tasks.scripts.script import RiseTask, RiseTaskResponse
+
 
 # Create your models here.
 class Task(models.Model):
@@ -22,11 +24,12 @@ class Task(models.Model):
         self.ultima_execucao = timezone.now()
         self.save()
 
-    def executar(self) -> str:
+    def executar(self) -> RiseTaskResponse:
         modulo = import_module(
             f"tasks.scripts.{self.script.split('.', maxsplit=1)[0]}"
         )
-        resp = modulo.main()
+        script: RiseTask = modulo.main()
+        resp: RiseTaskResponse = script.run()
         self.executou()
 
         return resp
