@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.db.models.aggregates import Max, Min
+from django.db.models import Q
 
 from mge.models import EventoDePoder, Punido
 
@@ -174,7 +175,9 @@ def findplayer(request):
             busca = request.POST["busca"]
             player = Player.objects.filter(game_id=busca).first()
             if not player:
-                players = Player.objects.filter(nick__icontains=busca)
+                players = Player.objects.filter(
+                    Q(nick__icontains=busca) | Q(observacao__icontains=busca)
+                )
                 context = {
                     "membros": players,
                     "termo": busca,
