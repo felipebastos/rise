@@ -175,9 +175,13 @@ def findplayer(request):
             busca = request.POST["busca"]
             player = Player.objects.filter(game_id=busca).first()
             if not player:
-                players = Player.objects.filter(
-                    Q(nick__icontains=busca) | Q(observacao__icontains=busca)
-                )
+                if request.user.is_authenticated:
+                    players = Player.objects.filter(
+                        Q(nick__icontains=busca)
+                        | Q(observacao__icontains=busca)
+                    )
+                else:
+                    players = Player.objects.filter(nick__icontains=busca)
                 context = {
                     "membros": players,
                     "termo": busca,
