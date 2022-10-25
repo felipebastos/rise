@@ -1,3 +1,4 @@
+from typing import Type
 from django import forms
 
 
@@ -20,8 +21,8 @@ class RiseTask:
         self.nome = nome
         self.descricao = descricao
 
-    def run(self) -> RiseTaskResponse:
+    def run(self, from_form: forms.Form = None) -> RiseTaskResponse:
         pass
 
-    def render(self) -> forms.BaseForm:
+    def form_class(self) -> Type[forms.Form]:
         pass
