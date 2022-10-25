@@ -29,7 +29,13 @@
                 <td>Nunca executada</td>
                 {% endif %}
                 <td>
-                    <a href="{% url 'execute_task' task.uuid %}" class="btn btn-primary">Executar</a>
+                    <form action="{% url 'execute_task' task.uuid %}" method="post">
+                        {% csrf_token %}
+                        {% if task.form %}
+                        {{task.form.as_p}}
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">Executar</button>
+                    </form>
                     <a href="{% url 'remove_task' task.uuid %}" class="btn btn-danger">Remover</a>
                 </td>
             </tr>

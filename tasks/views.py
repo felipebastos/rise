@@ -40,11 +40,15 @@ def home(request):
 def execute_task(request, uuid):
     task = Task.objects.get(uuid=uuid)
 
+    form = None
+    if task.form_class() is not None:
+        form = task.form_class()(request.POST or None)
+
     if task:
         request.session["resultado_task"] = {
             "nome": task.nome_da_task,
             "uuid": str(task.uuid),
-            "mensagem": str(task.executar()),
+            "mensagem": str(task.executar(form)),
         }
 
     return redirect(to=home)
