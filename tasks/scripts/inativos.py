@@ -1,3 +1,4 @@
+from django import forms
 from players.models import Player, PlayerStatus
 from tasks.scripts.script import RiseTask, RiseTaskResponse
 
@@ -28,6 +29,9 @@ class InativosTask(RiseTask):
             f"Atualizados os status de {players} player(s)."
         )
         return response
+
+    def render(self) -> forms.BaseForm:
+        return None
 
 
 def main() -> RiseTask:

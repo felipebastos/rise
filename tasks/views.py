@@ -1,8 +1,10 @@
+from importlib import import_module
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from tasks.forms import ConfiguraTask
 
 from tasks.models import Task
+from tasks.scripts.script import RiseTask
 
 # Create your views here.
 @login_required
@@ -12,7 +14,14 @@ def home(request):
     if request.method == "POST":
         form = ConfiguraTask(request.POST)
         if form.is_valid():
-            form.save()
+            nova_task: Task = form.save()
+            modulo = import_module(
+                f"tasks.scripts.{nova_task.script.split('.', maxsplit=1)[0]}"
+            )
+            script: RiseTask = modulo.main()
+            nova_task.nome_da_task = script.nome
+            nova_task.descricao = script.descricao
+            nova_task.save()
 
     mensagem = ""
     if "resultado_task" in request.session:
@@ -35,7 +44,7 @@ def execute_task(request, uuid):
         request.session["resultado_task"] = {
             "nome": task.nome_da_task,
             "uuid": str(task.uuid),
-            "mensagem": task.executar(),
+            "mensagem": str(task.executar()),
         }
 
     return redirect(to=home)
