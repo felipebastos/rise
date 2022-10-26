@@ -62,14 +62,16 @@ def home(request):
                 ):
                     status_list[
                         f"{status.get_status_display()} de {status.get_spec_display()}"
-                    ] = status.valor * (1.3 if item[1] else 1)
+                    ] = (
+                        round((status.valor * (1.3 if item[1] else 1)) * 2) / 2
+                    )
                 else:
                     status_list[
                         f"{status.get_status_display()} de {status.get_spec_display()}"
                     ] = status_list[
                         f"{status.get_status_display()} de {status.get_spec_display()}"
-                    ] + status.valor * (
-                        1.3 if item[1] else 1
+                    ] + round(
+                        (status.valor * (1.3 if item[1] else 1) * 2) / 2
                     )
 
     lista = {}
