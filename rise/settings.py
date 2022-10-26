@@ -40,6 +40,7 @@ else:
 INSTALLED_APPS = [
     "config.apps.ConfigConfig",
     "players.apps.PlayersConfig",
+    "equipments.apps.EquipmentsConfig",
     "bank.apps.BankConfig",
     "kvk.apps.KvkConfig",
     "mge.apps.MgeConfig",
@@ -216,7 +217,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = "/home/k32/rise/static"
+
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
+else:
+    STATIC_ROOT = BASE_DIR / "static"
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 TASK_DIR = os.listdir(os.path.join(BASE_DIR, "tasks", "scripts"))
 

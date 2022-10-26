@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf.urls.static import static
+from django.conf import settings
 
 from rise import views
 
@@ -31,12 +33,13 @@ urlpatterns = [
     path("items/", include("items.urls")),
     path("reports/", include("reports.urls")),
     path("osiris/", include("osiris.urls")),
+    path("equips/", include("equipments.urls")),
     path("config/", include("config.urls")),
     path("tasks/", include("tasks.urls")),
     path("captcha/", include("captcha.urls")),
     path("api/v1/", include("api.urls")),
     path("api-auth/", include("rest_framework.urls")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_header = "K32 Admin"
 admin.site.site_title = "Administração do K32"
