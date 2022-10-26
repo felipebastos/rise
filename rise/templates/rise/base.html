@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
         integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
+
+    {% block extracss %}
     <style>
         .medalhas {
             display: flex;
@@ -28,6 +30,7 @@
             margin: 10px;
         }
     </style>
+    {% endblock %}
 </head>
 
 <body>
@@ -54,24 +57,7 @@
                             <li><a href="{% url 'mge_index' %}" class="dropdown-item">MGE</a></li>
                             <li><a href="{% url 'arca_home' %}" class="dropdown-item">Arca de Osíris</a></li>
                             <li><a href="{% url 'advertencias' %}" class="dropdown-item">Advertências</a></li>
-                            <li><a href="{% url 'itemshome' %}" class="dropdown-item">Pedido de items</a></li>
-                            {% if user.is_authenticated %}
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a href="{% url 'creditos' %}" class="dropdown-item">Créditos</a></li>
-                            <li><a href="{% url 'busca_especial' %}" class="dropdown-item">Busca especial</a></li>
-                            <li><a href="{% url 'reports_index' %}" class="dropdown-item">Relatório</a></li>
-                            <li><a href="{% url 'upload_csv' %}" class="dropdown-item">Subir planilha</a></li>
-                            <li>
-                                <a class="dropdown-item" href="/admin">Painel Administrativo</a>
-                            </li>
-                            <li><a href="{% url 'tasks_home' %}" class="dropdown-item">Tarefas de rotina</a></li>
-                            <li>
-                                <a href="{% url 'config' %}" class="dropdown-item">Configurações gerais</a>
-                            </li>
 
-                            {% endif %}
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -105,6 +91,33 @@
                             <li><a class="dropdown-item" href="{% url 'listspec' 'lid' %}">Liderança</a></li>
                             {% if user.is_authenticated %}
                             <li><a class="dropdown-item" href="{% url 'listspec' 'end' %}">Não definidos</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop-tools" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Ferramentas
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbardrop-tools">
+                            <li><a class="dropdown-item" href="{% url 'equip_home' %}">Equipamentos</a></li>
+                            <li><a href="{% url 'itemshome' %}" class="dropdown-item">Pedido de items</a></li>
+                            {% if user.is_authenticated %}
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a href="{% url 'creditos' %}" class="dropdown-item">Créditos</a></li>
+                            <li><a href="{% url 'busca_especial' %}" class="dropdown-item">Busca especial</a></li>
+                            <li><a href="{% url 'reports_index' %}" class="dropdown-item">Relatório</a></li>
+                            <li><a href="{% url 'upload_csv' %}" class="dropdown-item">Subir planilha</a></li>
+                            <li>
+                                <a class="dropdown-item" href="/admin">Painel Administrativo</a>
+                            </li>
+                            <li><a href="{% url 'tasks_home' %}" class="dropdown-item">Tarefas de rotina</a></li>
+                            <li>
+                                <a href="{% url 'config' %}" class="dropdown-item">Configurações gerais</a>
+                            </li>
+
                             {% endif %}
                         </ul>
                     </li>

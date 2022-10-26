@@ -3,6 +3,7 @@ dados.csv
 etapas.csv
 .venv
 static/
+media/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
