@@ -1,0 +1,74 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Equipamentos{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+    <h1>Cadastre um novo equipamento</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2>Configuração geral</h2>
+        <div class="row">
+            {% for field in form %}
+            <div class="col">
+                {{ field.errors }}
+                {{field.label_tag}} {{field}}
+            </div>
+            {% endfor %}
+        </div>
+        <h2>Buffs</h2>
+        <div class="row">
+            {{ buffform.management_form }}
+            {% for duo in buffform %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Buff {{forloop.counter}}
+                        {% if buffform.can_delete %}
+                        <span>{{ duo.DELETE }}</span> (mark para não usar)
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            {{ duo.spec.errors }}
+                            {{ duo.spec.label_tag }} {{duo.spec}}
+                        </p>
+                        <p>
+                            {{ duo.status.errors }}
+                            {{ duo.status.label_tag }} {{duo.status}}
+                        </p>
+                        <p>
+                            {{ duo.valor.errors }}
+                            {{ duo.valor.label_tag }} {{duo.valor}}
+                        </p>
+                        <p>
+                            {{ duo.ativacao.errors }}
+                            <span>
+                                {{ duo.ativacao.label_tag }}
+                                <span class="badge rounded-pill bg-info" id="display{{forloop.counter0}}">100%</span>
+                            </span>
+
+                        <div id="range">
+                            {{duo.ativacao}}
+                        </div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="btn btn-primary" type="submit">Adicionar</button>
+    </form>
+</div>
+<script>
+    function update() {
+        let todos = document.querySelectorAll('div#range>input');
+        let cont = 0;
+        for (let range of todos) {
+            let display = document.querySelector(`#display${cont}`)
+            display.innerHTML = `${range.value * 100}%`;
+            cont++;
+        }
+    }
+</script>
+{% endif %}
+{% endblock %}

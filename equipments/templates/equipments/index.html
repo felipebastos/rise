@@ -61,91 +61,157 @@
         grid-column: 2 / 2;
         grid-row: 4 / 4;
     }
+
+    .equipform {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .item {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+    }
 </style>
 {% endblock %}
 {% block content %}
 {% if user.is_authenticated %}
 <div class="container">
-    <h1>Cadastre um novo equipamento</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <h2>Configuração geral</h2>
-        <div class="row">
-            {% for field in form %}
-            <div class="col">
-                {{ field.errors }}
-                {{field.label_tag}} {{field}}
-            </div>
-            {% endfor %}
-        </div>
-        <h2>Buffs</h2>
-        <div class="row">
-            {{ buffform.management_form }}
-            {% for duo in buffform %}
-            <div class="col">
-                <div class="card">
-                    <div class="card-header">
-                        Buff {{forloop.counter}}
-                        {% if buffform.can_delete %}
-                        <span>{{ duo.DELETE }}</span> (mark para não usar)
-                        {% endif %}
-                    </div>
-                    <div class="card-body">
-                        <p>
-                            {{ duo.spec.errors }}
-                            {{ duo.spec.label_tag }} {{duo.spec}}
-                        </p>
-                        <p>
-                            {{ duo.status.errors }}
-                            {{ duo.status.label_tag }} {{duo.status}}
-                        </p>
-                        <p>
-                            {{ duo.valor.errors }}
-                            {{ duo.valor.label_tag }} {{duo.valor}}
-                        </p>
-                        <p>
-                            {{ duo.ativacao.errors }}
-                            <span>
-                                {{ duo.ativacao.label_tag }}
-                                <span class="badge rounded-pill bg-info" id="display{{forloop.counter0}}">100%</span>
-                            </span>
-
-                        <div id="range">
-                            {{duo.ativacao}}
-                        </div>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        <button class="btn btn-primary" type="submit">Adicionar</button>
-    </form>
+    <a href="{% url 'equip_add' %}" class="btn btn-primary">Adicione novos equipamentos</a>
 </div>
-<script>
-    function update() {
-        let todos = document.querySelectorAll('div#range>input');
-        let cont = 0;
-        for (let range of todos) {
-            let display = document.querySelector(`#display${cont}`)
-            display.innerHTML = `${range.value * 100}%`;
-            cont++;
-        }
-    }
-</script>
 {% endif %}
 <div class="container">
     <h1>Configure um conjunto de equipamentos</h1>
     <div class="row">
-        <div class="col-4">
-            <h3>Escolha os equipamentos</h3>
-            <form method="get">
-                {{capform}}
-                <button type="submit" class="btn btn-primary">Calcular</button>
+        <div class="col-sm-4">
+            <h3 class="text-center">Escolha os equipamentos</h3>
+            <form method="get" onchange="submit()">
+                <div class="equipform">
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.capacete.label}} {{capform.capacete}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.cap_spec}}
+                                {{capform.cap_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.cap_icon}}
+                                {{capform.cap_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.peitoral.label}} {{capform.peitoral}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.pei_spec}}
+                                {{capform.pei_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.pei_icon}}
+                                {{capform.pei_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.armamento.label}} {{capform.armamento}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.arm_spec}}
+                                {{capform.arm_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.arm_icon}}
+                                {{capform.arm_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.luva.label}} {{capform.luva}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.luv_spec}}
+                                {{capform.luv_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.luv_icon}}
+                                {{capform.luv_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.calca.label}} {{capform.calca}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.cal_spec}}
+                                {{capform.cal_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.cal_icon}}
+                                {{capform.cal_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.ace.label}} {{capform.ace}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.ace_spec}}
+                                {{capform.ace_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.ace_icon}}
+                                {{capform.ace_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.botas.label}} {{capform.botas}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.bot_spec}}
+                                {{capform.bot_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.bot_icon}}
+                                {{capform.bot_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.acd.label}} {{capform.acd}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.acd_spec}}
+                                {{capform.acd_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.acd_icon}}
+                                {{capform.acd_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
-        <div class="col-4">
-            <h3>Montagem</h3>
+        <div class="col-sm-4">
+            <h3 class="text-center">Montagem</h3>
             <div class="armor-grid">
                 <div class="box capacete">
                     <img src="{{montagem.capacete.miniatura.url}}" alt="">
@@ -173,14 +239,18 @@
                 </div>
             </div>
         </div>
-        <div class="col-4">
-            <h3>Status</h3>
+        <div class="col-sm-4">
+            <h3 class="text-center">Status</h3>
             <table class="table table-striped">
                 <tbody>
                     {% for key, item in status.items %}
                     <tr>
                         <td>{{key}}</td>
-                        <td>{{item}}%</td>
+                        <td>{{item|floatformat:2}}%</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td>Nenhum status calculado</td>
                     </tr>
                     {% endfor %}
                 </tbody>

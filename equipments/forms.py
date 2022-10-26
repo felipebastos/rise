@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import inlineformset_factory
+from django.forms import CheckboxInput, inlineformset_factory
 
 from equipments.models import Buff, Equipamento
 
@@ -48,9 +48,29 @@ class EquipForm(forms.Form):
         widget=forms.Select(attrs={"class": "form-select"}),
         required=False,
     )
+    cap_spec = forms.BooleanField(
+        label="Spec",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        required=False,
+    )
+    cap_icon = forms.BooleanField(
+        label="Icônico",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        required=False,
+    )
     peitoral = forms.ModelChoiceField(
         queryset=Equipamento.objects.filter(slot="pei"),
         widget=forms.Select(attrs={"class": "form-select"}),
+        required=False,
+    )
+    pei_spec = forms.BooleanField(
+        label="Spec",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        required=False,
+    )
+    pei_icon = forms.BooleanField(
+        label="Icônico",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
         required=False,
     )
     armamento = forms.ModelChoiceField(
@@ -58,9 +78,29 @@ class EquipForm(forms.Form):
         widget=forms.Select(attrs={"class": "form-select"}),
         required=False,
     )
+    arm_spec = forms.BooleanField(
+        label="Spec",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        required=False,
+    )
+    arm_icon = forms.BooleanField(
+        label="Icônico",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        required=False,
+    )
     luva = forms.ModelChoiceField(
         queryset=Equipamento.objects.filter(slot="luv"),
         widget=forms.Select(attrs={"class": "form-select"}),
+        required=False,
+    )
+    luv_spec = forms.BooleanField(
+        label="Spec",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        required=False,
+    )
+    luv_icon = forms.BooleanField(
+        label="Icônico",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
         required=False,
     )
     calca = forms.ModelChoiceField(
@@ -69,9 +109,29 @@ class EquipForm(forms.Form):
         widget=forms.Select(attrs={"class": "form-select"}),
         required=False,
     )
+    cal_spec = forms.BooleanField(
+        label="Spec",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        required=False,
+    )
+    cal_icon = forms.BooleanField(
+        label="Icônico",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        required=False,
+    )
     botas = forms.ModelChoiceField(
         queryset=Equipamento.objects.filter(slot="bot"),
         widget=forms.Select(attrs={"class": "form-select"}),
+        required=False,
+    )
+    bot_spec = forms.BooleanField(
+        label="Spec",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        required=False,
+    )
+    bot_icon = forms.BooleanField(
+        label="Icônico",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
         required=False,
     )
     ace = forms.ModelChoiceField(
@@ -80,9 +140,29 @@ class EquipForm(forms.Form):
         widget=forms.Select(attrs={"class": "form-select"}),
         required=False,
     )
+    ace_spec = forms.BooleanField(
+        label="Spec",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        required=False,
+    )
+    ace_icon = forms.BooleanField(
+        label="Icônico",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        required=False,
+    )
     acd = forms.ModelChoiceField(
         label="Acessório da direita",
         queryset=Equipamento.objects.filter(slot="acd"),
         widget=forms.Select(attrs={"class": "form-select"}),
+        required=False,
+    )
+    acd_spec = forms.BooleanField(
+        label="Spec",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        required=False,
+    )
+    acd_icon = forms.BooleanField(
+        label="Icônico",
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
         required=False,
     )
