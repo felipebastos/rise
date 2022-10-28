@@ -5,54 +5,119 @@ from equipments.forms import BuffFormSet, EquipForm, EquipmentForm
 from equipments.models import Equipamento
 
 # Create your views here.
+PECAS = (
+    ("cap", "capacete"),
+    ("arm", "armamento"),
+    ("pei", "peitoral"),
+    ("luv", "luva"),
+    ("ace", "ace"),
+    ("cal", "calca"),
+    ("acd", "acd"),
+    ("bot", "botas"),
+)
+
+
 def home(request):
     equipform = EquipForm(request.GET or None)
 
     armadura = {}
 
-    if equipform.is_valid():
-        armadura["capacete"] = (
-            equipform.cleaned_data["capacete"] or Equipamento(),
-            equipform.cleaned_data["cap_spec"] or False,
-            equipform.cleaned_data["cap_icon"] or False,
-        )
-        armadura["armamento"] = (
-            equipform.cleaned_data["armamento"] or Equipamento(),
-            equipform.cleaned_data["arm_spec"] or False,
-            equipform.cleaned_data["arm_icon"] or False,
-        )
-        armadura["peitoral"] = (
-            equipform.cleaned_data["peitoral"] or Equipamento(),
-            equipform.cleaned_data["pei_spec"] or False,
-            equipform.cleaned_data["pei_icon"] or False,
-        )
-        armadura["luva"] = (
-            equipform.cleaned_data["luva"] or Equipamento(),
-            equipform.cleaned_data["luv_spec"] or False,
-            equipform.cleaned_data["luv_icon"] or False,
-        )
-        armadura["ace"] = (
-            equipform.cleaned_data["ace"] or Equipamento(),
-            equipform.cleaned_data["ace_spec"] or False,
-            equipform.cleaned_data["ace_icon"] or False,
-        )
-        armadura["calca"] = (
-            equipform.cleaned_data["calca"] or Equipamento(),
-            equipform.cleaned_data["cal_spec"] or False,
-            equipform.cleaned_data["cal_icon"] or False,
-        )
-        armadura["acd"] = (
-            equipform.cleaned_data["acd"] or Equipamento(),
-            equipform.cleaned_data["acd_spec"] or False,
-            equipform.cleaned_data["acd_icon"] or False,
-        )
-        armadura["botas"] = (
-            equipform.cleaned_data["botas"] or Equipamento(),
-            equipform.cleaned_data["bot_spec"] or False,
-            equipform.cleaned_data["bot_icon"] or False,
-        )
-
     status_list = {}
+    status_list["Status base: defesa"] = 0
+    status_list["Status base: ataque"] = 0
+    status_list["Status base: saúde"] = 0
+
+    if equipform.is_valid():
+        for peca in PECAS:
+            armadura[peca[1]] = (
+                equipform.cleaned_data[peca[1]] or Equipamento(),
+                equipform.cleaned_data[f"{peca[0]}_spec"] or False,
+                equipform.cleaned_data[f"{peca[0]}_icon"] or False,
+            )
+            if equipform.cleaned_data[f"{peca[0]}_icon"]:
+                print(f"tem icônico na {peca[0]}")
+                match (peca[0]):
+                    case ("cap"):
+                        status_list["Status base: defesa"] = (
+                            status_list["Status base: defesa"]
+                            + 3
+                            + (
+                                1
+                                if equipform.cleaned_data[f"{peca[0]}_spec"]
+                                else 0
+                            )
+                        )
+                    case ("pei"):
+                        status_list["Status base: defesa"] = (
+                            status_list["Status base: defesa"]
+                            + 3
+                            + (
+                                1
+                                if equipform.cleaned_data[f"{peca[0]}_spec"]
+                                else 0
+                            )
+                        )
+                    case ("arm"):
+                        status_list["Status base: ataque"] = (
+                            status_list["Status base: ataque"]
+                            + 3
+                            + (
+                                1
+                                if equipform.cleaned_data[f"{peca[0]}_spec"]
+                                else 0
+                            )
+                        )
+                    case ("luv"):
+                        status_list["Status base: ataque"] = (
+                            status_list["Status base: ataque"]
+                            + 3
+                            + (
+                                1
+                                if equipform.cleaned_data[f"{peca[0]}_spec"]
+                                else 0
+                            )
+                        )
+                    case ("cal"):
+                        status_list["Status base: saúde"] = (
+                            status_list["Status base: saúde"]
+                            + 3
+                            + (
+                                1
+                                if equipform.cleaned_data[f"{peca[0]}_spec"]
+                                else 0
+                            )
+                        )
+                    case ("bot"):
+                        status_list["Status base: saúde"] = (
+                            status_list["Status base: saúde"]
+                            + 3
+                            + (
+                                1
+                                if equipform.cleaned_data[f"{peca[0]}_spec"]
+                                else 0
+                            )
+                        )
+                    case ("ace"):
+                        status_list["Status base: saúde"] = (
+                            status_list["Status base: saúde"]
+                            + 3
+                            + (
+                                1
+                                if equipform.cleaned_data[f"{peca[0]}_spec"]
+                                else 0
+                            )
+                        )
+                    case ("acd"):
+                        status_list["Status base: saúde"] = (
+                            status_list["Status base: saúde"]
+                            + 3
+                            + (
+                                1
+                                if equipform.cleaned_data[f"{peca[0]}_spec"]
+                                else 0
+                            )
+                        )
+
     for i, item in armadura.items():
         if item[0].pk:
             for status in item[0].buffs.all():

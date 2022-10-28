@@ -4,7 +4,7 @@ from tasks.scripts.script import RiseTask, RiseTaskResponse
 
 
 class InativosTask(RiseTask):
-    def run(self) -> RiseTaskResponse:
+    def run(self, from_form: forms.Form = None) -> RiseTaskResponse:
         ultima_leitura = (
             PlayerStatus.objects.all().order_by("-data").first().data
         )

@@ -246,7 +246,11 @@
                     {% for key, item in status.items %}
                     <tr>
                         <td>{{key}}</td>
+                        {% if forloop.counter > 3 %}
                         <td>{{item|floatformat:2}}%</td>
+                        {% else %}
+                        <td>+ {{item|floatformat:0}}</td>
+                        {% endif %}
                     </tr>
                     {% empty %}
                     <tr>
