@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
@@ -23,8 +24,8 @@ def home(request):
     armadura = {}
 
     status_list = {}
-    status_list["Status base: defesa"] = 0
     status_list["Status base: ataque"] = 0
+    status_list["Status base: defesa"] = 0
     status_list["Status base: saúde"] = 0
 
     if equipform.is_valid():
@@ -35,7 +36,6 @@ def home(request):
                 equipform.cleaned_data[f"{peca[0]}_icon"] or False,
             )
             if equipform.cleaned_data[f"{peca[0]}_icon"]:
-                print(f"tem icônico na {peca[0]}")
                 match (peca[0]):
                     case ("cap"):
                         status_list["Status base: defesa"] = (
@@ -118,22 +118,24 @@ def home(request):
                             )
                         )
 
+    buffs = {}
+
     for i, item in armadura.items():
         if item[0].pk:
             for status in item[0].buffs.all():
                 if (
                     f"{status.get_status_display()} de {status.get_spec_display()}"
-                    not in status_list
+                    not in buffs
                 ):
-                    status_list[
+                    buffs[
                         f"{status.get_status_display()} de {status.get_spec_display()}"
                     ] = (
                         round((status.valor * (1.3 if item[1] else 1)) * 2) / 2
                     )
                 else:
-                    status_list[
+                    buffs[
                         f"{status.get_status_display()} de {status.get_spec_display()}"
-                    ] = status_list[
+                    ] = buffs[
                         f"{status.get_status_display()} de {status.get_spec_display()}"
                     ] + round(
                         (status.valor * (1.3 if item[1] else 1) * 2) / 2
@@ -143,10 +145,17 @@ def home(request):
     for key, item in armadura.items():
         lista[key] = item[0]
 
+    ordered_buffs = OrderedDict()
+
+    key_list = sorted(buffs.keys())
+    for key in key_list:
+        ordered_buffs[key] = buffs[key]
+
     context = {
         "capform": equipform,
         "montagem": lista,
         "status": status_list,
+        "buffs": ordered_buffs,
     }
 
     return render(request, "equipments/index.html", context=context)

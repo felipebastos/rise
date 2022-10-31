@@ -246,15 +246,26 @@
                     {% for key, item in status.items %}
                     <tr>
                         <td>{{key}}</td>
-                        {% if forloop.counter > 3 %}
-                        <td>{{item|floatformat:2}}%</td>
-                        {% else %}
                         <td>+ {{item|floatformat:0}}</td>
-                        {% endif %}
                     </tr>
                     {% empty %}
                     <tr>
                         <td>Nenhum status calculado</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h3 class="text-center">Buffs</h3>
+            <table class="table table-striped">
+                <tbody>
+                    {% for key, item in buffs.items %}
+                    <tr>
+                        <td>{{key}}</td>
+                        <td>{{item|floatformat:2}}%</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td>Nenhum buff calculado</td>
                     </tr>
                     {% endfor %}
                 </tbody>

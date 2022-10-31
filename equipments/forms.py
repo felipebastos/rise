@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import CheckboxInput, inlineformset_factory
+from django.forms import inlineformset_factory
 
 from equipments.models import Buff, Equipamento
 
@@ -44,7 +44,7 @@ BuffFormSet = inlineformset_factory(
 
 class EquipForm(forms.Form):
     capacete = forms.ModelChoiceField(
-        queryset=Equipamento.objects.filter(slot="cap"),
+        queryset=Equipamento.objects.filter(slot="cap").order_by("nome"),
         widget=forms.Select(attrs={"class": "form-select"}),
         required=False,
     )
@@ -59,7 +59,7 @@ class EquipForm(forms.Form):
         required=False,
     )
     peitoral = forms.ModelChoiceField(
-        queryset=Equipamento.objects.filter(slot="pei"),
+        queryset=Equipamento.objects.filter(slot="pei").order_by("nome"),
         widget=forms.Select(attrs={"class": "form-select"}),
         required=False,
     )
@@ -74,7 +74,7 @@ class EquipForm(forms.Form):
         required=False,
     )
     armamento = forms.ModelChoiceField(
-        queryset=Equipamento.objects.filter(slot="arm"),
+        queryset=Equipamento.objects.filter(slot="arm").order_by("nome"),
         widget=forms.Select(attrs={"class": "form-select"}),
         required=False,
     )
@@ -89,7 +89,7 @@ class EquipForm(forms.Form):
         required=False,
     )
     luva = forms.ModelChoiceField(
-        queryset=Equipamento.objects.filter(slot="luv"),
+        queryset=Equipamento.objects.filter(slot="luv").order_by("nome"),
         widget=forms.Select(attrs={"class": "form-select"}),
         required=False,
     )
@@ -105,7 +105,7 @@ class EquipForm(forms.Form):
     )
     calca = forms.ModelChoiceField(
         label="Calça",
-        queryset=Equipamento.objects.filter(slot="cal"),
+        queryset=Equipamento.objects.filter(slot="cal").order_by("nome"),
         widget=forms.Select(attrs={"class": "form-select"}),
         required=False,
     )
@@ -120,7 +120,7 @@ class EquipForm(forms.Form):
         required=False,
     )
     botas = forms.ModelChoiceField(
-        queryset=Equipamento.objects.filter(slot="bot"),
+        queryset=Equipamento.objects.filter(slot="bot").order_by("nome"),
         widget=forms.Select(attrs={"class": "form-select"}),
         required=False,
     )
@@ -136,7 +136,7 @@ class EquipForm(forms.Form):
     )
     ace = forms.ModelChoiceField(
         label="Acessório da esquerda",
-        queryset=Equipamento.objects.filter(slot="ace"),
+        queryset=Equipamento.objects.filter(slot="ace").order_by("nome"),
         widget=forms.Select(attrs={"class": "form-select"}),
         required=False,
     )
@@ -152,7 +152,7 @@ class EquipForm(forms.Form):
     )
     acd = forms.ModelChoiceField(
         label="Acessório da direita",
-        queryset=Equipamento.objects.filter(slot="acd"),
+        queryset=Equipamento.objects.filter(slot="acd").order_by("nome"),
         widget=forms.Select(attrs={"class": "form-select"}),
         required=False,
     )
