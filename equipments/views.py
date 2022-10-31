@@ -2,8 +2,14 @@ from collections import OrderedDict
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-from equipments.forms import BuffFormSet, EquipForm, EquipmentForm
-from equipments.models import Equipamento
+from equipments.forms import (
+    BuffFormSet,
+    ConjuntoForm,
+    EquipForm,
+    EquipmentForm,
+    SetBuffFormSet,
+)
+from equipments.models import Conjunto, Equipamento
 
 # Create your views here.
 PECAS = (
@@ -22,6 +28,7 @@ def home(request):
     equipform = EquipForm(request.GET or None)
 
     armadura = {}
+    buffs_conjuntos = {}
 
     status_list = {}
     status_list["Status base: ataque"] = 0
@@ -118,26 +125,28 @@ def home(request):
                             )
                         )
 
+    lista = []
+    for k, peca in armadura.items():
+        lista.append(peca[0])
+    for conj in Conjunto.objects.all():
+        has_buffs = conj.get_buffs(lista)
+        if has_buffs:
+            buffs_conjuntos[conj.nome] = has_buffs
+
     buffs = {}
 
     for i, item in armadura.items():
         if item[0].pk:
             for status in item[0].buffs.all():
-                if (
-                    f"{status.get_status_display()} de {status.get_spec_display()}"
-                    not in buffs
-                ):
-                    buffs[
-                        f"{status.get_status_display()} de {status.get_spec_display()}"
-                    ] = (
+                label = f"{status.get_status_display()} de {status.get_spec_display()}"
+                if status.ativacao < 1:
+                    label = f"{label} ({status.ativacao*100}%)"
+                if label not in buffs:
+                    buffs[label] = (
                         round((status.valor * (1.3 if item[1] else 1)) * 2) / 2
                     )
                 else:
-                    buffs[
-                        f"{status.get_status_display()} de {status.get_spec_display()}"
-                    ] = buffs[
-                        f"{status.get_status_display()} de {status.get_spec_display()}"
-                    ] + round(
+                    buffs[label] = buffs[label] + round(
                         (status.valor * (1.3 if item[1] else 1) * 2) / 2
                     )
 
@@ -156,6 +165,7 @@ def home(request):
         "montagem": lista,
         "status": status_list,
         "buffs": ordered_buffs,
+        "conjuntos": buffs_conjuntos,
     }
 
     return render(request, "equipments/index.html", context=context)
@@ -184,3 +194,24 @@ def add_equip(request):
     }
 
     return render(request, "equipments/add.html", context=context)
+
+
+@login_required
+def conjuntos(request):
+    form = ConjuntoForm()
+    buffform = SetBuffFormSet()
+    if request.method == "POST":
+        form = ConjuntoForm(request.POST)
+
+        instance = None
+        if form.is_valid():
+            instance = form.save()
+        buffform = SetBuffFormSet(request.POST, instance=instance)
+        if buffform.is_valid():
+            buffform.save()
+
+    context = {
+        "form": form,
+        "buffform": buffform,
+    }
+    return render(request, "equipments/conjuntos.html", context=context)

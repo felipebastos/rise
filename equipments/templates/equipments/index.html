@@ -78,6 +78,7 @@
 {% if user.is_authenticated %}
 <div class="container">
     <a href="{% url 'equip_add' %}" class="btn btn-primary">Adicione novos equipamentos</a>
+    <a href="{% url 'conjunto_add' %}" class="btn btn-primary">Configure conjuntos</a>
 </div>
 {% endif %}
 <div class="container">
@@ -266,6 +267,23 @@
                     {% empty %}
                     <tr>
                         <td>Nenhum buff calculado</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h3 class="text-center">Buffs de conjuntos</h3>
+            <table class="table table-striped">
+                <tbody>
+                    {% for key, item in conjuntos.items %}
+                    {% for buff in item %}
+                    <tr>
+                        <td>{{key}} ({{buff.pecas}} peças)</td>
+                        <td>{{buff.get_status_display}} de {{buff.get_spec_display}} {{buff.valor|floatformat:2}}%</td>
+                    </tr>
+                    {% endfor %}
+                    {% empty %}
+                    <tr>
+                        <td>Nenhum buff de conjunto presente</td>
                     </tr>
                     {% endfor %}
                 </tbody>

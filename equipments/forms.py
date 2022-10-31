@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from equipments.models import Buff, Equipamento
+from equipments.models import Buff, BuffConjunto, Conjunto, Equipamento
 
 
 class EquipmentForm(forms.ModelForm):
@@ -152,7 +152,7 @@ class EquipForm(forms.Form):
     )
     acd = forms.ModelChoiceField(
         label="Acessório da direita",
-        queryset=Equipamento.objects.filter(slot="acd").order_by("nome"),
+        queryset=Equipamento.objects.filter(slot="ace").order_by("nome"),
         widget=forms.Select(attrs={"class": "form-select"}),
         required=False,
     )
@@ -166,3 +166,41 @@ class EquipForm(forms.Form):
         widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
         required=False,
     )
+
+
+class ConjuntoForm(forms.ModelForm):
+    class Meta:
+        model = Conjunto
+        fields = ["nome", "conjunto"]
+        widgets = {
+            "nome": forms.TextInput(attrs={"class": "form-control"}),
+            "conjunto": forms.SelectMultiple(attrs={"class": "form-select"}),
+        }
+
+
+SetBuffFormSet = inlineformset_factory(
+    Conjunto,
+    BuffConjunto,
+    fields=("spec", "status", "valor", "pecas", "ativacao"),
+    widgets={
+        "spec": forms.Select(attrs={"class": "form-select"}),
+        "status": forms.Select(attrs={"class": "form-select"}),
+        "valor": forms.NumberInput(
+            attrs={"class": "form-control", "value": "0"}
+        ),
+        "ativacao": forms.NumberInput(
+            attrs={
+                "class": "form-range",
+                "type": "range",
+                "value": "1.0",
+                "min": "0.0",
+                "max": "1.0",
+                "step": "0.05",
+                "onchange": "update()",
+            }
+        ),
+        "pecas": forms.Select(attrs={"class": "form-select"}),
+    },
+    extra=3,
+    can_delete_extra=True,
+)

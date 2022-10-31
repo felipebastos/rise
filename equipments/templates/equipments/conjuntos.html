@@ -1,21 +1,12 @@
 {% extends 'rise/base.html' %}
-{% block title %}- Equipamentos{% endblock %}
+{% block title %}- Conjuntos{% endblock %}
 {% block content %}
-{% if user.is_authenticated %}
 <div class="container">
-    <h1 class="text-center">Cadastre um novo equipamento</h1>
-    <form method="post" enctype="multipart/form-data">
+    <h2 class="text-center">Configure um conjunto</h2>
+    <form method="post">
         {% csrf_token %}
-        <h2 class="text-center">Configuração geral</h2>
-        <div class="row">
-            {% for field in form %}
-            <div class="col">
-                {{ field.errors }}
-                {{field.label_tag}} {{field}}
-            </div>
-            {% endfor %}
-        </div>
-        <h2 class="text-center">Buffs</h2>
+        {{form}}
+        <h3 class="text-center">Buffs do conjunto</h3>
         <div class="row">
             {{ buffform.management_form }}
             {% for duo in buffform %}
@@ -41,6 +32,10 @@
                             {{ duo.valor.label_tag }} {{duo.valor}}
                         </p>
                         <p>
+                            {{ duo.pecas.errors }}
+                            {{ duo.pecas.label_tag }} {{duo.pecas}}
+                        </p>
+                        <p>
                             {{ duo.ativacao.errors }}
                             <span>
                                 {{ duo.ativacao.label_tag }}
@@ -56,7 +51,7 @@
             </div>
             {% endfor %}
         </div>
-        <button class="btn btn-primary" type="submit">Adicionar</button>
+        <button class="btn btn-primary">Configurar</button>
     </form>
 </div>
 <script>
@@ -70,5 +65,4 @@
         }
     }
 </script>
-{% endif %}
 {% endblock %}
