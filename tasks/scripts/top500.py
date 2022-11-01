@@ -47,7 +47,7 @@ class Top500Task(RiseTask):
         players = (
             Player.objects.filter(game_id__in=game_ids_ativos)
             .filter(status__in=mudar)
-            .update(status="PLAYER")
+            .update(status="VIGIAR")
         )
 
         response = RiseTaskResponse(
@@ -64,5 +64,5 @@ def main() -> RiseTask:
     return Top500Task(
         nome="Reativa Top",
         descricao="Torna todos os inativos ou que \
-                           migraram e voltaram a aparecer na última leitura em player.",
+                           migraram e voltaram a aparecer na última leitura em vigiar.",
     )
