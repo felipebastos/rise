@@ -38,6 +38,11 @@
                 Estes pontos também não são considerados para calcular a média do grupo.
             </td>
         </tr>
+        <tr>
+            <td><span style="color:orange;">-numero</span> são os pontos abatidos por ter sido zerado (são abatidas as
+                mortes entre a leitura imediatamente após e a leitura imediatamente antes do zeramento)
+            </td>
+        </tr>
     </table>
     <div class="accordion" id="accordionExample">
         {% for grupo in categorizados %}
@@ -108,6 +113,10 @@
                                     <td>{{player.dt}}
                                         {% if player.player__game_id in adicionais %}
                                         <span style="color:green;">+ {{adicionais|get:player.player__game_id}}</span>
+                                        {% endif %}
+                                        {% if player.player__game_id in abates_de_zerados %}
+                                        <span style="color:orange;">-
+                                            {{abates_de_zerados|get:player.player__game_id}}</span>
                                         {% endif %}
                                     </td>
                                     {% if user.is_authenticated %}
