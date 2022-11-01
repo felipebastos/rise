@@ -137,6 +137,7 @@ def removezerado(request, kvk, zerado_id):
 
 def analisedesempenho(request, kvkid, cat):
     kvk = Kvk.objects.get(pk=kvkid)
+    abates_de_zerado = {}
 
     if cat not in ["kp", "dt"]:
         return render(request, "rise/404.html")
@@ -214,22 +215,31 @@ def analisedesempenho(request, kvkid, cat):
                 )
                 .order_by(f"-{cat}")
             )
+
             media = 0
             contabilizar = 0
+
             for stat in status:
                 player = Player.objects.get(pk=stat["player"])
-                if (
-                    not player in zerados_lista
-                    and not player in banidos_e_inativos
-                ):
+                if not player in banidos_e_inativos:
                     abater = 0
+                    abate_de_zeramento = 0
                     if cat == "kp":
                         abate_mge = PontosDeMGE.objects.filter(
                             kvk=kvk, player=player
                         )
                         for pontos in abate_mge:
                             abater = abater + pontos.pontos
-                    media = media + stat[cat] - abater
+
+                    abate_de_zeramento = get_desconto_de_zeramento(
+                        kvk_id=kvkid, player_id=player.id
+                    )
+                    if abate_de_zeramento > 0:
+                        abates_de_zerado[player.game_id] = abate_de_zeramento
+                    if cat == "dt":
+                        media = media + stat[cat] - abater - abate_de_zeramento
+                    else:
+                        media = media + stat[cat] - abater
                     contabilizar = contabilizar + 1
 
             if contabilizar:
@@ -242,6 +252,7 @@ def analisedesempenho(request, kvkid, cat):
                     adicional.t4_deaths * 0.25 + adicional.t5_deaths * 0.5
                 )
             context["adicionais"] = adicionais_dic
+            context["abates_de_zerados"] = abates_de_zerado
 
             mge_controlado = PontosDeMGE.objects.filter(kvk=kvk)
             abate_mge_dic = {}
@@ -273,7 +284,6 @@ def analisedesempenho(request, kvkid, cat):
 def adicionar_farms(request):
     if request.method == "POST":
         kvk = Kvk.objects.filter(id=request.POST["kvkid"]).first()
-        print(kvk)
         player = Player.objects.filter(
             game_id=request.POST["player_id"]
         ).first()
@@ -297,7 +307,6 @@ def adicionar_farms(request):
 def adicionar_mge_controlado(request):
     if request.method == "POST":
         kvk = Kvk.objects.filter(id=request.POST["kvkid"]).first()
-        print(kvk)
         player = Player.objects.filter(
             game_id=request.POST["player_id"]
         ).first()
@@ -319,7 +328,6 @@ def adicionar_mge_controlado(request):
 def registrar_etapa(request, kvkid):
     if request.method == "POST":
         etapamanualform = EtapaForm(request.POST)
-        print(request.POST["kvk"])
         if etapamanualform.is_valid():
             nova = Etapas()
             kvk_id = request.POST["kvk"]
@@ -418,3 +426,32 @@ def remove_cargo(request, cargoid):
         cargo.delete()
 
     return redirect(f"/kvk/edit/{kvkid}/")
+
+
+def get_desconto_de_zeramento(kvk_id, player_id):
+    zeramentos = Zerado.objects.filter(kvk=kvk_id, player=player_id)
+
+    if zeramentos:
+        total_mortos = 0
+        for zeramento in zeramentos:
+            status_antes = (
+                PlayerStatus.objects.filter(
+                    data__lte=zeramento.date, player=player_id
+                )
+                .order_by("-data")
+                .first()
+            )
+            status_depois = (
+                PlayerStatus.objects.filter(
+                    data__gte=zeramento.date, player=player_id
+                )
+                .order_by("data")
+                .first()
+            )
+
+            mortos = status_depois.deaths - status_antes.deaths
+            total_mortos = total_mortos + mortos
+
+        return total_mortos
+
+    return 0
