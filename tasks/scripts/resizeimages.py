@@ -66,7 +66,8 @@ class ResizeTask(RiseTask):
                     )
                     saving_diff = new_image_size - image_size
                     print(
-                        f"[+] Image size change: {saving_diff/image_size*100:.2f}% of the original image size."
+                        f"[+] Image size change: {saving_diff/image_size*100:.2f}% \
+                          of the original image size."
                     )
                 else:
                     print(f"Mantendo o tamanho original de {imagem}")
