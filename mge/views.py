@@ -105,6 +105,15 @@ def inscrever(request, mge_id):
         if "intuito" in request.POST:
             inscrito.intuito = request.POST["intuito"]
 
+        if "situacao" in request.POST:
+            inscrito.situacao = request.POST["situacao"]
+
+        if "gh" in request.POST:
+            inscrito.gh = request.POST["gh"]
+
+        if "prioridade" in request.POST:
+            inscrito.prioridade = request.POST["prioridade"]
+
         kvk = Kvk.objects.filter(ativo=False).order_by("-inicio").first()
 
         final = kvk.final
