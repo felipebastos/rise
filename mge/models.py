@@ -113,6 +113,10 @@ class Inscrito(models.Model):
 
     intuito = models.BooleanField(default=False)
 
+    situacao = models.CharField(max_length=5, default="0000")
+    gh = models.IntegerField(default=0)
+    prioridade = models.BooleanField(default=False)
+
     inserido = models.DateTimeField("Inserido", default=timezone.now)
 
     def __str__(self) -> str:
