@@ -139,7 +139,7 @@
                 {% endif %}
                 <td>{{inscrito.general}}{% if inscrito.intuito %} <span class="badge bg-success">Apenas
                         liberar</span>{% endif %}</td>
-                {% if user.is_authenticated and not rank_fechado %}
+                {% if user.is_authenticated %}
                 <td>
                     {% if inscrito.prioridade %}
                     <a href="#" class="btn btn-success position-relative">
