@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Kvk, Zerado, AdicionalDeFarms, Etapas, PontosDeMGE, Cargo
+from .models import AdicionalDeFarms, Cargo, Etapas, Kvk, PontosDeMGE, Zerado
 
 # Register your models here.
 

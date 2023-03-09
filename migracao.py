@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 
-from players.models import Alliance, Player, PlayerStatus, Advertencia
-from bank.models import Semana, Donation
-from kvk.models import Kvk, Zerado, AdicionalDeFarms, Etapas
-from mge.models import Mge, Punido, Ranking, Inscrito, Comandante, EventoDePoder
+from bank.models import Donation, Semana
+from kvk.models import AdicionalDeFarms, Etapas, Kvk, Zerado
+from mge.models import Comandante, EventoDePoder, Inscrito, Mge, Punido, Ranking
+from players.models import Advertencia, Alliance, Player, PlayerStatus
 
 
 def migrar(items):

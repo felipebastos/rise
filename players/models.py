@@ -1,9 +1,8 @@
 from datetime import date, datetime, timedelta, timezone
 
 from django.contrib.auth import get_user_model
-from django.utils import timezone as tz
 from django.db import models
-
+from django.utils import timezone as tz
 
 # Create your models here.
 PLAYER_STATUS = (

@@ -1,14 +1,15 @@
 from datetime import date, datetime, timedelta, timezone
 
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db.models.aggregates import Max, Min
 from django.shortcuts import render
-from django.core.paginator import Paginator
 
-from players.models import PLAYER_STATUS, Alliance, PlayerStatus, Player
 from kvk.models import faixas
+from players.models import PLAYER_STATUS, Alliance, Player, PlayerStatus
 from reports.forms import FiltroForm
 from rise.forms import SearchPlayerForm
+
 
 # Create your views here.
 @login_required

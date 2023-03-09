@@ -1,9 +1,8 @@
 import os
 
-from PIL import Image
-
 from django import forms
 from django.conf import settings
+from PIL import Image
 
 from tasks.scripts.script import RiseTask, RiseTaskResponse
 

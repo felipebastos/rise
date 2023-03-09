@@ -4,7 +4,9 @@ from osiris import views
 
 urlpatterns = [
     path("", views.home, name="arca_home"),
-    path("time/remove/<funcaoid>/", views.remove_funcao, name="remove_do_time"),
+    path(
+        "time/remove/<funcaoid>/", views.remove_funcao, name="remove_do_time"
+    ),
     path("time/<timeid>/", views.editar_time, name="editar_time"),
     path(
         "marchas/<funcaoid>/",

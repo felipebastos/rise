@@ -1,10 +1,7 @@
 from datetime import datetime
-from rest_framework import viewsets, filters
-from django.db.models import Max
 
-from kvk.models import Kvk, Zerado
-from mge.models import Inscrito, Mge, Punido, Ranking
-from players.models import Alliance, Player, PlayerStatus
+from django.db.models import Max
+from rest_framework import filters, viewsets
 
 from api.serializers import (
     AllianceSerializer,
@@ -18,6 +15,9 @@ from api.serializers import (
     RankingSerializer,
     ZeradoSerializer,
 )
+from kvk.models import Kvk, Zerado
+from mge.models import Inscrito, Mge, Punido, Ranking
+from players.models import Alliance, Player, PlayerStatus
 
 
 class PlayerViewSet(viewsets.ModelViewSet):

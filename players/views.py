@@ -2,31 +2,28 @@ import csv
 import logging
 from datetime import date
 
-from django.shortcuts import redirect, render
-from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.utils import timezone
 from django.core.paginator import Paginator
-from django.db.models.aggregates import Max, Min
 from django.db.models import Q
-
-from mge.models import EventoDePoder, Punido
+from django.db.models.aggregates import Max, Min
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.utils import timezone
 
 from bank.models import Credito
-
+from kvk.models import Cargo, Etapas, Kvk, PontosDeMGE, Zerado, get_minha_faixa
+from mge.models import EventoDePoder, Punido
+from players.forms import UploadFileForm
 from players.models import (
+    PLAYER_STATUS,
     Advertencia,
+    Alliance,
     Player,
     PlayerStatus,
-    Alliance,
-    PLAYER_STATUS,
     player_rank,
     player_spec,
 )
-from players.forms import UploadFileForm
-
 from rise.forms import SearchPlayerForm
-from kvk.models import Cargo, Etapas, Kvk, PontosDeMGE, Zerado, get_minha_faixa
 
 # Create your views here.
 logger = logging.getLogger("k32")
@@ -164,7 +161,9 @@ def review_players(request, ally_tag):
                 membro.alterado_por = request.user
                 membro.alterado_em = date.today()
                 membro.save()
-                logger.debug(f"{request.user.username} editou {membro.game_id}")
+                logger.debug(
+                    f"{request.user.username} editou {membro.game_id}"
+                )
         return redirect(f"/players/review/{ally_tag}/")
 
 
@@ -233,7 +232,9 @@ def add_status(request, game_id):
             if "zerado" in request.POST:
                 zerado = 1
 
-            return redirect(f"/kvk/update/{kvk.id}/{game_id}/{honra}/{zerado}/")
+            return redirect(
+                f"/kvk/update/{kvk.id}/{game_id}/{honra}/{zerado}/"
+            )
         if "origem" in request.POST:
             return redirect(request.POST["origem"])
         return redirect(f"/players/{game_id}/")
@@ -404,7 +405,6 @@ def populate(request):
 
 @login_required
 def alliance(request, ally_id):
-
     ally = Alliance.objects.get(pk=ally_id)
 
     if ally:

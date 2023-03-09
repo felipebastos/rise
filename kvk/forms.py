@@ -1,6 +1,6 @@
 from django import forms
 
-from kvk.models import Kvk, Cargo
+from kvk.models import Cargo, Kvk
 
 
 class EtapaForm(forms.Form):
@@ -11,7 +11,9 @@ class EtapaForm(forms.Form):
         required=True,
     )
     date = forms.DateField(
-        widget=forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+        widget=forms.DateInput(
+            attrs={"type": "date", "class": "form-control"}
+        ),
         label="Data da etapa",
         required=True,
     )

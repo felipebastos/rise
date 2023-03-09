@@ -1,11 +1,10 @@
 from datetime import date
 from typing import Tuple
-from django.db import models
 
+from django.db import models
 from django.utils import timezone
 
 from players.models import Player
-
 
 # Create your models here.
 kvk_choices = (

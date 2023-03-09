@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+
 from django.db import models
 from django.utils import timezone
 
@@ -31,7 +32,7 @@ class Semana(models.Model):
         return self.inicio() + timedelta(days=6)
 
     def recurso_da_semana(self):
-        for (cod, val) in resources:
+        for cod, val in resources:
             if cod == self.recurso:
                 return val
         return None

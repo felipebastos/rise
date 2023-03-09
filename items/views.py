@@ -1,10 +1,9 @@
-from django.shortcuts import render, redirect
-
-from players.models import Player
-
-from items.models import Pedido
+from django.shortcuts import redirect, render
 
 from items.forms import PedidoForm
+from items.models import Pedido
+from players.models import Player
+
 
 # Create your views here.
 def home(request):

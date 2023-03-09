@@ -1,10 +1,9 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
 
 from bank.forms import CreditoForm
-
 from bank.models import Credito, Donation, Semana
-from players.models import Player, Alliance
+from players.models import Alliance, Player
 
 
 # Create your views here.

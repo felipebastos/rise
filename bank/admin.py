@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Donation, Semana, Credito
+from .models import Credito, Donation, Semana
 
 
 class DonationAdmin(admin.ModelAdmin):

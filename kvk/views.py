@@ -2,25 +2,16 @@ import csv
 import logging
 from datetime import datetime
 
-from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from django.db.models.aggregates import Max, Min
+from django.shortcuts import redirect, render
 from django.utils import timezone
-
-from players.models import Player, PlayerStatus
+from django.views.decorators.cache import cache_page
 
 from kvk.forms import CargoForm, EtapaForm, UploadEtapasFileForm
-from kvk.models import (
-    Cargo,
-    Etapas,
-    Kvk,
-    PontosDeMGE,
-    Zerado,
-    AdicionalDeFarms,
-    faixas,
-)
+from kvk.models import AdicionalDeFarms, Cargo, Etapas, Kvk, PontosDeMGE, Zerado, faixas
+from players.models import Player, PlayerStatus
 
 # Create your views here.
 logger = logging.getLogger("k32")

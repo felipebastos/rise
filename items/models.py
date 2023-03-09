@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
+
 from players.models import Player
+
 
 # Create your models here.
 class Item(models.Model):

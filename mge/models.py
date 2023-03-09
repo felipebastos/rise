@@ -53,7 +53,9 @@ COMMANDERS = [
 
 class Mge(models.Model):
     criado_em = models.DateField("Criado em", default=date.today)
-    inicio_das_inscricoes = models.DateField("Início das inscrições", null=True)
+    inicio_das_inscricoes = models.DateField(
+        "Início das inscrições", null=True
+    )
     tipo = models.CharField(
         "Tipo", max_length=2, choices=COMMANDER_CHOICES, default="0"
     )
