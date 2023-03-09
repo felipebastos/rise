@@ -1,4 +1,5 @@
 from typing import Dict
+
 from django import template
 
 from kvk.models import Cargo

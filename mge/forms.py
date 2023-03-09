@@ -1,6 +1,6 @@
 from django import forms
 
-from mge.models import Mge, COMMANDER_CHOICES
+from mge.models import COMMANDER_CHOICES, Mge
 
 
 class CriaMGE(forms.Form):

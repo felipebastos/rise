@@ -1,9 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 
 from osiris.forms import ArcaForm, MarchaForm, TimeForm
-from osiris.models import Funcao, Time, Marcha
+from osiris.models import Funcao, Marcha, Time
+
 
 # Create your views here.
 def home(request):

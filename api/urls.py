@@ -1,17 +1,18 @@
-from django.urls import path, include
+from django.urls import include, path
 from rest_framework import routers
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
 )
+
 from api.views import (
+    AllianceViewSet,
     InscritoViewSet,
     KvkViewSet,
     MgeViewSet,
     PlayerStatusViewSet,
     PlayerViewSet,
-    AllianceViewSet,
     PunidoViewSet,
     RankingViewSet,
     Top10KillPointsViewSet,
@@ -19,7 +20,6 @@ from api.views import (
     Top10PowerViewSet,
     ZeradoViewSet,
 )
-
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()

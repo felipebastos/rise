@@ -1,6 +1,6 @@
 from django import template
-from kvk.models import Cargo
 
+from kvk.models import Cargo
 from players.models import Alliance
 
 register = template.Library()

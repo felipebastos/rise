@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Mge, Ranking, Punido, Inscrito, EventoDePoder
+from .models import EventoDePoder, Inscrito, Mge, Punido, Ranking
 
 # Register your models here.
 admin.site.register(Mge)

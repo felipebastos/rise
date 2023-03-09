@@ -1,7 +1,9 @@
 from datetime import datetime
+
 from django import template
-from mge.models import EventoDePoder, Inscrito, Punido
 from django.utils import timezone
+
+from mge.models import EventoDePoder, Inscrito, Punido
 
 register = template.Library()
 

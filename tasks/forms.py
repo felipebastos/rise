@@ -1,5 +1,5 @@
-from django.conf import settings
 from django import forms
+from django.conf import settings
 
 from tasks.models import Task
 

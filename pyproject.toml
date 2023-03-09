@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rise"
-version = "0.1.0"
+version = "0.2.0"
 description = "A project to manage a Rise of Kingdoms kingdom"
 authors = ["Felipe Bastos <felipe.bstosn@gmail.com>"]
 license = "GPL-3.0"
@@ -17,16 +17,43 @@ gunicorn = "^20.1.0"
 django-cors-headers = "^3.11.0"
 mysqlclient = "^2.1.1"
 
-[tool.poetry.dev-dependencies]
+
+[tool.poetry.group.dev.dependencies]
 pylint = "^2.9.2"
 pytest = "^6.2.4"
 autopep8 = "^1.5.7"
 black = "^22.3"
 requests = "^2.27.1"
 pylint-django = "^2.5.3"
+pytest-cov = "^4.0.0"
+isort = "^5.12.0"
+taskipy = "^1.10.3"
+bandit = "^1.7.4"
+pre-commit = "^3.1.1"
+
+
+[tool.poetry.group.doc.dependencies]
+mkdocs = "^1.4.2"
+mkdocs-material = "^9.1.2"
+
+
+[tool.taskipy.tasks]
+requirements = { cmd = 'poetry export -o requirements.txt', help = 'Exporta o requirements.txt' }
+onboard = { cmd = 'pre-commit install', help = 'Instala os hooks de pre-commit' }
+lint = { cmd = 'pylint .', help = 'Checagem estática' }
+test = { cmd = 'pytest', help = 'Executa os testes' }
+coverage = { cmd = 'pytest --cov', help = 'Verifica a cobertura de testes' }
+secure = { cmd = 'bandit -r kvk api bank config equipments items mge osiris players reports rise tasks', help = 'Gera relatório de falhas de segurança no código.' }
+imports = { cmd = 'isort .', help = 'Organiza os imports do projeto' }
+format = { cmd = 'black .', help = 'Formata o código' }
+
+
+[tool.isort]
+profile = "black"
+
 
 [tool.black]
-line-length = 80
+line-length = 79
 include = '\.pyi?$'
 
 

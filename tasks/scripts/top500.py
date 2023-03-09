@@ -1,5 +1,7 @@
 from typing import Type
+
 from django import forms
+
 from players.models import Player, PlayerStatus
 from tasks.scripts.script import RiseTask, RiseTaskResponse
 
@@ -40,7 +42,9 @@ class Top500Task(RiseTask):
                 data__day=ultima_leitura.day,
             )
 
-        game_ids_ativos = [status.player.game_id for status in ativos_no_top500]
+        game_ids_ativos = [
+            status.player.game_id for status in ativos_no_top500
+        ]
 
         mudar = ["MIGROU", "INATIVO"]
 

@@ -1,6 +1,6 @@
 from django import forms
 
-from osiris.models import TIMES, Time, Marcha
+from osiris.models import TIMES, Marcha, Time
 from players.models import Player
 
 

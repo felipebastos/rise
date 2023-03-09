@@ -1,8 +1,8 @@
 from rest_framework import serializers
+
 from kvk.models import Kvk, Zerado
 from mge.models import Inscrito, Mge, Punido, Ranking
 from players.models import Alliance, Player, PlayerStatus
-
 
 # Player module Models
 

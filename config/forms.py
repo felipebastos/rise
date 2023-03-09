@@ -9,7 +9,9 @@ class ConfigForm(forms.ModelForm):
         model = SiteConfig
         fields = "__all__"
         widgets = {
-            "prazo_inscricao_mge": forms.Select(attrs={"class": "form-select"}),
+            "prazo_inscricao_mge": forms.Select(
+                attrs={"class": "form-select"}
+            ),
             "encerra_ranking": forms.Select(attrs={"class": "form-select"}),
             "banner": forms.Textarea(attrs={"class": "form-control"}),
         }

@@ -1,12 +1,13 @@
 import logging
-from django.shortcuts import render
 
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
-from config.models import SiteConfig
 from config.forms import ConfigForm, DestaqueFormSet
+from config.models import SiteConfig
 
 logger = logging.getLogger("k32")
+
 
 # Create your views here.
 @login_required

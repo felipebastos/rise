@@ -1,5 +1,7 @@
 from django.test import TestCase
+
 from .models import Player
+
 
 # Create your tests here.
 class PlayerTestCase(TestCase):

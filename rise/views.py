@@ -1,9 +1,9 @@
-from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
 
-from players.models import PlayerStatus
 from config.models import SiteConfig
+from players.models import PlayerStatus
 from rise.forms import LoginForm
 
 

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Advertencia, Player, Alliance, PlayerStatus
+from .models import Advertencia, Alliance, Player, PlayerStatus
 
 
 class PlayerAdmin(admin.ModelAdmin):

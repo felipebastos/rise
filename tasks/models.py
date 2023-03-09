@@ -1,9 +1,8 @@
 from importlib import import_module
 from typing import Type
-
 from uuid import uuid4
-from django import forms
 
+from django import forms
 from django.db import models
 from django.utils import timezone
 

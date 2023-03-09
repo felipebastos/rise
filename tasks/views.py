@@ -1,10 +1,12 @@
 from importlib import import_module
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from tasks.forms import ConfiguraTask
 
+from tasks.forms import ConfiguraTask
 from tasks.models import Task
 from tasks.scripts.script import RiseTask
+
 
 # Create your views here.
 @login_required

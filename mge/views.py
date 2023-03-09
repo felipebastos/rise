@@ -1,26 +1,24 @@
 import logging
 from datetime import date, timedelta
 
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.utils import timezone
 from django.db.models.aggregates import Max, Min
+from django.shortcuts import redirect, render
+from django.utils import timezone
+
 from config.models import SiteConfig
-
-from players.models import Advertencia, Player, PlayerStatus
-
+from kvk.models import Kvk
 from mge.forms import NovoCriaMGEForm
 from mge.models import (
+    COMMANDERS,
     Comandante,
     EventoDePoder,
+    Inscrito,
     Mge,
     Punido,
     Ranking,
-    Inscrito,
-    COMMANDERS,
 )
-
-from kvk.models import Kvk
+from players.models import Advertencia, Player, PlayerStatus
 
 # Create your views here.
 logger = logging.getLogger("k32")
@@ -72,7 +70,9 @@ def mgeedit(request, mge_id):
     punidos = Punido.objects.filter(mge=mge).order_by("inserido")
     insc_encerradas = False
     config = SiteConfig.objects.all().first()
-    if date.today() > mge.semana() - timedelta(days=config.prazo_inscricao_mge):
+    if date.today() > mge.semana() - timedelta(
+        days=config.prazo_inscricao_mge
+    ):
         # passou da quinta feira
         insc_encerradas = True
     rank_fechado = False
@@ -197,9 +197,7 @@ def punir(request, player_id):
     adv = Advertencia()
     adv.player = player
     adv.duracao = 15
-    adv.descricao = (
-        f'Queimou pontuação máxima no {mge} {mge.semana().strftime("%d/%m/%y")}'
-    )
+    adv.descricao = f'Queimou pontuação máxima no {mge} {mge.semana().strftime("%d/%m/%y")}'
     adv.save()
 
     return redirect(f"/mge/view/{mge.id}/")
