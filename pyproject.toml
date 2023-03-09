@@ -38,6 +38,7 @@ mkdocs-material = "^9.1.2"
 
 
 [tool.taskipy.tasks]
+requirements = { cmd = 'poetry export -o requirements.txt', help = 'Exporta o requirements.txt' }
 onboard = { cmd = 'pre-commit install', help = 'Instala os hooks de pre-commit' }
 lint = { cmd = 'pylint .', help = 'Checagem estática' }
 test = { cmd = 'pytest', help = 'Executa os testes' }
