@@ -40,7 +40,7 @@ mkdocs-material = "^9.1.2"
 [tool.taskipy.tasks]
 requirements = { cmd = 'poetry export -o requirements.txt', help = 'Exporta o requirements.txt' }
 onboard = { cmd = 'pre-commit install', help = 'Instala os hooks de pre-commit' }
-lint = { cmd = 'pylint .', help = 'Checagem estática' }
+lint = { cmd = 'pylint -f text . > linter-report.txt', help = 'Checagem estática' }
 test = { cmd = 'pytest', help = 'Executa os testes' }
 coverage = { cmd = 'pytest --cov', help = 'Verifica a cobertura de testes' }
 secure = { cmd = 'bandit -r kvk api bank config equipments items mge osiris players reports rise tasks', help = 'Gera relatório de falhas de segurança no código.' }
