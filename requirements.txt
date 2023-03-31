@@ -133,15 +133,15 @@ pyjwt==2.6.0 ; python_version >= "3.8" and python_version < "4.0" \
 python-dotenv==0.19.2 ; python_version >= "3.8" and python_version < "4.0" \
     --hash=sha256:32b2bdc1873fd3a3c346da1c6db83d0053c3c62f28f1f38516070c4c8971b1d3 \
     --hash=sha256:a5de49a31e953b45ff2d2fd434bbc2670e8db5273606c1e737cc6b93eff3655f
-pytz==2022.7.1 ; python_version >= "3.8" and python_version < "4.0" \
-    --hash=sha256:01a0681c4b9684a28304615eba55d1ab31ae00bf68ec157ec3708a8182dbbcd0 \
-    --hash=sha256:78f4f37d8198e0627c5f1143240bb0206b8691d8d7ac6d78fee88b78733f8c4a
-setuptools==67.6.0 ; python_version >= "3.8" and python_version < "4.0" \
-    --hash=sha256:2ee892cd5f29f3373097f5a814697e397cf3ce313616df0af11231e2ad118077 \
-    --hash=sha256:b78aaa36f6b90a074c1fa651168723acbf45d14cb1196b6f02c0fd07f17623b2
+pytz==2023.3 ; python_version >= "3.8" and python_version < "4.0" \
+    --hash=sha256:1d8ce29db189191fb55338ee6d0387d82ab59f3d00eac103412d64e0ebd0c588 \
+    --hash=sha256:a151b3abb88eda1d4e34a9814df37de2a80e301e68ba0fd856fb9b46bfbbbffb
+setuptools==67.6.1 ; python_version >= "3.8" and python_version < "4.0" \
+    --hash=sha256:257de92a9d50a60b8e22abfcbb771571fde0dbf3ec234463212027a4eeecbe9a \
+    --hash=sha256:e728ca814a823bf7bf60162daf9db95b93d532948c4c0bea762ce62f60189078
 sqlparse==0.4.3 ; python_version >= "3.8" and python_version < "4.0" \
     --hash=sha256:0323c0ec29cd52bceabc1b4d9d579e311f3e4961b98d174201d5622a23b85e34 \
     --hash=sha256:69ca804846bb114d2ec380e4360a8a340db83f0ccf3afceeb1404df028f57268
-tzdata==2022.7 ; python_version >= "3.8" and python_version < "4.0" and sys_platform == "win32" \
-    --hash=sha256:2b88858b0e3120792a3c0635c23daf36a7d7eeeca657c323da299d2094402a0d \
-    --hash=sha256:fe5f866eddd8b96e9fcba978f8e503c909b19ea7efda11e52e39494bad3a7bfa
+tzdata==2023.3 ; python_version >= "3.8" and python_version < "4.0" and sys_platform == "win32" \
+    --hash=sha256:11ef1e08e54acb0d4f95bdb1be05da659673de4acbd21bf9c69e94cc5e907a3a \
+    --hash=sha256:7e65763eef3120314099b6939b5546db7adce1e7d6f2e179e3df563c70511eda
