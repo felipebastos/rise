@@ -10,7 +10,15 @@ from django.utils import timezone
 from django.views.decorators.cache import cache_page
 
 from kvk.forms import CargoForm, EtapaForm, UploadEtapasFileForm
-from kvk.models import AdicionalDeFarms, Cargo, Etapas, Kvk, PontosDeMGE, Zerado, faixas
+from kvk.models import (
+    AdicionalDeFarms,
+    Cargo,
+    Etapas,
+    Kvk,
+    PontosDeMGE,
+    Zerado,
+    faixas,
+)
 from players.models import Player, PlayerStatus
 
 # Create your views here.
@@ -43,6 +51,10 @@ def show_kvk(request, kvkid):
     for zerado in zerados:
         zerados_lista.append(zerado.player)
 
+    inicio = kvk.inicio
+    if kvk.primeira_luta:
+        inicio = kvk.primeira_luta
+
     final = kvk.final
     if not final:
         final = timezone.now()
@@ -54,7 +66,7 @@ def show_kvk(request, kvkid):
     topkp = (
         PlayerStatus.objects.all()
         .exclude(player__in=farms_banidos_e_inativos)
-        .filter(data__gte=kvk.inicio)
+        .filter(data__gte=inicio)
         .filter(data__lte=final)
         .values("player__nick", "player__game_id")
         .annotate(
@@ -67,7 +79,7 @@ def show_kvk(request, kvkid):
         PlayerStatus.objects.all()
         .exclude(player__in=zerados_lista)
         .exclude(player__in=farms_banidos_e_inativos)
-        .filter(data__gte=kvk.inicio)
+        .filter(data__gte=inicio)
         .filter(data__lte=final)
         .values("player__nick", "player__game_id")
         .annotate(
@@ -136,6 +148,10 @@ def analisedesempenho(request, kvkid, cat):
     if kvk.id == 4:
         return render(request, "rise/404.html")
 
+    inicio = kvk.inicio
+    if kvk.primeira_luta:
+        inicio = kvk.primeira_luta
+
     final = kvk.final
     if not final:
         final = timezone.now()
@@ -192,7 +208,7 @@ def analisedesempenho(request, kvkid, cat):
 
             status = (
                 PlayerStatus.objects.filter(player__in=players_faixa_original)
-                .filter(data__gte=kvk.inicio)
+                .filter(data__gte=inicio)
                 .filter(data__lte=final)
                 .values(
                     "player",

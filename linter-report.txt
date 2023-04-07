@@ -131,14 +131,14 @@ tasks\views.py:1:0: R0801: Similar lines in 2 files
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==api.views:[86:94]
 ==rise.views:[13:21]
-        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-        .exclude(player__status="INATIVO")
-        .exclude(player__status="BANIDO")
-        .filter(
-            data__year=ultimo.data.year,
-            data__month=ultimo.data.month,
-            data__day=ultimo.data.day,
-        ) (duplicate-code)
+            PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
+            .exclude(player__status="INATIVO")
+            .exclude(player__status="BANIDO")
+            .filter(
+                data__year=ultimo.data.year,
+                data__month=ultimo.data.month,
+                data__day=ultimo.data.day,
+            ) (duplicate-code)
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==api.views:[64:72]
 ==rise.views:[25:33]
@@ -174,17 +174,17 @@ tasks\views.py:1:0: R0801: Similar lines in 2 files
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==api.views:[107:119]
 ==rise.views:[36:48]
-    o_reino_mortes = (
-        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-        .exclude(player__status="INATIVO")
-        .exclude(player__status="BANIDO")
-        .filter(
-            data__year=ultimo.data.year,
-            data__month=ultimo.data.month,
-            data__day=ultimo.data.day,
+        o_reino_mortes = (
+            PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
+            .exclude(player__status="INATIVO")
+            .exclude(player__status="BANIDO")
+            .filter(
+                data__year=ultimo.data.year,
+                data__month=ultimo.data.month,
+                data__day=ultimo.data.day,
+            )
+            .order_by("-deaths")
         )
-        .order_by("-deaths")
-    )
  (duplicate-code)
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==api.views:[85:97]
@@ -204,3 +204,4 @@ tasks\views.py:1:0: R0801: Similar lines in 2 files
 
 ------------------------------------------------------------------
 Your code has been rated at 9.56/10 (previous run: 9.56/10, +0.00)
+

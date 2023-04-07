@@ -39,6 +39,8 @@ class Kvk(models.Model):
     tipo = models.CharField(max_length=2, choices=kvk_choices, default="HA")
     ativo = models.BooleanField(default=True)
 
+    primeira_luta = models.DateField(null=True)
+
     def __str__(self):
         return f"KvK iniciado em {self.inicio}"
 
