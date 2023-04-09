@@ -311,19 +311,19 @@ def populate(request):
                 # create new player
                 jogador = Player()
                 jogador.game_id = row[0]
-                jogador.nick = row[2]
+                jogador.nick = row[1]
                 psa = Alliance.objects.filter(tag="PSA").first()
                 jogador.alliance = psa
                 jogador.save()
             else:
                 # update some data
                 oldnick = jogador.nick
-                print(f"Mudança de nick: {oldnick} > {row[2]}")
+                print(f"Mudança de nick: {oldnick} > {row[1]}")
                 jogador.nick = row[2]
                 if jogador.nick != oldnick:
                     if jogador.observacao:
                         jogador.observacao += (
-                            f"\r\nMudança de nick: {oldnick} > {row[2]}"
+                            f"\r\nMudança de nick: {oldnick} > {row[1]}"
                         )
                     else:
                         jogador.observacao = (
