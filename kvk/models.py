@@ -35,11 +35,11 @@ def get_minha_faixa(poder: int) -> Tuple[int, int]:
 
 class Kvk(models.Model):
     inicio = models.DateField(default=date.today, unique=True)
-    final = models.DateField(null=True)
+    final = models.DateField(null=True, blank=True)
     tipo = models.CharField(max_length=2, choices=kvk_choices, default="HA")
     ativo = models.BooleanField(default=True)
 
-    primeira_luta = models.DateField(null=True)
+    primeira_luta = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return f"KvK iniciado em {self.inicio}"
