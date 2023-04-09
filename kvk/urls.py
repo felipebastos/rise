@@ -29,4 +29,5 @@ urlpatterns = [
     path("clearetapa/<kvkid>/", views.clear_etapas, name="limparetapas"),
     path("cargos/<kvkid>/", views.cargos_view, name="cargos_view"),
     path("removecargo/<cargoid>/", views.remove_cargo, name="remove_cargo"),
+    path("config/<kvkid>/", views.config_kvk, name="config_kvk"),
 ]

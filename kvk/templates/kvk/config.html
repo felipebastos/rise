@@ -1,0 +1,13 @@
+{% extends 'rise/base.html' %}
+{% block title %}- KvK{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h2>Configurando o {{kvk}}</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary" type="submit">Salvar</button>
+        <a href="{% url 'show_kvk' kvk.id %}" class="btn btn-secondary">Voltar</a>
+    </form>
+</div>
+{% endblock %}

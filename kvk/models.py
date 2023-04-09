@@ -10,6 +10,7 @@ from players.models import Player
 kvk_choices = (
     ("HA", "Hino Heróico"),
     ("C8", "Conflito dos 8"),
+    ("NI", "Nilo"),
 )
 
 faixas = [

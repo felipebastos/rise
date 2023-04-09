@@ -44,3 +44,27 @@ class CargoForm(forms.ModelForm):
         labels = {
             "funcao": "Função",
         }
+
+
+class KvkConfigForm(forms.ModelForm):
+    class Meta:
+        model = Kvk
+        fields = ["inicio", "tipo", "primeira_luta", "final"]
+        widgets = {
+            "inicio": forms.DateInput(
+                format=("%Y-%m-%d"),
+                attrs={"type": "date", "class": "form-control"},
+            ),
+            "final": forms.DateInput(
+                format=("%Y-%m-%d"),
+                attrs={"type": "date", "class": "form-control"},
+            ),
+            "tipo": forms.Select(attrs={"class": "form-select"}),
+            "primeira_luta": forms.DateInput(
+                format=("%Y-%m-%d"),
+                attrs={"type": "date", "class": "form-control"},
+            ),
+        }
+        labels = {
+            "primeira_luta": "Primeira luta",
+        }

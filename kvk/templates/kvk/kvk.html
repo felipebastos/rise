@@ -7,6 +7,7 @@
     {% if user.is_authenticated %}
     {% if kvk.ativo %}
     <a class="btn btn-warning" href="{% url 'close_kvk' kvk.id %}">Fechar registros</a>
+    <a href="{% url 'config_kvk' kvk.id %}" class="btn btn-secondary">Configurar KvK</a>
     {% else %}
     <a class="btn btn-success" href="{% url 'close_kvk' kvk.id %}">Abrir registros</a>
     {% endif %}

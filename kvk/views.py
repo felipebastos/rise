@@ -7,9 +7,8 @@ from django.core.cache import cache
 from django.db.models.aggregates import Max, Min
 from django.shortcuts import redirect, render
 from django.utils import timezone
-from django.views.decorators.cache import cache_page
 
-from kvk.forms import CargoForm, EtapaForm, UploadEtapasFileForm
+from kvk.forms import CargoForm, EtapaForm, UploadEtapasFileForm, KvkConfigForm
 from kvk.models import (
     AdicionalDeFarms,
     Cargo,
@@ -462,3 +461,30 @@ def get_desconto_de_zeramento(kvk_id, player_id):
         return total_mortos
 
     return 0
+
+
+@login_required
+def config_kvk(request, kvkid):
+    kvk = Kvk.objects.get(pk=kvkid)
+
+    if request.method == "POST":
+        form = KvkConfigForm(request.POST or None, instance=kvk)
+
+        if form.is_valid():
+            form.save()
+
+    form = KvkConfigForm(
+        initial={
+            "inicio": kvk.inicio,
+            "final": kvk.final,
+            "primeira_luta": kvk.primeira_luta,
+            "tipo": kvk.tipo,
+        },
+    )
+
+    context = {
+        "form": form,
+        "kvk": kvk,
+    }
+
+    return render(request, "kvk/config.html", context=context)
