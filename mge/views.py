@@ -116,6 +116,10 @@ def inscrever(request, mge_id):
 
         kvk = Kvk.objects.filter(ativo=False).order_by("-inicio").first()
 
+        inicio = kvk.inicio
+        if kvk.primeira_luta:
+            inicio = kvk.primeira_luta
+
         final = kvk.final
         if not final:
             final = timezone.now()
@@ -123,7 +127,7 @@ def inscrever(request, mge_id):
         status = (
             PlayerStatus.objects.all()
             .filter(player=player)
-            .filter(data__gte=kvk.inicio)
+            .filter(data__gte=inicio)
             .filter(data__lte=final)
             .values("player__nick")
             .annotate(

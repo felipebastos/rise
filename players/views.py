@@ -311,19 +311,19 @@ def populate(request):
                 # create new player
                 jogador = Player()
                 jogador.game_id = row[0]
-                jogador.nick = row[2]
+                jogador.nick = row[1]
                 psa = Alliance.objects.filter(tag="PSA").first()
                 jogador.alliance = psa
                 jogador.save()
             else:
                 # update some data
                 oldnick = jogador.nick
-                print(f"Mudança de nick: {oldnick} > {row[2]}")
+                print(f"Mudança de nick: {oldnick} > {row[1]}")
                 jogador.nick = row[2]
                 if jogador.nick != oldnick:
                     if jogador.observacao:
                         jogador.observacao += (
-                            f"\r\nMudança de nick: {oldnick} > {row[2]}"
+                            f"\r\nMudança de nick: {oldnick} > {row[1]}"
                         )
                     else:
                         jogador.observacao = (
@@ -548,6 +548,10 @@ def como_estou(request):
         if not kvk:
             kvk = Kvk.objects.all().order_by("-inicio").first()
 
+        inicio = kvk.inicio
+        if kvk.primeira_luta:
+            inicio = kvk.primeira_luta
+
         final = kvk.final
         if not final:
             final = timezone.now()
@@ -556,7 +560,7 @@ def como_estou(request):
         o_player = Player.objects.filter(game_id=player_id).first()
         status = (
             PlayerStatus.objects.filter(player=o_player)
-            .filter(data__gte=kvk.inicio, data__lte=final)
+            .filter(data__gte=inicio, data__lte=final)
             .order_by("data")
         )
 
@@ -577,7 +581,7 @@ def como_estou(request):
         ultimo = status.last()
 
         status_kp = (
-            PlayerStatus.objects.filter(data__gte=kvk.inicio, data__lte=final)
+            PlayerStatus.objects.filter(data__gte=inicio, data__lte=final)
             .values("player__nick", "player__game_id")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
@@ -594,7 +598,7 @@ def como_estou(request):
 
         status_dt = (
             PlayerStatus.objects.exclude(player__in=zerados_lista)
-            .filter(data__gte=kvk.inicio, data__lte=final)
+            .filter(data__gte=inicio, data__lte=final)
             .values("player__nick", "player__game_id")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
@@ -629,7 +633,7 @@ def como_estou(request):
             .exclude(player__in=banidos_e_inativos)
             .exclude(player__in=zerados_lista)
             .filter(player__in=players_faixa_original)
-            .filter(data__gte=kvk.inicio, data__lte=final)
+            .filter(data__gte=inicio, data__lte=final)
             .values("player__nick", "player__game_id")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
@@ -642,7 +646,7 @@ def como_estou(request):
             .exclude(player__in=banidos_e_inativos)
             .exclude(player__in=zerados_lista)
             .filter(player__in=players_faixa_original)
-            .filter(data__gte=kvk.inicio, data__lte=final)
+            .filter(data__gte=inicio, data__lte=final)
             .values("player__nick", "player__game_id")
             .annotate(
                 kp=Max("killpoints") - Min("killpoints"),
