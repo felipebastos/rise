@@ -21,6 +21,9 @@
         <tr class="table-danger">
             <td>Fez menos que 50% da média</td>
         </tr>
+        <tr class="table-primary">
+            <td>Farms do reino não contam para as médias.</td>
+        </tr>
         <tr class="table-secondary">
             <td>
                 Zerados pelo adversário e banidos após o KvK encerrar continuam aparecendo mas não são contabilizados
@@ -86,6 +89,8 @@
                                     {% else %}
                                     {% if player.player in zerados or player.player in banidos_inativos %}
                                 <tr class="table-secondary">
+                                    {% elif player.player in farms %}
+                                <tr class="table-primary">
                                     {% elif player.kp >= grupo.media %}
                                 <tr class="table-success">
                                     {% elif player.kp >= grupo.meiamedia %}

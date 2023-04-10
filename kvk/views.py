@@ -186,8 +186,14 @@ def analisedesempenho(request, kvkid, cat):
             zerados_lista.append(zerado_pra_lista.player)
             zerados_ids.append(zerado_pra_lista.player.id)
 
+        farms = Player.objects.filter(status__in=["FARM"])
+        farms_ids = []
+        for player in farms:
+            farms_ids.append(player.id)
+
         context["zerados"] = zerados_ids
         context["banidos_inativos"] = banidos_inativos_ids
+        context["farms"] = farms_ids
 
         categorizados = []
         for faixa in faixas:
@@ -227,7 +233,7 @@ def analisedesempenho(request, kvkid, cat):
 
             for stat in status:
                 player = Player.objects.get(pk=stat["player"])
-                if not player in banidos_e_inativos:
+                if not player in banidos_e_inativos and not player in farms:
                     abater = 0
                     abate_de_zeramento = 0
                     if cat == "kp":
