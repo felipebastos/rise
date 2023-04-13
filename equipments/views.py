@@ -49,81 +49,49 @@ def home(request):
                         status_list["Status base: defesa"] = (
                             status_list["Status base: defesa"]
                             + 3
-                            + (
-                                1
-                                if equipform.cleaned_data[f"{peca[0]}_spec"]
-                                else 0
-                            )
+                            + (1 if equipform.cleaned_data[f"{peca[0]}_spec"] else 0)
                         )
                     case ("pei"):
                         status_list["Status base: defesa"] = (
                             status_list["Status base: defesa"]
                             + 3
-                            + (
-                                1
-                                if equipform.cleaned_data[f"{peca[0]}_spec"]
-                                else 0
-                            )
+                            + (1 if equipform.cleaned_data[f"{peca[0]}_spec"] else 0)
                         )
                     case ("arm"):
                         status_list["Status base: ataque"] = (
                             status_list["Status base: ataque"]
                             + 3
-                            + (
-                                1
-                                if equipform.cleaned_data[f"{peca[0]}_spec"]
-                                else 0
-                            )
+                            + (1 if equipform.cleaned_data[f"{peca[0]}_spec"] else 0)
                         )
                     case ("luv"):
                         status_list["Status base: ataque"] = (
                             status_list["Status base: ataque"]
                             + 3
-                            + (
-                                1
-                                if equipform.cleaned_data[f"{peca[0]}_spec"]
-                                else 0
-                            )
+                            + (1 if equipform.cleaned_data[f"{peca[0]}_spec"] else 0)
                         )
                     case ("cal"):
                         status_list["Status base: saúde"] = (
                             status_list["Status base: saúde"]
                             + 3
-                            + (
-                                1
-                                if equipform.cleaned_data[f"{peca[0]}_spec"]
-                                else 0
-                            )
+                            + (1 if equipform.cleaned_data[f"{peca[0]}_spec"] else 0)
                         )
                     case ("bot"):
                         status_list["Status base: saúde"] = (
                             status_list["Status base: saúde"]
                             + 3
-                            + (
-                                1
-                                if equipform.cleaned_data[f"{peca[0]}_spec"]
-                                else 0
-                            )
+                            + (1 if equipform.cleaned_data[f"{peca[0]}_spec"] else 0)
                         )
                     case ("ace"):
                         status_list["Status base: saúde"] = (
                             status_list["Status base: saúde"]
                             + 3
-                            + (
-                                1
-                                if equipform.cleaned_data[f"{peca[0]}_spec"]
-                                else 0
-                            )
+                            + (1 if equipform.cleaned_data[f"{peca[0]}_spec"] else 0)
                         )
                     case ("acd"):
                         status_list["Status base: saúde"] = (
                             status_list["Status base: saúde"]
                             + 3
-                            + (
-                                1
-                                if equipform.cleaned_data[f"{peca[0]}_spec"]
-                                else 0
-                            )
+                            + (1 if equipform.cleaned_data[f"{peca[0]}_spec"] else 0)
                         )
 
     lista = []

@@ -66,9 +66,7 @@ def donated(request, donationid):
 
 @login_required
 def donations_report(request):
-    context = {
-        "devedores": Donation.objects.filter(donated=False).order_by("player")
-    }
+    context = {"devedores": Donation.objects.filter(donated=False).order_by("player")}
     return render(request, "bank/report.html", context=context)
 
 

@@ -53,9 +53,7 @@ format = { cmd = 'black .', help = 'Formata o código' }
 [tool.isort]
 profile = "black"
 
-
 [tool.black]
-line-length = 79
 include = '\.pyi?$'
 
 

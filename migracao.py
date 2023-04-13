@@ -2,14 +2,7 @@ from django.contrib.auth.models import User
 
 from bank.models import Donation, Semana
 from kvk.models import AdicionalDeFarms, Etapas, Kvk, Zerado
-from mge.models import (
-    Comandante,
-    EventoDePoder,
-    Inscrito,
-    Mge,
-    Punido,
-    Ranking,
-)
+from mge.models import Comandante, EventoDePoder, Inscrito, Mge, Punido, Ranking
 from players.models import Advertencia, Alliance, Player, PlayerStatus
 
 

@@ -11,9 +11,7 @@ def home(request):
     confirma = ""
     if request.method == "POST":
         if form.is_valid():
-            player = Player.objects.filter(
-                game_id=form.cleaned_data["player"]
-            ).first()
+            player = Player.objects.filter(game_id=form.cleaned_data["player"]).first()
             if player:
                 novo = Pedido()
                 novo.player = player
@@ -23,12 +21,8 @@ def home(request):
                 confirma = "Seu pedido foi registrado com sucesso!"
 
     form = PedidoForm()
-    pedidos_pendentes = Pedido.objects.filter(avaliado=False).order_by(
-        "pedido_em"
-    )
-    pedidos_avaliados = Pedido.objects.filter(avaliado=True).order_by(
-        "pedido_em"
-    )
+    pedidos_pendentes = Pedido.objects.filter(avaliado=False).order_by("pedido_em")
+    pedidos_avaliados = Pedido.objects.filter(avaliado=True).order_by("pedido_em")
     context = {
         "form": form,
         "pendentes": pedidos_pendentes,

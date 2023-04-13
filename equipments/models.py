@@ -65,9 +65,7 @@ class Buff(models.Model):
     equipamento = models.ForeignKey(
         Equipamento, related_name="buffs", on_delete=models.CASCADE
     )
-    spec = models.CharField(
-        "Especialidade", max_length=3, choices=SPECS, default="tod"
-    )
+    spec = models.CharField("Especialidade", max_length=3, choices=SPECS, default="tod")
     status = models.CharField(max_length=3, choices=STATUS, default="atq")
     valor = models.FloatField()
     ativacao = models.FloatField("Ativação", default=1.0)
@@ -84,9 +82,7 @@ class BuffConjunto(models.Model):
     conjunto = models.ForeignKey(
         "Conjunto", related_name="buff_conjunto", on_delete=models.CASCADE
     )
-    spec = models.CharField(
-        "Especialidade", max_length=3, choices=SPECS, default="tod"
-    )
+    spec = models.CharField("Especialidade", max_length=3, choices=SPECS, default="tod")
     status = models.CharField(max_length=3, choices=STATUS, default="atq")
     valor = models.FloatField()
     ativacao = models.FloatField("Ativação", default=1.0)
@@ -104,8 +100,6 @@ class Conjunto(models.Model):
             if peca in conjunto:
                 quantidade = quantidade + 1
 
-        buffs = BuffConjunto.objects.filter(
-            conjunto=self, pecas__lte=quantidade
-        )
+        buffs = BuffConjunto.objects.filter(conjunto=self, pecas__lte=quantidade)
 
         return buffs

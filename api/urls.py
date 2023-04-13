@@ -25,9 +25,7 @@ from api.views import (
 router = routers.DefaultRouter()
 router.register(r"players", PlayerViewSet)
 router.register(r"alliances", AllianceViewSet)
-router.register(
-    r"playerstatuses", PlayerStatusViewSet, basename="playerstatuses"
-)
+router.register(r"playerstatuses", PlayerStatusViewSet, basename="playerstatuses")
 router.register(r"mges", MgeViewSet)
 router.register(r"punidos", PunidoViewSet)
 router.register(r"rankings", RankingViewSet)

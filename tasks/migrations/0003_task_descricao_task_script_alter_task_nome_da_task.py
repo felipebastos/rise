@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("tasks", "0002_task_uuid"),
     ]
@@ -22,9 +21,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="task",
             name="script",
-            field=models.CharField(
-                default="", max_length=100, verbose_name="Script"
-            ),
+            field=models.CharField(default="", max_length=100, verbose_name="Script"),
         ),
         migrations.AlterField(
             model_name="task",

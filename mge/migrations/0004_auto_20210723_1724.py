@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("mge", "0003_auto_20210723_1722"),
     ]
@@ -13,22 +12,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="inscrito",
             name="inserido",
-            field=models.DateTimeField(
-                auto_now_add=True, verbose_name="Inserido"
-            ),
+            field=models.DateTimeField(auto_now_add=True, verbose_name="Inserido"),
         ),
         migrations.AlterField(
             model_name="punido",
             name="inserido",
-            field=models.DateTimeField(
-                auto_now_add=True, verbose_name="Inserido"
-            ),
+            field=models.DateTimeField(auto_now_add=True, verbose_name="Inserido"),
         ),
         migrations.AlterField(
             model_name="ranking",
             name="inserido",
-            field=models.DateTimeField(
-                auto_now_add=True, verbose_name="Inserido"
-            ),
+            field=models.DateTimeField(auto_now_add=True, verbose_name="Inserido"),
         ),
     ]

@@ -32,9 +32,7 @@ logger = logging.getLogger("k32")
 def index(request, game_id):
     try:
         player = Player.objects.get(game_id=game_id)
-        status = PlayerStatus.objects.filter(player__game_id=game_id).order_by(
-            "-data"
-        )
+        status = PlayerStatus.objects.filter(player__game_id=game_id).order_by("-data")
         spec = None
         for i, (res, verbose) in enumerate(player_spec):
             if player.specialty == res:
@@ -161,9 +159,7 @@ def review_players(request, ally_tag):
                 membro.alterado_por = request.user
                 membro.alterado_em = date.today()
                 membro.save()
-                logger.debug(
-                    f"{request.user.username} editou {membro.game_id}"
-                )
+                logger.debug(f"{request.user.username} editou {membro.game_id}")
         return redirect(f"/players/review/{ally_tag}/")
 
 
@@ -176,8 +172,7 @@ def findplayer(request):
             if not player:
                 if request.user.is_authenticated:
                     players = Player.objects.filter(
-                        Q(nick__icontains=busca)
-                        | Q(observacao__icontains=busca)
+                        Q(nick__icontains=busca) | Q(observacao__icontains=busca)
                     )
                 else:
                     players = Player.objects.filter(nick__icontains=busca)
@@ -185,9 +180,7 @@ def findplayer(request):
                     "membros": players,
                     "termo": busca,
                 }
-                return render(
-                    request, "players/searchresult.html", context=context
-                )
+                return render(request, "players/searchresult.html", context=context)
             return redirect(f"/players/{player.game_id}/")
         return render(request, "rise/404.html")
     return render(request, "rise/404.html")
@@ -232,9 +225,7 @@ def add_status(request, game_id):
             if "zerado" in request.POST:
                 zerado = 1
 
-            return redirect(
-                f"/kvk/update/{kvk.id}/{game_id}/{honra}/{zerado}/"
-            )
+            return redirect(f"/kvk/update/{kvk.id}/{game_id}/{honra}/{zerado}/")
         if "origem" in request.POST:
             return redirect(request.POST["origem"])
         return redirect(f"/players/{game_id}/")
@@ -326,9 +317,7 @@ def populate(request):
                             f"\r\nMudança de nick: {oldnick} > {row[1]}"
                         )
                     else:
-                        jogador.observacao = (
-                            f"Mudança de nick: {oldnick} > {row[1]}"
-                        )
+                        jogador.observacao = f"Mudança de nick: {oldnick} > {row[1]}"
                 if not row[4] in ["32br", "32BR"]:
                     ally = Alliance.objects.filter(tag=row[4]).first()
                 elif row[4] == "32br":
@@ -421,9 +410,7 @@ def alliance(request, ally_id):
         power = 0
         for membro in membros:
             status = (
-                PlayerStatus.objects.filter(player=membro)
-                .order_by("-data")
-                .first()
+                PlayerStatus.objects.filter(player=membro).order_by("-data").first()
             )
             if status:
                 kills = kills + status.killpoints
@@ -451,15 +438,9 @@ def top300(request):
     jogadores = []
     noreino = Player.objects.exclude(alliance__tag="MIGR")
     for jogador in noreino:
-        status = (
-            PlayerStatus.objects.filter(player=jogador)
-            .order_by("-data")
-            .first()
-        )
+        status = PlayerStatus.objects.filter(player=jogador).order_by("-data").first()
         jogadores.append(status)
-    jogadores.sort(
-        key=lambda x: x.power if (x is not None) else 0, reverse=True
-    )
+    jogadores.sort(key=lambda x: x.power if (x is not None) else 0, reverse=True)
     poder_total = 0
     for jogador in jogadores[:300]:
         poder_total = poder_total + jogador.power
@@ -520,9 +501,7 @@ def edita_status(request, status_id):
             status.deaths = request.POST["deaths"]
             status.data = timezone.now()
             status.save()
-            logger.debug(
-                f"{request.user.username} editou {status.player.game_id}"
-            )
+            logger.debug(f"{request.user.username} editou {status.player.game_id}")
 
         return redirect(f"/players/{status.player.game_id}")
 
@@ -660,9 +639,7 @@ def como_estou(request):
         media_kp = 0
         continue_contando = True
         for stat in status_kp_similares:
-            quem_eh = Player.objects.filter(
-                game_id=stat["player__game_id"]
-            ).first()
+            quem_eh = Player.objects.filter(game_id=stat["player__game_id"]).first()
             abate_mge = PontosDeMGE.objects.filter(kvk=kvk, player=quem_eh)
             abater = 0
             for pontos in abate_mge:
@@ -697,9 +674,7 @@ def como_estou(request):
             "killpoints": ultimo.killpoints - primeiro.killpoints,
             "deaths": ultimo.deaths - primeiro.deaths,
             "power": (ultimo.power - primeiro.power) * -1,
-            "perdeuganhou": "Ganhou"
-            if ultimo.power > primeiro.power
-            else "Perdeu",
+            "perdeuganhou": "Ganhou" if ultimo.power > primeiro.power else "Perdeu",
             "poskp": pos_kp,
             "posdt": pos_dt,
             "todoskp": todos_kp,

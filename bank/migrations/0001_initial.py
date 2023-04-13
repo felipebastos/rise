@@ -34,9 +34,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "donated",
-                    models.BooleanField(
-                        default=False, verbose_name="Doação realizada"
-                    ),
+                    models.BooleanField(default=False, verbose_name="Doação realizada"),
                 ),
                 ("ally", models.ManyToManyField(to="players.Alliance")),
                 ("player", models.ManyToManyField(to="players.Player")),

@@ -42,8 +42,7 @@ def startnew(request):
         if form.is_valid():
             mge = form.save()
             mge.temporada = (
-                Mge.objects.all().aggregate(Max("temporada"))["temporada__max"]
-                + 1
+                Mge.objects.all().aggregate(Max("temporada"))["temporada__max"] + 1
             )
             mge.save()
             logger.debug(f"{request.user.username} criou novo MGE {mge}")
@@ -70,9 +69,7 @@ def mgeedit(request, mge_id):
     punidos = Punido.objects.filter(mge=mge).order_by("inserido")
     insc_encerradas = False
     config = SiteConfig.objects.all().first()
-    if date.today() > mge.semana() - timedelta(
-        days=config.prazo_inscricao_mge
-    ):
+    if date.today() > mge.semana() - timedelta(days=config.prazo_inscricao_mge):
         # passou da quinta feira
         insc_encerradas = True
     rank_fechado = False
@@ -201,7 +198,9 @@ def punir(request, player_id):
     adv = Advertencia()
     adv.player = player
     adv.duracao = 15
-    adv.descricao = f'Queimou pontuação máxima no {mge} {mge.semana().strftime("%d/%m/%y")}'
+    adv.descricao = (
+        f'Queimou pontuação máxima no {mge} {mge.semana().strftime("%d/%m/%y")}'
+    )
     adv.save()
 
     return redirect(f"/mge/view/{mge.id}/")
@@ -235,7 +234,9 @@ def punir_evento_de_poder(request, player_id):
     adv = Advertencia()
     adv.player = player
     adv.duracao = 15
-    adv.descricao = f'Quebrou ranking do evento de poder em {timezone.now().strftime("%d/%m/%y")}'
+    adv.descricao = (
+        f'Quebrou ranking do evento de poder em {timezone.now().strftime("%d/%m/%y")}'
+    )
     adv.save()
 
     return redirect(f"/players/{player_id}/")

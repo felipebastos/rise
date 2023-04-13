@@ -27,9 +27,7 @@ def index(request):
 
         for player in players_god:
             status = (
-                PlayerStatus.objects.filter(player=player)
-                .order_by("-data")
-                .first()
+                PlayerStatus.objects.filter(player=player).order_by("-data").first()
             )
             if status:
                 delta = hoje - status.data
@@ -45,9 +43,7 @@ def index(request):
 
         for player in players_bod:
             status = (
-                PlayerStatus.objects.filter(player=player)
-                .order_by("-data")
-                .first()
+                PlayerStatus.objects.filter(player=player).order_by("-data").first()
             )
             if status:
                 delta = hoje - status.data
@@ -255,9 +251,7 @@ def analisedesempenho(request, cat):
     categorizados = []
     for faixa in faixas:
         faixa_original = (
-            PlayerStatus.objects.filter(
-                power__gte=mais_fraco_do_top300[0].power
-            )
+            PlayerStatus.objects.filter(power__gte=mais_fraco_do_top300[0].power)
             .filter(
                 data__year=ultima_leitura.data.year,
                 data__month=ultima_leitura.data.month,

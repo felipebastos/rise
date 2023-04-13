@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("config", "0004_destaque"),
     ]
@@ -13,8 +12,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="destaque",
             name="texto",
-            field=models.CharField(
-                max_length=500, verbose_name="Texto do destaque"
-            ),
+            field=models.CharField(max_length=500, verbose_name="Texto do destaque"),
         ),
     ]

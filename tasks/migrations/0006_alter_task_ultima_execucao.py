@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("tasks", "0005_alter_task_uuid"),
     ]
@@ -13,8 +12,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="task",
             name="ultima_execucao",
-            field=models.DateTimeField(
-                null=True, verbose_name="Última execução"
-            ),
+            field=models.DateTimeField(null=True, verbose_name="Última execução"),
         ),
     ]

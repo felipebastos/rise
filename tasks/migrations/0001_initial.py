@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = []
@@ -24,9 +23,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "nome_da_task",
-                    models.CharField(
-                        max_length=40, verbose_name="Nome da task"
-                    ),
+                    models.CharField(max_length=40, verbose_name="Nome da task"),
                 ),
                 (
                     "ultima_execucao",
