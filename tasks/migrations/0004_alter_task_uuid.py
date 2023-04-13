@@ -14,8 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="task",
             name="uuid",
-            field=models.UUIDField(
-                default=uuid.uuid4, verbose_name="ID único"
-            ),
+            field=models.UUIDField(default=uuid.uuid4, verbose_name="ID único"),
         ),
     ]

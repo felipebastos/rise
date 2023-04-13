@@ -44,15 +44,9 @@ class Player(models.Model):
     game_id = models.CharField(max_length=9, unique=True)
     nick = models.CharField(max_length=100)
     rank = models.CharField(max_length=2, choices=player_rank, default="R1")
-    specialty = models.CharField(
-        max_length=30, choices=player_spec, default="end"
-    )
-    status = models.CharField(
-        max_length=100, default="PLAYER", choices=PLAYER_STATUS
-    )
-    observacao = models.TextField(
-        max_length=500, blank=True, null=True, default=""
-    )
+    specialty = models.CharField(max_length=30, choices=player_spec, default="end")
+    status = models.CharField(max_length=100, default="PLAYER", choices=PLAYER_STATUS)
+    observacao = models.TextField(max_length=500, blank=True, null=True, default="")
     alliance = models.ForeignKey(
         Alliance, on_delete=models.CASCADE, default=None, null=True
     )

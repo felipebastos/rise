@@ -25,9 +25,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "inserido",
-                    models.DateTimeField(
-                        auto_now_add=True, verbose_name="Inserido"
-                    ),
+                    models.DateTimeField(auto_now_add=True, verbose_name="Inserido"),
                 ),
                 (
                     "player",

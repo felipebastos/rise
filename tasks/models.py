@@ -16,9 +16,7 @@ class Task(models.Model):
         "Nome da task", max_length=40, default="Não nomeada"
     )
     ultima_execucao = models.DateTimeField("Última execução", null=True)
-    descricao = models.CharField(
-        "Descrição", max_length=500, default="Não fornecida"
-    )
+    descricao = models.CharField("Descrição", max_length=500, default="Não fornecida")
     script = models.CharField("Script", max_length=100, default="")
 
     def executou(self):
@@ -26,9 +24,7 @@ class Task(models.Model):
         self.save()
 
     def executar(self, from_form: forms.Form = None) -> RiseTaskResponse:
-        modulo = import_module(
-            f"tasks.scripts.{self.script.split('.', maxsplit=1)[0]}"
-        )
+        modulo = import_module(f"tasks.scripts.{self.script.split('.', maxsplit=1)[0]}")
         script: RiseTask = modulo.main()
         resp: RiseTaskResponse = script.run(from_form)
         self.executou()
@@ -36,9 +32,7 @@ class Task(models.Model):
         return resp
 
     def form(self) -> forms.Form:
-        modulo = import_module(
-            f"tasks.scripts.{self.script.split('.', maxsplit=1)[0]}"
-        )
+        modulo = import_module(f"tasks.scripts.{self.script.split('.', maxsplit=1)[0]}")
         script: RiseTask = modulo.main()
         form_instance = None
         if script.form_class() is not None:
@@ -46,8 +40,6 @@ class Task(models.Model):
         return form_instance
 
     def form_class(self) -> Type[forms.Form]:
-        modulo = import_module(
-            f"tasks.scripts.{self.script.split('.', maxsplit=1)[0]}"
-        )
+        modulo = import_module(f"tasks.scripts.{self.script.split('.', maxsplit=1)[0]}")
         script: RiseTask = modulo.main()
         return script.form_class()

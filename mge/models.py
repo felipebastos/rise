@@ -48,9 +48,7 @@ COMMANDERS = [
 
 class Mge(models.Model):
     criado_em = models.DateField("Criado em", default=date.today)
-    inicio_das_inscricoes = models.DateField(
-        "Início das inscrições", null=True
-    )
+    inicio_das_inscricoes = models.DateField("Início das inscrições", null=True)
     tipo = models.CharField(
         "Tipo", max_length=2, choices=COMMANDER_CHOICES, default="0"
     )
@@ -122,9 +120,7 @@ class Inscrito(models.Model):
 
 class Comandante(models.Model):
     nome = models.TextField()
-    tipo = models.CharField(
-        max_length=3, choices=tipos_comandantes, default="arc"
-    )
+    tipo = models.CharField(max_length=3, choices=tipos_comandantes, default="arc")
 
 
 class EventoDePoder(models.Model):

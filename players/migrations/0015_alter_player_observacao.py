@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("players", "0014_alter_player_status"),
     ]
@@ -13,8 +12,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="player",
             name="observacao",
-            field=models.TextField(
-                blank=True, default="", max_length=500, null=True
-            ),
+            field=models.TextField(blank=True, default="", max_length=500, null=True),
         ),
     ]

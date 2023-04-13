@@ -23,9 +23,7 @@ class Top500TaskForm(forms.Form):
 
 class Top500Task(RiseTask):
     def run(self, from_form: forms.Form = None) -> RiseTaskResponse:
-        ultima_leitura = (
-            PlayerStatus.objects.all().order_by("-data").first().data
-        )
+        ultima_leitura = PlayerStatus.objects.all().order_by("-data").first().data
 
         ativos_no_top500 = None
 
@@ -42,9 +40,7 @@ class Top500Task(RiseTask):
                 data__day=ultima_leitura.day,
             )
 
-        game_ids_ativos = [
-            status.player.game_id for status in ativos_no_top500
-        ]
+        game_ids_ativos = [status.player.game_id for status in ativos_no_top500]
 
         mudar = ["MIGROU", "INATIVO"]
 
@@ -54,9 +50,7 @@ class Top500Task(RiseTask):
             .update(status="VIGIAR")
         )
 
-        response = RiseTaskResponse(
-            f"Atualizados os status de {players} player(s)."
-        )
+        response = RiseTaskResponse(f"Atualizados os status de {players} player(s).")
 
         return response
 

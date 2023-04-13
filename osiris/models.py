@@ -56,9 +56,7 @@ TIMES = (
 class Marcha(models.Model):
     tipo = models.CharField(max_length=4, choices=TIPO_MARCHA, default="mqt")
     tarefa = models.CharField(max_length=4, choices=TAREFA, default="open")
-    estrutura = models.CharField(
-        max_length=4, choices=ESTRUTURA, default="nenh"
-    )
+    estrutura = models.CharField(max_length=4, choices=ESTRUTURA, default="nenh")
     tarefa_especial = models.CharField(
         max_length=4, choices=TAREFA_ESPECIAL, default="nenh"
     )
@@ -75,8 +73,6 @@ class Funcao(models.Model):
 
 
 class Time(models.Model):
-    ally = models.ForeignKey(
-        Alliance, verbose_name="Aliança", on_delete=models.CASCADE
-    )
+    ally = models.ForeignKey(Alliance, verbose_name="Aliança", on_delete=models.CASCADE)
 
     funcoes = models.ManyToManyField(Funcao)

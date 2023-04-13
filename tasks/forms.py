@@ -18,7 +18,5 @@ class ConfiguraTask(forms.ModelForm):
             "uuid": forms.TextInput(
                 attrs={"class": "form-control", "readonly": "true"}
             ),
-            "script": forms.Select(
-                attrs={"class": "form-select"}, choices=SCRIPTS
-            ),
+            "script": forms.Select(attrs={"class": "form-select"}, choices=SCRIPTS),
         }

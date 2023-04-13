@@ -14,9 +14,7 @@ def get(dic: Dict, key):
 
 @register.filter
 def foi_rali(player_nick: str, kvkid):
-    tem = Cargo.objects.filter(
-        player__nick=player_nick, kvk__id=kvkid, funcao="ral"
-    )
+    tem = Cargo.objects.filter(player__nick=player_nick, kvk__id=kvkid, funcao="ral")
 
     if tem:
         return "ral"
@@ -25,9 +23,7 @@ def foi_rali(player_nick: str, kvkid):
 
 @register.filter
 def foi_guarnicao(player_nick: str, kvkid):
-    tem = Cargo.objects.filter(
-        player__nick=player_nick, kvk__id=kvkid, funcao="gua"
-    )
+    tem = Cargo.objects.filter(player__nick=player_nick, kvk__id=kvkid, funcao="gua")
 
     if tem:
         return "gua"

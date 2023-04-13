@@ -16,9 +16,7 @@ class Migration(migrations.Migration):
             model_name="zerado",
             name="date",
             field=models.DateField(
-                default=datetime.datetime(
-                    2022, 8, 10, 13, 50, 16, 124923, tzinfo=utc
-                )
+                default=datetime.datetime(2022, 8, 10, 13, 50, 16, 124923, tzinfo=utc)
             ),
         ),
     ]

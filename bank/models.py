@@ -38,7 +38,9 @@ class Semana(models.Model):
         return None
 
     def __str__(self):
-        return f"Semana de {self.inicio()} a {self.final()} - {self.recurso_da_semana()}"
+        return (
+            f"Semana de {self.inicio()} a {self.final()} - {self.recurso_da_semana()}"
+        )
 
 
 class Donation(models.Model):
@@ -56,9 +58,7 @@ class Donation(models.Model):
 
 
 class Credito(models.Model):
-    ally = models.ForeignKey(
-        Alliance, verbose_name="Aliança", on_delete=models.CASCADE
-    )
+    ally = models.ForeignKey(Alliance, verbose_name="Aliança", on_delete=models.CASCADE)
     timestamp = models.DateTimeField(default=timezone.now)
     quantidade = models.FloatField("Quantidade em milhões", blank=False)
 

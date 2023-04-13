@@ -8,16 +8,8 @@ from django.db.models.aggregates import Max, Min
 from django.shortcuts import redirect, render
 from django.utils import timezone
 
-from kvk.forms import CargoForm, EtapaForm, UploadEtapasFileForm, KvkConfigForm
-from kvk.models import (
-    AdicionalDeFarms,
-    Cargo,
-    Etapas,
-    Kvk,
-    PontosDeMGE,
-    Zerado,
-    faixas,
-)
+from kvk.forms import CargoForm, EtapaForm, KvkConfigForm, UploadEtapasFileForm
+from kvk.models import AdicionalDeFarms, Cargo, Etapas, Kvk, PontosDeMGE, Zerado, faixas
 from players.models import Player, PlayerStatus
 
 # Create your views here.
@@ -130,9 +122,7 @@ def removezerado(request, kvk, zerado_id):
     if kvk == zerado.kvk.id:
         player = zerado.player
         zerado.delete()
-        logger.debug(
-            f"{request.user.username} removeu {player.game_id} dos zerados."
-        )
+        logger.debug(f"{request.user.username} removeu {player.game_id} dos zerados.")
 
     return redirect(f"/kvk/edit/{zerado.kvk.id}/")
 
@@ -163,17 +153,13 @@ def analisedesempenho(request, kvkid, cat):
     context = cache.get(f"context_{cat}_{kvk.id}") or context
 
     if "zerados" not in context:
-        banidos_e_inativos = Player.objects.filter(
-            status__in=["BANIDO", "INATIVO"]
-        )
+        banidos_e_inativos = Player.objects.filter(status__in=["BANIDO", "INATIVO"])
         banidos_inativos_ids = []
         for player in banidos_e_inativos:
             banidos_inativos_ids.append(player.id)
 
         primeiro = (
-            PlayerStatus.objects.filter(data__gte=kvk.inicio)
-            .order_by("data")
-            .first()
+            PlayerStatus.objects.filter(data__gte=kvk.inicio).order_by("data").first()
         )
 
         if not primeiro:
@@ -237,9 +223,7 @@ def analisedesempenho(request, kvkid, cat):
                     abater = 0
                     abate_de_zeramento = 0
                     if cat == "kp":
-                        abate_mge = PontosDeMGE.objects.filter(
-                            kvk=kvk, player=player
-                        )
+                        abate_mge = PontosDeMGE.objects.filter(kvk=kvk, player=player)
                         for pontos in abate_mge:
                             abater = abater + pontos.pontos
 
@@ -296,9 +280,7 @@ def analisedesempenho(request, kvkid, cat):
 def adicionar_farms(request):
     if request.method == "POST":
         kvk = Kvk.objects.filter(id=request.POST["kvkid"]).first()
-        player = Player.objects.filter(
-            game_id=request.POST["player_id"]
-        ).first()
+        player = Player.objects.filter(game_id=request.POST["player_id"]).first()
 
         if kvk and player:
             novo = AdicionalDeFarms()
@@ -310,18 +292,14 @@ def adicionar_farms(request):
             logger.debug(
                 f"{request.user.username} adicionou dados de farm para {player.game_id} no {kvk}"
             )
-    return redirect(
-        f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/"
-    )
+    return redirect(f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/")
 
 
 @login_required
 def adicionar_mge_controlado(request):
     if request.method == "POST":
         kvk = Kvk.objects.filter(id=request.POST["kvkid"]).first()
-        player = Player.objects.filter(
-            game_id=request.POST["player_id"]
-        ).first()
+        player = Player.objects.filter(game_id=request.POST["player_id"]).first()
 
         if kvk and player:
             novo = PontosDeMGE()
@@ -332,9 +310,7 @@ def adicionar_mge_controlado(request):
             logger.debug(
                 f"{request.user.username} adicionou pontos de MGE para {player.game_id} no {kvk}"
             )
-    return redirect(
-        f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/"
-    )
+    return redirect(f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/")
 
 
 def registrar_etapa(request, kvkid):
@@ -385,9 +361,7 @@ def etapas_por_planilha(request, kvkid):
                     etapa = Etapas()
                     etapa.kvk = kvk
                     etapa.descricao = row[0]
-                    etapa.date = timezone.make_aware(
-                        datetime.fromisoformat(row[1])
-                    )
+                    etapa.date = timezone.make_aware(datetime.fromisoformat(row[1]))
                     etapa.save()
 
     return redirect(f"/kvk/etapa/{kvkid}/")
@@ -411,9 +385,7 @@ def cargos_view(request, kvkid):
 
         if form.is_valid():
             form.save()
-            logger.debug(
-                f"{request.user.username} adicionou cargos no kvk {kvkid}"
-            )
+            logger.debug(f"{request.user.username} adicionou cargos no kvk {kvkid}")
 
     kvk = Kvk.objects.get(pk=kvkid)
     form = CargoForm(initial={"kvk": kvk})
@@ -447,16 +419,12 @@ def get_desconto_de_zeramento(kvk_id, player_id):
         total_mortos = 0
         for zeramento in zeramentos:
             status_antes = (
-                PlayerStatus.objects.filter(
-                    data__lte=zeramento.date, player=player_id
-                )
+                PlayerStatus.objects.filter(data__lte=zeramento.date, player=player_id)
                 .order_by("-data")
                 .first()
             )
             status_depois = (
-                PlayerStatus.objects.filter(
-                    data__gte=zeramento.date, player=player_id
-                )
+                PlayerStatus.objects.filter(data__gte=zeramento.date, player=player_id)
                 .order_by("data")
                 .first()
             )

@@ -17,9 +17,7 @@ urlpatterns = [
     path("nostatus/<ally_id>/", views.falta_status, name="falta_status"),
     path("old/<ally_id>/", views.antigos, name="antigos"),
     path("statusedit/<status_id>/", views.edita_status, name="edit_status"),
-    path(
-        "statusdelete/<status_id>/", views.delete_status, name="delete_status"
-    ),
+    path("statusdelete/<status_id>/", views.delete_status, name="delete_status"),
     path("desempenho/", views.como_estou, name="como_estou"),
     path("advertencias/", views.advertencias, name="advertencias"),
     path("adv_add/", views.criar_advertencia, name="adv_add"),

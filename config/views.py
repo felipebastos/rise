@@ -23,9 +23,7 @@ def home(request):
 
         if form.is_valid():
             form.save()
-            logger.debug(
-                f"{request.user.username} alterou configuracoes gerais"
-            )
+            logger.debug(f"{request.user.username} alterou configuracoes gerais")
 
         if formset.is_valid():
             formset.save()

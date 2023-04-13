@@ -43,9 +43,7 @@ class SoftwareStatsTask(RiseTask):
                             lines_of_code = lines_of_code + contagem + 1
                     elif os.path.isdir(inside) and inside == "templates":
                         print(f"Entrando nos templates de {item}")
-                        os.chdir(
-                            os.path.join(settings.BASE_DIR, item, inside, item)
-                        )
+                        os.chdir(os.path.join(settings.BASE_DIR, item, inside, item))
                         in_inside = os.listdir()
                         for template in in_inside:
                             if os.path.isfile(template) and (
@@ -67,9 +65,7 @@ class SoftwareStatsTask(RiseTask):
                                     contagem = 0
                                     for count, line in enumerate(source):
                                         contagem = count
-                                    lines_of_code = (
-                                        lines_of_code + contagem + 1
-                                    )
+                                    lines_of_code = lines_of_code + contagem + 1
                         print(f"Saindo dos templates de {item}")
                     elif os.path.isdir(inside) and inside == "migrations":
                         print(f"Entrando nas migrations de {item}")
@@ -94,9 +90,7 @@ class SoftwareStatsTask(RiseTask):
                                     contagem = 0
                                     for count, line in enumerate(source):
                                         contagem = count
-                                    lines_of_code = (
-                                        lines_of_code + contagem + 1
-                                    )
+                                    lines_of_code = lines_of_code + contagem + 1
                         print(f"Saindo das migrations de {item}")
                 os.chdir(settings.BASE_DIR)
             elif item.endswith(".py") or item.endswith(".html"):

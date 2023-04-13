@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("mge", "0014_mge_livre_mge_temporada"),
     ]
@@ -13,8 +12,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="mge",
             name="inicio_das_inscricoes",
-            field=models.DateField(
-                null=True, verbose_name="Início das inscrições"
-            ),
+            field=models.DateField(null=True, verbose_name="Início das inscrições"),
         ),
     ]

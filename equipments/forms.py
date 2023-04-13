@@ -22,9 +22,7 @@ BuffFormSet = inlineformset_factory(
     widgets={
         "spec": forms.Select(attrs={"class": "form-select"}),
         "status": forms.Select(attrs={"class": "form-select"}),
-        "valor": forms.NumberInput(
-            attrs={"class": "form-control", "value": "0"}
-        ),
+        "valor": forms.NumberInput(attrs={"class": "form-control", "value": "0"}),
         "ativacao": forms.NumberInput(
             attrs={
                 "class": "form-range",
@@ -185,9 +183,7 @@ SetBuffFormSet = inlineformset_factory(
     widgets={
         "spec": forms.Select(attrs={"class": "form-select"}),
         "status": forms.Select(attrs={"class": "form-select"}),
-        "valor": forms.NumberInput(
-            attrs={"class": "form-control", "value": "0"}
-        ),
+        "valor": forms.NumberInput(attrs={"class": "form-control", "value": "0"}),
         "ativacao": forms.NumberInput(
             attrs={
                 "class": "form-range",
