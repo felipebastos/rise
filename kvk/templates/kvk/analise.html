@@ -79,6 +79,8 @@
                                 {% if tipo == 'dt' %}
                                 {% if player.player in zerados or player.player in banidos_inativos %}
                                 <tr class="table-secondary">
+                                    {% elif player.player in farms %}
+                                <tr class="table-primary">
                                     {% elif player.dt >= grupo.media %}
                                 <tr class="table-success">
                                     {% elif player.dt >= grupo.meiamedia %}
