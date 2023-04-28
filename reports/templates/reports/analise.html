@@ -67,7 +67,7 @@
                                     {% endif %}
                                     <th scope="row">{{forloop.counter}}</th>
                                     <td>{{player.player__game_id}} - <a
-                                            href="{% url 'player_profile' player.game_id %}">[{{player.player__alliance__tag}}]
+                                            href="{% url 'player_profile' player.player__game_id %}">[{{player.player__alliance__tag}}]
                                             {{player.player__nick}}</a></td>
                                     <td>{{player.kp}}</td>
                                     <td>{{player.dt}}</td>

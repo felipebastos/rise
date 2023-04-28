@@ -41,6 +41,7 @@ mkdocs-material = "^9.1.2"
 [tool.taskipy.tasks]
 audit = { cmd = 'pip-audit', help = 'Verifica falhas de segurança das dependências do projeto' }
 coverage = { cmd = 'pytest --cov', help = 'Verifica a cobertura de testes' }
+dev = { cmd = 'python manage.py runserver', help = 'Servidor de desenvolvimento'}
 format = { cmd = 'black .', help = 'Formata o código' }
 imports = { cmd = 'isort .', help = 'Organiza os imports do projeto' }
 lint = { cmd = 'pylint -f text . > linter-report.txt', help = 'Checagem estática' }
