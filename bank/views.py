@@ -102,7 +102,7 @@ def add_credits(request):
     ultimos = {}
 
     for credito in creditos:
-        if not credito.ally.id in ultimos:
+        if credito.ally.id not in ultimos:
             ultimos[credito.ally.id] = credito
 
     context = {

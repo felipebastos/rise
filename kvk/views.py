@@ -29,7 +29,7 @@ def new_kvk(request):
     novo = Kvk()
     novo.inicio = request.POST["inicio"]
     novo.save()
-    logger.debug(f"{request.user.username} criou novo kvk: {novo}")
+    logger.debug("%s criou novo kvk: %s", request.user.username, novo)
 
     return redirect("/kvk/")
 
@@ -94,7 +94,7 @@ def close_kvk(request, kvk_id):
     kvk = Kvk.objects.get(pk=kvk_id)
     kvk.ativo = not kvk.ativo
     kvk.save()
-    logger.debug(f"{request.user.username} abriu/fechou {kvk}")
+    logger.debug("%s abriu/fechou %s", request.user.username, kvk)
     return redirect(f"/kvk/edit/{kvk_id}/")
 
 
@@ -109,7 +109,10 @@ def add_zerado(request, player_id):
         zerado.kvk = running_kvk
         zerado.save()
         logger.debug(
-            f"{request.user.username} marcou {quem.game_id} como zerado em {running_kvk}"
+            "%s marcou %s como zerado em %s",
+            request.user.username,
+            quem.game_id,
+            running_kvk,
         )
         return redirect(f"/kvk/edit/{running_kvk.id}/")
 
@@ -122,7 +125,9 @@ def removezerado(request, kvk, zerado_id):
     if kvk == zerado.kvk.id:
         player = zerado.player
         zerado.delete()
-        logger.debug(f"{request.user.username} removeu {player.game_id} dos zerados.")
+        logger.debug(
+            "%s removeu %s dos zerados.", request.user.username, player.game_id
+        )
 
     return redirect(f"/kvk/edit/{zerado.kvk.id}/")
 
@@ -219,7 +224,7 @@ def analisedesempenho(request, kvkid, cat):
 
             for stat in status:
                 player = Player.objects.get(pk=stat["player"])
-                if not player in banidos_e_inativos and not player in farms:
+                if player not in banidos_e_inativos and player not in farms:
                     abater = 0
                     abate_de_zeramento = 0
                     if cat == "kp":
@@ -290,7 +295,10 @@ def adicionar_farms(request):
             novo.kvk = kvk
             novo.save()
             logger.debug(
-                f"{request.user.username} adicionou dados de farm para {player.game_id} no {kvk}"
+                "%s adicionou dados de farm para %s no %s",
+                request.user.username,
+                player.game_id,
+                kvk,
             )
     return redirect(f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/")
 
@@ -308,7 +316,10 @@ def adicionar_mge_controlado(request):
             novo.kvk = kvk
             novo.save()
             logger.debug(
-                f"{request.user.username} adicionou pontos de MGE para {player.game_id} no {kvk}"
+                "%s adicionou pontos de MGE para %s no %s",
+                request.user.username,
+                player.game_id,
+                kvk,
             )
     return redirect(f"/kvk/analise/{request.POST['kvkid']}/{request.POST['cat']}/")
 
@@ -385,7 +396,9 @@ def cargos_view(request, kvkid):
 
         if form.is_valid():
             form.save()
-            logger.debug(f"{request.user.username} adicionou cargos no kvk {kvkid}")
+            logger.debug(
+                "%s adicionou cargos no kvk %s", request.user.username, str(kvkid)
+            )
 
     kvk = Kvk.objects.get(pk=kvkid)
     form = CargoForm(initial={"kvk": kvk})

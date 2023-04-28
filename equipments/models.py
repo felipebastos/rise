@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.query_utils import Q
 
 # Create your models here.
 SPECS = (

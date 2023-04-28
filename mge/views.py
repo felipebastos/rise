@@ -45,7 +45,7 @@ def startnew(request):
                 Mge.objects.all().aggregate(Max("temporada"))["temporada__max"] + 1
             )
             mge.save()
-            logger.debug(f"{request.user.username} criou novo MGE {mge}")
+            logger.debug("%s criou novo MGE %s", request.user.username, mge)
 
     return redirect("/mge/")
 
@@ -141,7 +141,7 @@ def inscrever(request, mge_id):
             inscrito.deaths = -1
 
         inscrito.save()
-        logger.debug(f"Inscrito: {player.game_id} no MGE: {mge}")
+        logger.debug("Inscrito: %s no MGE: %s", player.game_id, mge)
     return redirect(f"/mge/view/{mge_id}/")
 
 
@@ -165,7 +165,7 @@ def addtorank(request, mge_id, player_id):
     ranking.mge = mge
     ranking.save()
     logger.debug(
-        f"{request.user.username} adicionou {player.game_id} ao ranking de {mge}"
+        "%s adicionou %s ao ranking de %s", request.user.username, player.game_id, mge
     )
     return redirect(f"/mge/view/{mge_id}/")
 
@@ -178,7 +178,7 @@ def removefromrank(request, mge_id, player_id):
     remover = Ranking.objects.filter(mge=mge).filter(player=player).first()
     remover.delete()
     logger.debug(
-        f"{request.user.username} removeu {player.game_id} do ranking de {mge}"
+        "%s removeu %s do ranking de %s", request.user.username, player.game_id, mge
     )
 
     return redirect(f"/mge/view/{mge_id}/")
@@ -193,7 +193,7 @@ def punir(request, player_id):
     apunir.mge = mge
     apunir.player = player
     apunir.save()
-    logger.debug(f"{request.user.username} puniu {player.game_id} no {mge}")
+    logger.debug("%s puniu %s no %s", request.user.username, player.game_id, mge)
 
     adv = Advertencia()
     adv.player = player
@@ -214,7 +214,7 @@ def despunir(request, mge_id, player_id):
     punicao = Punido.objects.filter(mge=mge).filter(player=player).first()
     punicao.delete()
     logger.debug(
-        f"{request.user.username} retirou a punicao de {player.game_id} em {mge}"
+        "%s retirou a punicao de %s em %s", request.user.username, player.game_id, mge
     )
 
     return redirect(f"/mge/view/{mge_id}/")
@@ -228,7 +228,9 @@ def punir_evento_de_poder(request, player_id):
     punicao.player = player
     punicao.save()
     logger.debug(
-        f"{request.user.username} adicionou punicao a {player.game_id} para evento de poder"
+        "%s adicionou punicao a %s para evento de poder",
+        request.user.username,
+        player.game_id,
     )
 
     adv = Advertencia()

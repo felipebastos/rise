@@ -31,6 +31,7 @@ taskipy = "^1.10.3"
 bandit = "^1.7.4"
 pre-commit = "^3.1.1"
 pip-audit = "^2.5.4"
+prospector = "^1.9.0"
 
 
 [tool.poetry.group.doc.dependencies]

@@ -34,7 +34,7 @@ def index(request, game_id):
         player = Player.objects.get(game_id=game_id)
         status = PlayerStatus.objects.filter(player__game_id=game_id).order_by("-data")
         spec = None
-        for i, (res, verbose) in enumerate(player_spec):
+        for _, (res, verbose) in enumerate(player_spec):
             if player.specialty == res:
                 spec = verbose
         tem_kvk = Kvk.objects.order_by("-inicio").first()
@@ -105,7 +105,7 @@ def edit_player(request, game_id):
     player.alliance = Alliance.objects.filter(tag=request.POST["ally"]).first()
     player.alterado_por = request.user
     player.save()
-    logger.debug(f"{request.user.username} editou {player.game_id}")
+    logger.debug("%s editou %s", request.user.username, player.game_id)
     context = {
         "player": player,
         "status_list": PLAYER_STATUS,
@@ -121,7 +121,7 @@ def listspecs(request, spec):
     players = Player.objects.filter(specialty=spec).order_by("alliance")
 
     specialty = None
-    for i, (code, verbose) in enumerate(player_spec):
+    for _, (code, verbose) in enumerate(player_spec):
         if code == spec:
             specialty = verbose
 
@@ -159,7 +159,7 @@ def review_players(request, ally_tag):
                 membro.alterado_por = request.user
                 membro.alterado_em = date.today()
                 membro.save()
-                logger.debug(f"{request.user.username} editou {membro.game_id}")
+                logger.debug("%s editou %s", request.user.username, membro.game_id)
         return redirect(f"/players/review/{ally_tag}/")
 
 
@@ -213,7 +213,7 @@ def add_status(request, game_id):
         novo_status.deaths = deaths
         novo_status.save()
         logger.debug(
-            f"{request.user.username} adicionou status {novo_status.player.game_id}"
+            "%s adicionou status %s", request.user.username, novo_status.player.game_id
         )
 
         kvk = Kvk.objects.order_by("-inicio").first()
@@ -229,8 +229,11 @@ def add_status(request, game_id):
         if "origem" in request.POST:
             return redirect(request.POST["origem"])
         return redirect(f"/players/{game_id}/")
-    except Exception as exception:
-        return render(request, "rise/404.html")
+    except KeyError as exception:
+        context = {
+            "exception": exception,
+        }
+        return render(request, "rise/404.html", context=context)
 
 
 @login_required
@@ -501,7 +504,7 @@ def edita_status(request, status_id):
             status.deaths = request.POST["deaths"]
             status.data = timezone.now()
             status.save()
-            logger.debug(f"{request.user.username} editou {status.player.game_id}")
+            logger.debug("%s editou %s", request.user.username, status.player.game_id)
 
         return redirect(f"/players/{status.player.game_id}")
 
@@ -516,7 +519,7 @@ def delete_status(request, status_id):
     if status.editavel():
         game_id = status.player.game_id
         status.delete()
-        logger.debug(f"{request.user.username} deletou status de {game_id}")
+        logger.debug("%s deletou status de %s", request.user.username, game_id)
 
     return redirect(f"/players/{status.player.game_id}")
 
@@ -708,7 +711,7 @@ def criar_advertencia(request):
         adv.duracao = request.POST["duracao"]
 
         adv.save()
-        logger.debug(f"{request.user.username} advertiu {adv.player.game_id}")
+        logger.debug("%s advertiu %s", request.user.username, adv.player.game_id)
 
         return redirect("/players/advertencias")
     return render(request, "rise/404.html")

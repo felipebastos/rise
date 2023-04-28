@@ -23,11 +23,11 @@ def home(request):
 
         if form.is_valid():
             form.save()
-            logger.debug(f"{request.user.username} alterou configuracoes gerais")
+            logger.debug("%s alterou configuracoes gerais", request.user.username)
 
         if formset.is_valid():
             formset.save()
-            logger.debug(f"{request.user.username} alterou destaques do site")
+            logger.debug("%s alterou destaques do site", request.user.username)
 
     form = ConfigForm(instance=config)
     formset = DestaqueFormSet(instance=config)

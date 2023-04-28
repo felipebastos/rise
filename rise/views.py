@@ -68,9 +68,8 @@ def logar(request):
             if user is not None:
                 login(request, user)
                 return redirect("/")
-            else:
-                # Return an 'invalid login' error message.
-                return redirect("/login")
+            # Return an 'invalid login' error message.
+            return redirect("/login")
     form = LoginForm()
     context = {
         "form": form,

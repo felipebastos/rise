@@ -38,7 +38,7 @@ class SoftwareStatsTask(RiseTask):
                             encoding="UTF-8",
                         ) as source:
                             contagem = 0
-                            for count, line in enumerate(source):
+                            for count, _ in enumerate(source):
                                 contagem = count
                             lines_of_code = lines_of_code + contagem + 1
                     elif os.path.isdir(inside) and inside == "templates":
