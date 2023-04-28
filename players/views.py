@@ -150,17 +150,17 @@ def review_players(request, ally_tag):
             return render(request, "players/review.html", context)
 
         return render(request, "rise/404.html")
-    else:
-        membros = Player.objects.filter(alliance__tag=ally_tag)
-        semalianca = Alliance.objects.filter(tag="PSA").first()
-        for membro in membros:
-            if membro.game_id in request.POST:
-                membro.alliance = semalianca
-                membro.alterado_por = request.user
-                membro.alterado_em = date.today()
-                membro.save()
-                logger.debug("%s editou %s", request.user.username, membro.game_id)
-        return redirect(f"/players/review/{ally_tag}/")
+
+    membros = Player.objects.filter(alliance__tag=ally_tag)
+    semalianca = Alliance.objects.filter(tag="PSA").first()
+    for membro in membros:
+        if membro.game_id in request.POST:
+            membro.alliance = semalianca
+            membro.alterado_por = request.user
+            membro.alterado_em = date.today()
+            membro.save()
+            logger.debug("%s editou %s", request.user.username, membro.game_id)
+    return redirect(f"/players/review/{ally_tag}/")
 
 
 def findplayer(request):
@@ -334,7 +334,7 @@ def populate(request):
                 else:
                     nova = Alliance.objects.create(tag=row[4], nome=row[4])
                     nova.save()
-                    if not jogador.alliance.tag in ["BNDS", "MIGR"]:
+                    if jogador.alliance.tag not in ["BNDS", "MIGR"]:
                         jogador.alliance = nova
                 jogador.save()
 
@@ -367,11 +367,11 @@ def populate(request):
 
             killpoints = 0
             coeficientes = [0.2, 2, 4, 10, 20]
-            for i in range(len(kills)):
-                if isinstance(kills[i], str):
-                    if "." in kills[i]:
-                        kills[i] = kills[i].replace(".", "")
-                    kills[i] = int(kills[i])
+            for i, text in enumerate(kills):
+                if isinstance(text, str):
+                    if "." in text:
+                        kills[i] = text.replace(".", "")
+                    kills[i] = int(text)
 
                 killpoints = killpoints + kills[i] * coeficientes[i]
 
@@ -685,13 +685,9 @@ def como_estou(request):
             "todosdt": todos_dt,
             "posdtfaixa": pos_dt_faixa,
             "comparadoa": players_faixa_original,
-            "metamortes": True
-            if media_mortes <= ultimo.deaths - primeiro.deaths
-            else False,
+            "metamortes": media_mortes <= ultimo.deaths - primeiro.deaths,
             "mediamortes": media_mortes,
-            "metakp": True
-            if media_kp <= ultimo.killpoints - primeiro.killpoints
-            else False,
+            "metakp": media_kp <= ultimo.killpoints - primeiro.killpoints,
             "mediakp": media_kp,
             "zerado": zerado,
         }

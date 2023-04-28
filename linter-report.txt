@@ -5,10 +5,8 @@ config\tests.py:1:0: W0611: Unused TestCase imported from django.test (unused-im
 ************* Module equipments.tests
 equipments\tests.py:1:0: W0611: Unused TestCase imported from django.test (unused-import)
 ************* Module equipments.views
-equipments\views.py:28:0: R0914: Too many local variables (19/15) (too-many-locals)
+equipments\views.py:28:0: R0914: Too many local variables (17/15) (too-many-locals)
 equipments\views.py:28:0: R0912: Too many branches (14/12) (too-many-branches)
-equipments\views.py:98:8: W0612: Unused variable 'k' (unused-variable)
-equipments\views.py:107:8: W0612: Unused variable 'i' (unused-variable)
 ************* Module kvk.views
 kvk\views.py:135:0: R0914: Too many local variables (35/15) (too-many-locals)
 kvk\views.py:160:4: R1702: Too many nested blocks (6/5) (too-many-nested-blocks)
@@ -26,14 +24,10 @@ mge\models.py:100:0: R0902: Too many instance attributes (9/7) (too-many-instanc
 osiris\tests.py:1:0: W0611: Unused TestCase imported from django.test (unused-import)
 ************* Module players.views
 players\views.py:32:0: R0914: Too many local variables (19/15) (too-many-locals)
-players\views.py:139:4: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-players\views.py:294:0: R0914: Too many local variables (21/15) (too-many-locals)
-players\views.py:370:12: C0200: Consider using enumerate instead of iterating with range and len (consider-using-enumerate)
+players\views.py:294:0: R0914: Too many local variables (22/15) (too-many-locals)
 players\views.py:294:0: R0912: Too many branches (28/12) (too-many-branches)
 players\views.py:294:0: R0915: Too many statements (84/50) (too-many-statements)
 players\views.py:527:0: R0914: Too many local variables (37/15) (too-many-locals)
-players\views.py:688:26: R1719: The if expression can be replaced with 'test' (simplifiable-if-expression)
-players\views.py:692:22: R1719: The if expression can be replaced with 'test' (simplifiable-if-expression)
 players\views.py:527:0: R0912: Too many branches (24/12) (too-many-branches)
 players\views.py:527:0: R0915: Too many statements (70/50) (too-many-statements)
 ************* Module reports.views
@@ -44,8 +38,6 @@ reports\views.py:215:0: R0914: Too many local variables (17/15) (too-many-locals
 ************* Module rise.settings
 rise\settings.py:170:0: C0301: Line too long (95/88) (line-too-long)
 rise\settings.py:185:0: C0301: Line too long (91/88) (line-too-long)
-************* Module rise.views
-rise\views.py:68:12: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
 ************* Module tasks.admin
 tasks\admin.py:1:0: W0611: Unused admin imported from django.contrib (unused-import)
 ************* Module tasks.tests
@@ -54,36 +46,9 @@ tasks\tests.py:1:0: W0611: Unused TestCase imported from django.test (unused-imp
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==api.views:[61:75]
 ==rise.views:[10:24]
-        ultimo = PlayerStatus.objects.order_by("-data").first()
+    ultimo = PlayerStatus.objects.order_by("-data").first()
 
-        o_reino_poder = (
-            PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-            .exclude(player__status="INATIVO")
-            .exclude(player__status="BANIDO")
-            .filter(
-                data__year=ultimo.data.year,
-                data__month=ultimo.data.month,
-                data__day=ultimo.data.day,
-            )
-            .order_by("-power")
-        )
- (duplicate-code)
-tasks\views.py:1:0: R0801: Similar lines in 2 files
-==kvk.views:[268:278]
-==reports.views:[292:303]
-            categorizados.append(
-                {
-                    "faixa0": faixa[0],
-                    "faixa1": faixa[1],
-                    "media": media,
-                    "meiamedia": media * 0.5,
-                    "membros": status,
-                }
-            )
-            context["categorizados"] = categorizados (duplicate-code)
-tasks\views.py:1:0: R0801: Similar lines in 2 files
-==api.views:[86:94]
-==rise.views:[13:21]
+    o_reino_poder = (
         PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
         .exclude(player__status="INATIVO")
         .exclude(player__status="BANIDO")
@@ -91,10 +56,27 @@ tasks\views.py:1:0: R0801: Similar lines in 2 files
             data__year=ultimo.data.year,
             data__month=ultimo.data.month,
             data__day=ultimo.data.day,
-        ) (duplicate-code)
+        )
+        .order_by("-power")
+    )
+ (duplicate-code)
 tasks\views.py:1:0: R0801: Similar lines in 2 files
-==api.views:[64:72]
-==rise.views:[25:33]
+==kvk.views:[268:278]
+==reports.views:[292:303]
+        categorizados.append(
+            {
+                "faixa0": faixa[0],
+                "faixa1": faixa[1],
+                "media": media,
+                "meiamedia": media * 0.5,
+                "membros": status,
+            }
+        )
+        context["categorizados"] = categorizados
+ (duplicate-code)
+tasks\views.py:1:0: R0801: Similar lines in 2 files
+==api.views:[86:94]
+==rise.views:[13:21]
             PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
             .exclude(player__status="INATIVO")
             .exclude(player__status="BANIDO")
@@ -103,6 +85,17 @@ tasks\views.py:1:0: R0801: Similar lines in 2 files
                 data__month=ultimo.data.month,
                 data__day=ultimo.data.day,
             ) (duplicate-code)
+tasks\views.py:1:0: R0801: Similar lines in 2 files
+==api.views:[64:72]
+==rise.views:[25:33]
+        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
+        .exclude(player__status="INATIVO")
+        .exclude(player__status="BANIDO")
+        .filter(
+            data__year=ultimo.data.year,
+            data__month=ultimo.data.month,
+            data__day=ultimo.data.day,
+        ) (duplicate-code)
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==api.views:[67:75]
 ==reports.views:[171:179]
@@ -128,13 +121,13 @@ tasks\views.py:1:0: R0801: Similar lines in 2 files
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==kvk.views:[144:152]
 ==players.views:[532:540]
-        inicio = kvk.inicio
-        if kvk.primeira_luta:
-            inicio = kvk.primeira_luta
+    inicio = kvk.inicio
+    if kvk.primeira_luta:
+        inicio = kvk.primeira_luta
 
-        final = kvk.final
-        if not final:
-            final = timezone.now()
+    final = kvk.final
+    if not final:
+        final = timezone.now()
  (duplicate-code)
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==kvk.views:[44:52]
@@ -165,18 +158,18 @@ tasks\views.py:1:0: R0801: Similar lines in 2 files
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==api.views:[85:97]
 ==rise.views:[24:36]
-        o_reino_killpoints = (
-            PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-            .exclude(player__status="INATIVO")
-            .exclude(player__status="BANIDO")
-            .filter(
-                data__year=ultimo.data.year,
-                data__month=ultimo.data.month,
-                data__day=ultimo.data.day,
-            )
-            .order_by("-killpoints")
+    o_reino_killpoints = (
+        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
+        .exclude(player__status="INATIVO")
+        .exclude(player__status="BANIDO")
+        .filter(
+            data__year=ultimo.data.year,
+            data__month=ultimo.data.month,
+            data__day=ultimo.data.day,
         )
+        .order_by("-killpoints")
+    )
  (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.77/10 (previous run: 9.75/10, +0.02)
+Your code has been rated at 9.80/10 (previous run: 9.77/10, +0.03)
