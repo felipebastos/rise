@@ -36,8 +36,6 @@ urlpatterns = [
     path("config/", include("config.urls")),
     path("tasks/", include("tasks.urls")),
     path("captcha/", include("captcha.urls")),
-    path("api/v1/", include("api.urls")),
-    path("api-auth/", include("rest_framework.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_header = "K32 Admin"

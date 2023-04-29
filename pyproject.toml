@@ -10,11 +10,7 @@ python = "^3.8"
 Django = "^4.0.1"
 django-simple-captcha = "^0.5.14"
 python-dotenv = "^0.19.2"
-djangorestframework = "^3.13.1"
-djangorestframework-simplejwt = "^5.0.0"
-django-filter = "^21.1"
 gunicorn = "^20.1.0"
-django-cors-headers = "^3.11.0"
 mysqlclient = "^2.1.1"
 
 

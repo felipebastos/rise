@@ -36,22 +36,29 @@ reports\views.py:16:0: R0912: Too many branches (16/12) (too-many-branches)
 reports\views.py:16:0: R0915: Too many statements (52/50) (too-many-statements)
 reports\views.py:215:0: R0914: Too many local variables (17/15) (too-many-locals)
 ************* Module rise.settings
-rise\settings.py:170:0: C0301: Line too long (95/88) (line-too-long)
-rise\settings.py:185:0: C0301: Line too long (91/88) (line-too-long)
+rise\settings.py:149:0: C0301: Line too long (95/88) (line-too-long)
+rise\settings.py:164:0: C0301: Line too long (91/88) (line-too-long)
 ************* Module tasks.admin
 tasks\admin.py:1:0: W0611: Unused admin imported from django.contrib (unused-import)
 ************* Module tasks.tests
 tasks\tests.py:1:0: W0611: Unused TestCase imported from django.test (unused-import)
 ************* Module tasks.views
 tasks\views.py:1:0: R0801: Similar lines in 2 files
-==api.views:[61:75]
-==rise.views:[10:24]
-    ultimo = PlayerStatus.objects.order_by("-data").first()
-
-    o_reino_poder = (
-        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-        .exclude(player__status="INATIVO")
-        .exclude(player__status="BANIDO")
+==kvk.views:[268:278]
+==reports.views:[292:303]
+            categorizados.append(
+                {
+                    "faixa0": faixa[0],
+                    "faixa1": faixa[1],
+                    "media": media,
+                    "meiamedia": media * 0.5,
+                    "membros": status,
+                }
+            )
+            context["categorizados"] = categorizados (duplicate-code)
+tasks\views.py:1:0: R0801: Similar lines in 2 files
+==reports.views:[171:179]
+==rise.views:[16:24]
         .filter(
             data__year=ultimo.data.year,
             data__month=ultimo.data.month,
@@ -61,62 +68,14 @@ tasks\views.py:1:0: R0801: Similar lines in 2 files
     )
  (duplicate-code)
 tasks\views.py:1:0: R0801: Similar lines in 2 files
-==kvk.views:[268:278]
-==reports.views:[292:303]
-        categorizados.append(
-            {
-                "faixa0": faixa[0],
-                "faixa1": faixa[1],
-                "media": media,
-                "meiamedia": media * 0.5,
-                "membros": status,
-            }
-        )
-        context["categorizados"] = categorizados
- (duplicate-code)
-tasks\views.py:1:0: R0801: Similar lines in 2 files
-==api.views:[86:94]
-==rise.views:[13:21]
-            PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-            .exclude(player__status="INATIVO")
-            .exclude(player__status="BANIDO")
-            .filter(
-                data__year=ultimo.data.year,
-                data__month=ultimo.data.month,
-                data__day=ultimo.data.day,
-            ) (duplicate-code)
-tasks\views.py:1:0: R0801: Similar lines in 2 files
-==api.views:[64:72]
-==rise.views:[25:33]
-        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-        .exclude(player__status="INATIVO")
-        .exclude(player__status="BANIDO")
-        .filter(
-            data__year=ultimo.data.year,
-            data__month=ultimo.data.month,
-            data__day=ultimo.data.day,
-        ) (duplicate-code)
-tasks\views.py:1:0: R0801: Similar lines in 2 files
-==api.views:[67:75]
-==reports.views:[171:179]
-            .filter(
-                data__year=ultimo.data.year,
-                data__month=ultimo.data.month,
-                data__day=ultimo.data.day,
-            )
-            .order_by("-power")
-        )
- (duplicate-code)
-tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==kvk.views:[196:204]
 ==players.views:[605:612]
-            ).order_by("data")
-
-            players_faixa_original = []
-            for stat in faixa_original:
-                if stat.player not in players_faixa_original:
-                    if stat.data.hour == primeiro.data.hour:
-                        players_faixa_original.append(stat.player)
+        ).order_by("data")
+        players_faixa_original = []
+        for stat in faixa_original:
+            if stat.player not in players_faixa_original:
+                if stat.data.hour == primeiro.data.hour:
+                    players_faixa_original.append(stat.player)
  (duplicate-code)
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==kvk.views:[144:152]
@@ -132,44 +91,14 @@ tasks\views.py:1:0: R0801: Similar lines in 2 files
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==kvk.views:[44:52]
 ==mge.views:[115:123]
-    inicio = kvk.inicio
-    if kvk.primeira_luta:
-        inicio = kvk.primeira_luta
+        inicio = kvk.inicio
+        if kvk.primeira_luta:
+            inicio = kvk.primeira_luta
 
-    final = kvk.final
-    if not final:
-        final = timezone.now()
- (duplicate-code)
-tasks\views.py:1:0: R0801: Similar lines in 2 files
-==api.views:[107:119]
-==rise.views:[36:48]
-    o_reino_mortes = (
-        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-        .exclude(player__status="INATIVO")
-        .exclude(player__status="BANIDO")
-        .filter(
-            data__year=ultimo.data.year,
-            data__month=ultimo.data.month,
-            data__day=ultimo.data.day,
-        )
-        .order_by("-deaths")
-    )
- (duplicate-code)
-tasks\views.py:1:0: R0801: Similar lines in 2 files
-==api.views:[85:97]
-==rise.views:[24:36]
-    o_reino_killpoints = (
-        PlayerStatus.objects.exclude(player__alliance__tag="MIGR")
-        .exclude(player__status="INATIVO")
-        .exclude(player__status="BANIDO")
-        .filter(
-            data__year=ultimo.data.year,
-            data__month=ultimo.data.month,
-            data__day=ultimo.data.day,
-        )
-        .order_by("-killpoints")
-    )
+        final = kvk.final
+        if not final:
+            final = timezone.now()
  (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.80/10 (previous run: 9.77/10, +0.03)
+Your code has been rated at 9.81/10 (previous run: 9.80/10, +0.01)
