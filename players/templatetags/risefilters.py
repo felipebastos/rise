@@ -8,6 +8,7 @@ register = template.Library()
 
 @register.filter
 def alliances(req):
+    dir(req)
     return Alliance.objects.all().exclude(pk__in=[1, 2, 3])
 
 

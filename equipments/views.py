@@ -95,7 +95,7 @@ def home(request):
                         )
 
     lista = []
-    for k, peca in armadura.items():
+    for _, peca in armadura.items():
         lista.append(peca[0])
     for conj in Conjunto.objects.all():
         has_buffs = conj.get_buffs(lista)
@@ -104,7 +104,7 @@ def home(request):
 
     buffs = {}
 
-    for i, item in armadura.items():
+    for _, item in armadura.items():
         if item[0].pk:
             for status in item[0].buffs.all():
                 label = f"{status.get_status_display()} de {status.get_spec_display()}"
