@@ -63,7 +63,7 @@ class SoftwareStatsTask(RiseTask):
                                     encoding="UTF-8",
                                 ) as source:
                                     contagem = 0
-                                    for count, line in enumerate(source):
+                                    for count, _ in enumerate(source):
                                         contagem = count
                                     lines_of_code = lines_of_code + contagem + 1
                         print(f"Saindo dos templates de {item}")
@@ -88,7 +88,7 @@ class SoftwareStatsTask(RiseTask):
                                     encoding="UTF-8",
                                 ) as source:
                                     contagem = 0
-                                    for count, line in enumerate(source):
+                                    for count, _ in enumerate(source):
                                         contagem = count
                                     lines_of_code = lines_of_code + contagem + 1
                         print(f"Saindo das migrations de {item}")
@@ -103,7 +103,7 @@ class SoftwareStatsTask(RiseTask):
                     encoding="UTF-8",
                 ) as source:
                     contagem = 0
-                    for count, line in enumerate(source):
+                    for count, _ in enumerate(source):
                         contagem = count
                     lines_of_code = lines_of_code + contagem + 1
         mensagem = f"O projeto tem {source_files} arquivos de código \

@@ -24,7 +24,7 @@ class Semana(models.Model):
 
     def inicio(self):
         dia_da_semana = self.segunda.weekday() + 1
-        diferenca = timedelta(days=(8 - dia_da_semana))
+        diferenca = timedelta(days=8 - dia_da_semana)
         segunda_seguinte = self.segunda + diferenca
         return segunda_seguinte
 
