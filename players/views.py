@@ -369,8 +369,9 @@ def populate(request):
             coeficientes = [0.2, 2, 4, 10, 20]
             for i, text in enumerate(kills):
                 if isinstance(text, str):
+                    print(text)
                     if "." in text:
-                        kills[i] = text.replace(".", "")
+                        text = text.replace(".", "")
                     kills[i] = int(text)
 
                 killpoints = killpoints + kills[i] * coeficientes[i]
