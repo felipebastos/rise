@@ -284,7 +284,7 @@ def analisedesempenho(request, kvkid, cat):
                 }
             )
             context["categorizados"] = categorizados
-            cache.set(f"context_{cat}_{kvk.id}", context, 5)
+            cache.set(f"context_{cat}_{kvk.id}", context, 60)
 
     return render(request, "kvk/analise.html", context=context)
 
