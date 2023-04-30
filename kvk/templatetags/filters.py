@@ -13,6 +13,16 @@ def get(dic: Dict, key):
 
 
 @register.filter
+def getkp(dic: Dict, key):
+    return dic[key]["kp"]
+
+
+@register.filter
+def getdt(dic: Dict, key):
+    return dic[key]["dt"]
+
+
+@register.filter
 def foi_rali(player_nick: str, kvkid):
     tem = Cargo.objects.filter(player__nick=player_nick, kvk__id=kvkid, funcao="ral")
 

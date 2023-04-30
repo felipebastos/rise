@@ -46,6 +46,11 @@
                 mortes entre a leitura imediatamente após e a leitura imediatamente antes do zeramento)
             </td>
         </tr>
+        <tr>
+            <td><span style="color:magenta;">-numero</span> são os pontos abatidos por ter matado t1 em grande
+                quantidade.
+            </td>
+        </tr>
     </table>
     <div class="accordion" id="accordionExample">
         {% for grupo in categorizados %}
@@ -114,7 +119,7 @@
                                     </td>
                                     <td>{{player.kp}}
                                         {% if player.player__game_id in abateMGE %}
-                                        <span style="color:red;">- {{abateMGE|get:player.player__game_id}}</span>
+                                        <span style="color:red;">- {{abateMGE|getkp:player.player__game_id}}</span>
                                         {% endif %}
                                     </td>
                                     <td>{{player.dt}}
@@ -124,6 +129,10 @@
                                         {% if player.player__game_id in abates_de_zerados %}
                                         <span style="color:orange;">-
                                             {{abates_de_zerados|get:player.player__game_id}}</span>
+                                        {% endif %}
+                                        {% if player.player__game_id in abateMGE %}
+                                        <span style="color:magenta;">- {{abateMGE|getdt:player.player__game_id}}
+                                        </span>
                                         {% endif %}
                                     </td>
                                     {% if user.is_authenticated %}
@@ -137,7 +146,7 @@
                                             data-bs-target="#modalAbater" data-bs-nick="{{player.player__nick}}"
                                             data-bs-kvkid="{{kvk}}" data-bs-cat="{{tipo}}"
                                             data-bs-playerid="{{player.player__game_id}}">Abater
-                                            MGE controlado</button>
+                                            pontos</button>
                                     </td>
                                     {% endif %}
                                 </tr>
@@ -202,7 +211,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalLabelAbater">
-                    Abater pontos em MGE controlado</h5>
+                    Abater pontos indesejados (MGE ou feed)</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{% url 'adicionarMGE' %}" method="post">
@@ -215,6 +224,9 @@
                     <div class="mb-3">
                         <label for="pontos" class="form-label">Pontos</label>
                         <input id="pontos" class="form-control" type="text" name="pontos" placeholder="pontos" value="0"
+                            pattern="^(0|[1-9][0-9]*)$">
+                        <label for="mortes" class="form-label">Mortos</label>
+                        <input id="mortes" class="form-control" type="text" name="mortes" placeholder="mortes" value="0"
                             pattern="^(0|[1-9][0-9]*)$">
                     </div>
                 </div>

@@ -225,12 +225,14 @@ def analisedesempenho(request, kvkid, cat):
             for stat in status:
                 player = Player.objects.get(pk=stat["player"])
                 if player not in banidos_e_inativos and player not in farms:
-                    abater = 0
+                    abaterkp = 0
+                    abaterdt = 0
                     abate_de_zeramento = 0
-                    if cat == "kp":
-                        abate_mge = PontosDeMGE.objects.filter(kvk=kvk, player=player)
-                        for pontos in abate_mge:
-                            abater = abater + pontos.pontos
+
+                    abate_mge = PontosDeMGE.objects.filter(kvk=kvk, player=player)
+                    for pontos in abate_mge:
+                        abaterkp = abaterkp + pontos.pontos
+                        abaterdt = abaterdt + pontos.mortes
 
                     abate_de_zeramento = get_desconto_de_zeramento(
                         kvk_id=kvkid, player_id=player.id
@@ -238,9 +240,9 @@ def analisedesempenho(request, kvkid, cat):
                     if abate_de_zeramento > 0:
                         abates_de_zerado[player.game_id] = abate_de_zeramento
                     if cat == "dt":
-                        media = media + stat[cat] - abater - abate_de_zeramento
+                        media = media + stat[cat] - abaterdt - abate_de_zeramento
                     else:
-                        media = media + stat[cat] - abater
+                        media = media + stat[cat] - abaterkp
                     contabilizar = contabilizar + 1
 
             if contabilizar:
@@ -259,11 +261,17 @@ def analisedesempenho(request, kvkid, cat):
             abate_mge_dic = {}
             for pontos in mge_controlado:
                 if pontos.player.game_id not in abate_mge_dic:
-                    abate_mge_dic[pontos.player.game_id] = int(pontos.pontos)
+                    abate_mge_dic[pontos.player.game_id] = {
+                        "kp": int(pontos.pontos),
+                        "dt": int(pontos.mortes),
+                    }
                 else:
-                    abate_mge_dic[pontos.player.game_id] = abate_mge_dic[
-                        pontos.player.game_id
-                    ] + int(pontos.pontos)
+                    abate_mge_dic[pontos.player.game_id] = {
+                        "kp": abate_mge_dic[pontos.player.game_id]["kp"]
+                        + int(pontos.pontos),
+                        "dt": abate_mge_dic[pontos.player.game_id]["dt"]
+                        + int(pontos.mortes),
+                    }
             context["abateMGE"] = abate_mge_dic
 
             categorizados.append(
@@ -276,7 +284,7 @@ def analisedesempenho(request, kvkid, cat):
                 }
             )
             context["categorizados"] = categorizados
-            cache.set(f"context_{cat}_{kvk.id}", context, 60 * 60)
+            cache.set(f"context_{cat}_{kvk.id}", context, 60)
 
     return render(request, "kvk/analise.html", context=context)
 
@@ -312,6 +320,7 @@ def adicionar_mge_controlado(request):
         if kvk and player:
             novo = PontosDeMGE()
             novo.pontos = request.POST["pontos"]
+            novo.mortes = request.POST["mortes"]
             novo.player = player
             novo.kvk = kvk
             novo.save()
