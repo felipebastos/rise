@@ -21,16 +21,14 @@ class SoftwareStatsTask(RiseTask):
                 "media",
                 ".github",
             ]:
-                print(f"Módulo: {item}")
                 os.chdir(os.path.join(settings.BASE_DIR, item))
                 inner = os.listdir()
-                print(inner)
+
                 for inside in inner:
                     os.chdir(os.path.join(settings.BASE_DIR, item))
                     if os.path.isfile(inside) and (
                         inside.endswith(".py") or inside.endswith(".html")
                     ):
-                        print(f"Arquivo: {inside}")
                         source_files = source_files + 1
                         with open(
                             os.path.join(settings.BASE_DIR, item, inside),
@@ -42,14 +40,12 @@ class SoftwareStatsTask(RiseTask):
                                 contagem = count
                             lines_of_code = lines_of_code + contagem + 1
                     elif os.path.isdir(inside) and inside == "templates":
-                        print(f"Entrando nos templates de {item}")
                         os.chdir(os.path.join(settings.BASE_DIR, item, inside, item))
                         in_inside = os.listdir()
                         for template in in_inside:
                             if os.path.isfile(template) and (
                                 template.endswith(".html")
                             ):
-                                print(f"Template: {template}")
                                 source_files = source_files + 1
                                 with open(
                                     os.path.join(
@@ -66,16 +62,14 @@ class SoftwareStatsTask(RiseTask):
                                     for count, _ in enumerate(source):
                                         contagem = count
                                     lines_of_code = lines_of_code + contagem + 1
-                        print(f"Saindo dos templates de {item}")
+
                     elif os.path.isdir(inside) and inside == "migrations":
-                        print(f"Entrando nas migrations de {item}")
                         os.chdir(os.path.join(settings.BASE_DIR, item, inside))
                         in_inside = os.listdir()
                         for migration in in_inside:
                             if os.path.isfile(migration) and (
                                 migration.endswith(".py")
                             ):
-                                print(f"Template: {migration}")
                                 source_files = source_files + 1
                                 with open(
                                     os.path.join(
@@ -91,10 +85,9 @@ class SoftwareStatsTask(RiseTask):
                                     for count, _ in enumerate(source):
                                         contagem = count
                                     lines_of_code = lines_of_code + contagem + 1
-                        print(f"Saindo das migrations de {item}")
+
                 os.chdir(settings.BASE_DIR)
             elif item.endswith(".py") or item.endswith(".html"):
-                print(f"Arquivo: {item}")
                 source_files = source_files + 1
 
                 with open(

@@ -1,4 +1,6 @@
 from django import forms
+from django.db.models import Value
+from django.db.models.functions import RPad
 
 from players.models import Player, PlayerStatus
 from tasks.scripts.script import RiseTask, RiseTaskResponse
@@ -7,6 +9,10 @@ from tasks.scripts.script import RiseTask, RiseTaskResponse
 class InativosTask(RiseTask):
     def run(self, from_form: forms.Form = None) -> RiseTaskResponse:
         ultima_leitura = PlayerStatus.objects.all().order_by("-data").first().data
+
+        data = ultima_leitura.strftime("%d/%m/%Y")
+
+        obs = f"\r\nMarcado automaticamente como inativo em: {data}"
 
         ativos_no_top500 = PlayerStatus.objects.filter(
             data__year=ultima_leitura.year,
@@ -21,7 +27,9 @@ class InativosTask(RiseTask):
         players = (
             Player.objects.exclude(game_id__in=game_ids_ativos)
             .exclude(status__in=nao_mudar)
-            .update(status="INATIVO")
+            .update(
+                status="INATIVO", observacao=RPad("observacao", len(obs), Value(obs))
+            )
         )
 
         response = RiseTaskResponse(f"Atualizados os status de {players} player(s).")
