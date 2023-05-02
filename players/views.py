@@ -312,7 +312,7 @@ def populate(request):
             else:
                 # update some data
                 oldnick = jogador.nick
-                print(f"Mudança de nick: {oldnick} > {row[1]}")
+
                 jogador.nick = row[2]
                 if jogador.nick != oldnick:
                     if jogador.observacao:
@@ -369,7 +369,6 @@ def populate(request):
             coeficientes = [0.2, 2, 4, 10, 20]
             for i, text in enumerate(kills):
                 if isinstance(text, str):
-                    print(text)
                     if "." in text:
                         text = text.replace(".", "")
                     kills[i] = int(text)

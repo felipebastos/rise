@@ -36,40 +36,26 @@ class ResizeTask(RiseTask):
             os.chdir(os.path.join(settings.MEDIA_ROOT, pasta))
             arquivos = os.listdir()
             for imagem in arquivos:
-                print(f"Trabalhando em {os.getcwd()}")
                 img = Image.open(imagem)
-                print("[*] Image shape:", img.size)
+
                 shape_x, shape_y = img.size
 
                 image_size = os.path.getsize(imagem)
                 if shape_x > 64 or shape_y > 64:
-                    print(
-                        "[*] Size before compression:",
-                        get_size_format(image_size),
-                    )
                     img = img.resize((64, 64), Image.ANTIALIAS)
-                    print("[+] New Image shape:", img.size)
+
                     try:
                         img.save(imagem, quality=75, optimize=True)
                     except OSError:
                         img = img.convert("RGB")
                         img.save(imagem, quality=75, optimize=True)
-                    print("[+] New file saved:", imagem)
+
                     new_image_size = os.path.getsize(imagem)
                     estava_ocupando = estava_ocupando + image_size
                     economia = economia + new_image_size
                     quantidade = quantidade + 1
-                    print(
-                        "[+] Size after compression:",
-                        get_size_format(new_image_size),
-                    )
+
                     saving_diff = new_image_size - image_size
-                    print(
-                        f"[+] Image size change: {saving_diff/image_size*100:.2f}% \
-                          of the original image size."
-                    )
-                else:
-                    print(f"Mantendo o tamanho original de {imagem}")
 
         mensagem = "Não foi necessário realizar alterações."
         if estava_ocupando > 0:
