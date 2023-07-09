@@ -9,7 +9,16 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 
 from kvk.forms import CargoForm, EtapaForm, KvkConfigForm, UploadEtapasFileForm
-from kvk.models import AdicionalDeFarms, Cargo, Etapas, Kvk, PontosDeMGE, Zerado, faixas
+from kvk.models import (
+    AdicionalDeFarms,
+    Cargo,
+    Consolidado,
+    Etapas,
+    Kvk,
+    PontosDeMGE,
+    Zerado,
+    faixas,
+)
 from players.models import Player, PlayerStatus
 
 # Create your views here.
@@ -132,15 +141,8 @@ def removezerado(request, kvk, zerado_id):
     return redirect(f"/kvk/edit/{zerado.kvk.id}/")
 
 
-def analisedesempenho(request, kvkid, cat):
-    kvk = Kvk.objects.get(pk=kvkid)
+def calcular(kvk, cat):
     abates_de_zerado = {}
-
-    if cat not in ["kp", "dt"]:
-        return render(request, "rise/404.html")
-
-    if kvk.id == 4:
-        return render(request, "rise/404.html")
 
     inicio = kvk.inicio
     if kvk.primeira_luta:
@@ -152,7 +154,7 @@ def analisedesempenho(request, kvkid, cat):
 
     context = {
         "tipo": cat,
-        "kvk": kvkid,
+        "kvk": kvk.id,
     }
 
     context = cache.get(f"context_{cat}_{kvk.id}") or context
@@ -235,7 +237,7 @@ def analisedesempenho(request, kvkid, cat):
                         abaterdt = abaterdt + pontos.mortes
 
                     abate_de_zeramento = get_desconto_de_zeramento(
-                        kvk_id=kvkid, player_id=player.id
+                        kvk_id=kvk.id, player_id=player.id
                     )
                     if abate_de_zeramento > 0:
                         abates_de_zerado[player.game_id] = abate_de_zeramento
@@ -284,9 +286,65 @@ def analisedesempenho(request, kvkid, cat):
                 }
             )
             context["categorizados"] = categorizados
-            cache.set(f"context_{cat}_{kvk.id}", context, 60)
 
-    return render(request, "kvk/analise.html", context=context)
+    return context
+
+
+def analisedesempenho(request, kvkid, cat):
+    kvk = Kvk.objects.get(pk=kvkid)
+
+    if cat not in ["kp", "dt"]:
+        return render(request, "rise/404.html")
+
+    if kvk.id == 4:
+        return render(request, "rise/404.html")
+
+    consolidado = Consolidado.objects.filter(kvk=kvk)
+    if len(consolidado) == 0:
+        context = calcular(kvk, cat)
+
+        cache.set(f"context_{cat}_{kvk.id}", context, 60)
+
+        return render(request, "kvk/analise.html", context=context)
+
+    return redirect("/")
+
+
+@login_required
+def consolidar_kvk(request, kvkid):
+    kvk = Kvk.objects.get(pk=kvkid)
+
+    context = calcular(kvk, "dt")
+
+    categorias = context["categorizados"]
+    zerados = context["zerados"]
+    print(zerados)
+
+    for categoria in categorias:
+        posicao = 1
+        media = categoria["media"]
+        meia_media = categoria["meiamedia"]
+        for status in categoria["membros"]:
+            player = Player.objects.get(game_id=status["player__game_id"])
+            novo = Consolidado()
+            novo.kvk = kvk
+            novo.player = player
+            novo.kp = status["kp"]
+            novo.dt = status["dt"]
+            novo.posicao = posicao
+            if player.pk in zerados:
+                novo.cor = "GRA"
+                novo.zerado = True
+            elif novo.dt >= media:
+                novo.cor = "GRE"
+            elif novo.dt >= meia_media:
+                novo.cor = "YEL"
+            else:
+                novo.cor = "RED"
+            novo.save()
+            posicao = posicao + 1
+
+    return redirect("/")
 
 
 @login_required

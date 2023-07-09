@@ -94,3 +94,24 @@ class Cargo(models.Model):
 
     def __str__(self) -> str:
         return f"{self.funcao} - {self.player.nick} em {self.kvk}"
+
+
+CORES = (
+    ("GRA", "grey"),
+    ("GRE", "green"),
+    ("YEL", "yellow"),
+    ("RED", "red"),
+)
+
+
+class Consolidado(models.Model):
+    kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+
+    posicao = models.IntegerField()
+    cor = models.CharField(max_length=3, choices=CORES, default="GRE")
+
+    kp = models.BigIntegerField()
+    dt = models.IntegerField()
+
+    zerado = models.BooleanField(default=False)
