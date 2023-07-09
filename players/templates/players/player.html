@@ -37,8 +37,9 @@
                         class="fas fa-user-edit"></i></a>
                 <a href="{% url 'punir' player.game_id %}" class="btn btn-danger">Punir MGE</a>
                 <a href="{% url 'punirPoder' player.game_id %}" class="btn btn-warning">Punir Evento de Poder</a>
+                <a href="{% url 'banidoZerado' player.game_id %}" class="btn btn-warning">Registrar zeramento</a>
                 {% if showkvk %}
-                <a class="btn btn-danger" href="{% url 'add_zerado' player.game_id %}">Zerado</a>
+                <a class="btn btn-danger" href="{% url 'add_zerado' player.game_id %}">Zerado no KvK</a>
                 {% endif %}
             </div>
 

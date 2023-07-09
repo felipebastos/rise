@@ -730,3 +730,19 @@ def advertencias(request):
     }
 
     return render(request, "players/advertencias.html", context=context)
+
+
+@login_required
+def zerou_banido(request, player_id):
+    player = Player.objects.get(game_id=player_id)
+
+    if player:
+        hoje = timezone.now().strftime("%d/%m/%Y")
+
+        player.observacao = (
+            player.observacao + "\r\n" + f"Zerado por {request.user.username} em {hoje}"
+        )
+
+        player.save()
+
+    return redirect(f"/players/{player_id}")
