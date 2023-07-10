@@ -51,6 +51,8 @@ class Player(models.Model):
         Alliance, on_delete=models.CASCADE, default=None, null=True
     )
 
+    farms = models.ManyToManyField("Player", related_name="principal")
+
     alterado_em = models.DateField("Alterado em", default=date.today)
     alterado_por = models.ForeignKey(
         get_user_model(), on_delete=models.SET_NULL, null=True

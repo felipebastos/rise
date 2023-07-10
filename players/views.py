@@ -13,7 +13,7 @@ from django.utils import timezone
 from bank.models import Credito
 from kvk.models import Cargo, Etapas, Kvk, PontosDeMGE, Zerado, get_minha_faixa
 from mge.models import EventoDePoder, Punido
-from players.forms import UploadFileForm
+from players.forms import AddFarmForm, UploadFileForm
 from players.models import (
     PLAYER_STATUS,
     Advertencia,
@@ -63,6 +63,8 @@ def index(request, game_id):
 
         cargos = Cargo.objects.filter(player=player)
 
+        farm_form = AddFarmForm()
+
         context = {
             "player": player,
             "status": status,
@@ -73,6 +75,7 @@ def index(request, game_id):
             "advertencias": advertencias_do_player,
             "elementos": elementos,
             "cargos": cargos,
+            "farmform": farm_form,
         }
     except Player.DoesNotExist:
         return render(request, "rise/404.html")
@@ -746,3 +749,30 @@ def zerou_banido(request, player_id):
         player.save()
 
     return redirect(f"/players/{player_id}")
+
+
+@login_required
+def append_farm(request, principal_id):
+    principal = Player.objects.get(game_id=principal_id)
+    # TODO: add farms e depois remove
+    if request.method == "POST":
+        form = AddFarmForm(request.POST)
+        if form.is_valid():
+            farm_id = form.cleaned_data["farm"]
+
+            farm = Player.objects.get(game_id=farm_id)
+
+            principal.farms.add(farm)
+
+            principal.save()
+    return redirect(f"/players/{principal_id}/")
+
+
+def remove_farm(request, player_id, farm_id):
+    player = Player.objects.get(game_id=player_id)
+    farm = Player.objects.get(game_id=farm_id)
+
+    player.farms.remove(farm)
+    player.save()
+
+    return redirect(f"/players/{player_id}/")

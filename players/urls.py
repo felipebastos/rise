@@ -22,4 +22,6 @@ urlpatterns = [
     path("advertencias/", views.advertencias, name="advertencias"),
     path("adv_add/", views.criar_advertencia, name="adv_add"),
     path("zerouBanido/<player_id>/", views.zerou_banido, name="banidoZerado"),
+    path("appendFarm/<principal_id>/", views.append_farm, name="add_farm"),
+    path("removeFarm/<player_id>/<farm_id>/", views.remove_farm, name="remove_farm"),
 ]
