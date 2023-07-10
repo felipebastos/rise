@@ -6,8 +6,12 @@
 {% load filters %}
 <div class="bg-light p-3 text-center">
     <div class="container">
-        <h1 class="display-4">{{player.game_id}} - {{player.nick}} <span
-                class="badge bg-secondary">{{player.status}}</span></h1>
+        <h1 class="display-4">{{player.game_id}} - {{player.nick}} <span class="badge bg-secondary">{{player.status}}
+                {% if player.principal.count >= 1 %}
+                de <a
+                    href="{% url 'player_profile' player.principal.first.game_id %}">{{player.principal.first.nick}}</a>
+                {% endif %}
+            </span></h1>
         <div class="medalhas">
             {% for cargo in cargos %}
             <a href="{% url 'show_kvk' cargo.kvk.id %}">
@@ -47,6 +51,49 @@
         {% endif %}
     </div>
 </div>
+{% if user.is_authenticated %}
+<div class="container">
+    <h2>Gestão de farms</h2>
+    <form method="POST" action="{% url 'add_farm' player.game_id %}">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="id_farm">Farm a adicionar:</label>
+
+            <input type="text" name="farm" class="form-control" pattern="^[0-9]*$" maxlength="9" required id="id_farm">
+
+            <button class="btn btn-outline-primary" type="submit">Adicionar</button>
+        </div>
+    </form>
+    <div class="accordion" id="accordionFarms">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFarms">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFarms"
+                    aria-expanded="true" aria-controls="collapseFarms">Farms de {{player.nick}}</button>
+            </h2>
+            <div id="collapseFarms" class="accordion-collapse collapse show" aria-labelledby="headingFarms"
+                data-bs-parent="#accordionFarms">
+                <div class="accordion-body">
+                    <table class="table table-striped">
+                        <tbody>
+                            {% for farm in player.farms.all %}
+                            <tr>
+                                <td>
+                                    {{farm.game_id}} - <a
+                                        href="{% url 'player_profile' farm.game_id %}">[{{farm.alliance.tag}}]
+                                        {{farm.nick}}</a></td>
+                                <td> <a href="{% url 'remove_farm' player.game_id farm.game_id %}"
+                                        class="btn btn-danger">Remover</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endif %}
 <div class="container">
     <table class="table table-striped">
         <thead>
