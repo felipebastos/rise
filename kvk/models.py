@@ -108,10 +108,16 @@ class Consolidado(models.Model):
     kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
 
-    posicao = models.IntegerField()
-    cor = models.CharField(max_length=3, choices=CORES, default="GRE")
+    posicao_kp = models.IntegerField(null=True)
+    cor_kp = models.CharField(max_length=3, choices=CORES, default="GRE")
+
+    posicao_dt = models.IntegerField()
+    cor_dt = models.CharField(max_length=3, choices=CORES, default="GRE")
 
     kp = models.BigIntegerField()
     dt = models.IntegerField()
 
     zerado = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return f"{self.player.nick} no KvK {self.kvk.id}"

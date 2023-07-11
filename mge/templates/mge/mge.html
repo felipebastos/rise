@@ -96,6 +96,9 @@
                 <th scope="col">Abates no KvK</th>
                 <th scope="col">Mortes no KvK</th>
                 <th scope="col">General</th>
+                {% if user.is_authenticated %}
+                <th scope="col">Detalhes</th>
+                {% endif %}
                 {% if user.is_authenticated and not rank_fechado %}
                 <th scope="col">Situação</th>
                 <th scope="col">Ações</th>
@@ -141,6 +144,29 @@
                         liberar</span>{% endif %}</td>
                 {% if user.is_authenticated %}
                 <td>
+                    {% with consolidado=inscrito|is_consolidado %}
+                    {% if consolidado %}
+                    Ficou em
+                    {% with cor=inscrito|get_cor %}
+                    {% if cor == 'GRA' %}
+                    <span class="badge bg-secondary">
+                        {% elif cor == 'GRE' %}
+                        <span class="badge bg-success">
+                            {% elif cor == 'YEL' %}
+                            <span class="badge bg-warning">
+                                {% elif cor == 'RED' %}
+                                <span class="badge bg-danger">
+                                    {% endif %}
+                                    {{inscrito | get_posicao}}º
+                                </span>
+                                colocado por mortes em sua faixa de poder.
+                                {% endwith %}
+                                {% endif %}
+                                {% endwith %}
+                </td>
+                {% endif %}
+                {% if user.is_authenticated and not rank_fechado %}
+                <td>
                     {% if inscrito.prioridade %}
                     <a href="#" class="btn btn-success position-relative">
                         {{inscrito.situacao}} <i class="fas fa-splotch"></i>
@@ -173,6 +199,9 @@
                 <td>Não há inscritos ainda.</td>
                 <td></td>
                 <td></td>
+                {% if user.is_authenticated %}
+                <td></td>
+                {% endif %}
                 {% if user.is_authenticated and not rank_fechado %}
                 <td></td>
                 <td></td>
