@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 
 from config.models import SiteConfig
-from kvk.models import Kvk
+from kvk.models import Consolidado, Kvk
 from mge.forms import NovoCriaMGEForm
 from mge.models import (
     COMMANDERS,
@@ -113,32 +113,38 @@ def inscrever(request, mge_id):
 
         kvk = Kvk.objects.filter(ativo=False).order_by("-inicio").first()
 
-        inicio = kvk.inicio
-        if kvk.primeira_luta:
-            inicio = kvk.primeira_luta
+        consolidado = Consolidado.objects.filter(kvk=kvk, player=player).first()
 
-        final = kvk.final
-        if not final:
-            final = timezone.now()
-
-        status = (
-            PlayerStatus.objects.all()
-            .filter(player=player)
-            .filter(data__gte=inicio)
-            .filter(data__lte=final)
-            .values("player__nick")
-            .annotate(
-                kp=Max("killpoints") - Min("killpoints"),
-                dt=Max("deaths") - Min("deaths"),
-            )
-        )
-
-        if status:
-            inscrito.kills = status[0]["kp"]
-            inscrito.deaths = status[0]["dt"]
+        if consolidado:
+            inscrito.kills = consolidado.kp
+            inscrito.deaths = consolidado.dt
         else:
-            inscrito.kills = -1
-            inscrito.deaths = -1
+            inicio = kvk.inicio
+            if kvk.primeira_luta:
+                inicio = kvk.primeira_luta
+
+            final = kvk.final
+            if not final:
+                final = timezone.now()
+
+            status = (
+                PlayerStatus.objects.all()
+                .filter(player=player)
+                .filter(data__gte=inicio)
+                .filter(data__lte=final)
+                .values("player__nick")
+                .annotate(
+                    kp=Max("killpoints") - Min("killpoints"),
+                    dt=Max("deaths") - Min("deaths"),
+                )
+            )
+
+            if status:
+                inscrito.kills = status[0]["kp"]
+                inscrito.deaths = status[0]["dt"]
+            else:
+                inscrito.kills = -1
+                inscrito.deaths = -1
 
         inscrito.save()
         logger.debug("Inscrito: %s no MGE: %s", player.game_id, mge)

@@ -35,6 +35,7 @@ COMMANDERS = [
         "Amanitore",
         "Nabuco",
         "Henry",
+        "Dido",
     ],
     [
         "Wu Zetian",

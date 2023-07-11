@@ -300,14 +300,12 @@ def analisedesempenho(request, kvkid, cat):
         return render(request, "rise/404.html")
 
     consolidado = Consolidado.objects.filter(kvk=kvk)
-    if len(consolidado) == 0:
-        context = calcular(kvk, cat)
 
-        cache.set(f"context_{cat}_{kvk.id}", context, 60)
+    context = calcular(kvk, cat)
 
-        return render(request, "kvk/analise.html", context=context)
+    cache.set(f"context_{cat}_{kvk.id}", context, 60)
 
-    return redirect("/")
+    return render(request, "kvk/analise.html", context=context)
 
 
 @login_required
@@ -318,7 +316,6 @@ def consolidar_kvk(request, kvkid):
 
     categorias = context["categorizados"]
     zerados = context["zerados"]
-    print(zerados)
 
     for categoria in categorias:
         posicao = 1
@@ -331,16 +328,16 @@ def consolidar_kvk(request, kvkid):
             novo.player = player
             novo.kp = status["kp"]
             novo.dt = status["dt"]
-            novo.posicao = posicao
+            novo.posicao_dt = posicao
             if player.pk in zerados:
-                novo.cor = "GRA"
+                novo.cor_dt = "GRA"
                 novo.zerado = True
             elif novo.dt >= media:
-                novo.cor = "GRE"
+                novo.cor_dt = "GRE"
             elif novo.dt >= meia_media:
-                novo.cor = "YEL"
+                novo.cor_dt = "YEL"
             else:
-                novo.cor = "RED"
+                novo.cor_dt = "RED"
             novo.save()
             posicao = posicao + 1
 
