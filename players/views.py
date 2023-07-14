@@ -33,6 +33,9 @@ def index(request, game_id):
     try:
         player = Player.objects.get(game_id=game_id)
         status = PlayerStatus.objects.filter(player__game_id=game_id).order_by("-data")
+
+        grafico = PlayerStatus.objects.filter(player__game_id=game_id)
+
         spec = None
         for _, (res, verbose) in enumerate(player_spec):
             if player.specialty == res:
@@ -76,6 +79,7 @@ def index(request, game_id):
             "elementos": elementos,
             "cargos": cargos,
             "farmform": farm_form,
+            "grafico": grafico,
         }
     except Player.DoesNotExist:
         return render(request, "rise/404.html")

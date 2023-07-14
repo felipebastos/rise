@@ -67,10 +67,11 @@
     <div class="accordion" id="accordionFarms">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingFarms">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFarms"
-                    aria-expanded="true" aria-controls="collapseFarms">Farms de {{player.nick}}</button>
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseFarms" aria-expanded="true" aria-controls="collapseFarms">Farms de
+                    {{player.nick}}</button>
             </h2>
-            <div id="collapseFarms" class="accordion-collapse collapse show" aria-labelledby="headingFarms"
+            <div id="collapseFarms" class="accordion-collapse collapse" aria-labelledby="headingFarms"
                 data-bs-parent="#accordionFarms">
                 <div class="accordion-body">
                     <table class="table table-striped">
@@ -95,80 +96,179 @@
 </div>
 {% endif %}
 <div class="container">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Data da informação</th>
-                <th scope="col">Poder</th>
-                <th scope="col">Killpoints</th>
-                <th scope="col">Mortes</th>
-                {% if user.is_authenticated %}
-                <th scope="col">Ações</th>
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody>
-            {% language 'pt-br' %}
-            {% if user.is_authenticated %}
-            {% for item in elementos %}
-            {% if item.data %}
-            <tr>
-                <th scope="row">{{item.data}}</th>
-                <td>{{item.power}}</td>
-                <td>{{item.killpoints}}</td>
-                <td>{{item.deaths}}</td>
+    <div class="accordion" id="accordionStatus">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#item1"
+                    aria-expanded="true">
+                    Status em gráfico
+                </button>
+            </h2>
+            <div id="item1" class="accordion-collapse collapse show" data-bs-parent="#accordionStatus">
+                <div class="accordion-body">
+                    <canvas id="grafico"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button  collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#item2" aria-expanded="true">
+                    Status em tabela
+                </button>
+            </h2>
+            <div id="item2" class="accordion-collapse collapse" data-bs-parent="#accordionStatus">
+                <div class="accordion-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Data da informação</th>
+                                <th scope="col">Poder</th>
+                                <th scope="col">Killpoints</th>
+                                <th scope="col">Mortes</th>
+                                {% if user.is_authenticated %}
+                                <th scope="col">Ações</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% language 'pt-br' %}
+                            {% if user.is_authenticated %}
+                            {% for item in elementos %}
+                            {% if item.data %}
+                            <tr>
+                                <th scope="row">{{item.data}}</th>
+                                <td>{{item.power}}</td>
+                                <td>{{item.killpoints}}</td>
+                                <td>{{item.deaths}}</td>
 
-                <td>
-                    {% if item.editavel %}
-                    <a class="btn btn-warning" href="{% url 'edit_status' item.get_id %}">Editar</a>
-                    <a class="btn btn-danger" href="{% url 'delete_status' item.get_id %}">Deletar</a>
-                    {% endif %}
-                </td>
+                                <td>
+                                    {% if item.editavel %}
+                                    <a class="btn btn-warning" href="{% url 'edit_status' item.get_id %}">Editar</a>
+                                    <a class="btn btn-danger" href="{% url 'delete_status' item.get_id %}">Deletar</a>
+                                    {% endif %}
+                                </td>
 
-            </tr>
-            {% else %}
-            <tr class="table-danger">
-                <th scope="row">{{item.date}}</th>
-                <td>KvK iniciado em {{item.kvk.inicio}}</td>
-                <td>{{item.descricao}}</td>
-                <td></td>
-                <td></td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-            {% endif %}
-            {% if not user.is_authenticated %}
-            {% for item in status|slice:":1" %}
-            <tr>
-                <th scope="row">{{item.data}}</th>
-                <td>{{item.power}}</td>
-                <td>{{item.killpoints}}</td>
-                <td>{{item.deaths}}</td>
-            </tr>
-            {% endfor %}
-            {% endif %}
-            {% endlanguage %}
-        </tbody>
-    </table>
+                            </tr>
+                            {% else %}
+                            <tr class="table-danger">
+                                <th scope="row">{{item.date}}</th>
+                                <td>KvK iniciado em {{item.kvk.inicio}}</td>
+                                <td>{{item.descricao}}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                            {% if not user.is_authenticated %}
+                            {% for item in status|slice:":1" %}
+                            <tr>
+                                <th scope="row">{{item.data}}</th>
+                                <td>{{item.power}}</td>
+                                <td>{{item.killpoints}}</td>
+                                <td>{{item.deaths}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                            {% endlanguage %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% if user.is_authenticated %}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#item3" aria-expanded="true">
+                    Histórico de punições
+                </button>
+            </h2>
+            <div id="item3" class="accordion-collapse collapse" data-bs-parent="#accordionStatus">
+                <div class="accordion-body">
+                    <ul class="list-group">
+                        {% for punicao in punicoesMge %}
+                        <li class="list-group-item">{{punicao}} {{punicao.mge.semana}}</li>
+                        {% endfor %}
+                        {% for punicao in punicoesPoder %}
+                        <li class="list-group-item">{{punicao}} {{punicao.inserido}}</li>
+                        {% endfor %}
+                        {% for advertencia in advertencias %}
+                        <li class="list-group-item text-wrap" style="width:100%;"><b>Advertido por</b>
+                            {{advertencia.descricao}}
+                            <b>de</b> {{advertencia.inicio}}
+                            <b>até</b>
+                            {{advertencia.final}}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 </div>
-{% if user.is_authenticated %}
-<div class="container">
-    <h2>Histórico de punições</h2>
-    <ul class="list-group">
-        {% for punicao in punicoesMge %}
-        <li class="list-group-item">{{punicao}} {{punicao.mge.semana}}</li>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('grafico');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [
+                {% for item in grafico %}
+            '{{item.data|date:"d/m/Y"}}',
+            {% endfor %}
+            ],
+        {% localize off %}
+        datasets: [{
+            label: 'Killpoints',
+            yAxisID: 'yKP',
+            data: [
+                {% for item in grafico %}
+                {{ item.killpoints }},
         {% endfor %}
-        {% for punicao in punicoesPoder %}
-        <li class="list-group-item">{{punicao}} {{punicao.inserido}}</li>
+    ],
+        borderWidth: 1
+            },
+        {
+            label: 'Mortes',
+            yAxisID: 'yDT',
+            data: [
+                {% for item in grafico %}
+                    {{ item.deaths }},
         {% endfor %}
-        {% for advertencia in advertencias %}
-        <li class="list-group-item text-wrap" style="width:100%;"><b>Advertido por</b> {{advertencia.descricao}}
-            <b>de</b> {{advertencia.inicio}}
-            <b>até</b>
-            {{advertencia.final}}
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
+        ],
+        {% endlocalize %}
+        borderWidth: 1
+                }]
+        },
+        options: {
+        scales: {
+            yKP: {
+                title: {
+                    display: true,
+                    text: 'Killpoints',
+                },
+                position: 'left',
+            },
+            yDT: {
+                title: {
+                    display: true,
+                    text: 'Mortes',
+                },
+                position: 'right',
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Leituras'
+                }
+            },
+        }
+    }
+    });
+</script>
 {% endblock %}
