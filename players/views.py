@@ -114,6 +114,7 @@ def edit_player(request, game_id):
     player.func = request.POST["func"]
     player.alliance = Alliance.objects.filter(tag=request.POST["ally"]).first()
     player.alterado_por = request.user
+    player.alterado_em = timezone.now()
     player.save()
     logger.debug("%s editou %s", request.user.username, player.game_id)
     context = {
