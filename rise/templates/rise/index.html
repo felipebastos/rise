@@ -21,6 +21,16 @@
             <ol class="list-group list-group-numbered">
                 {% for p in top10poder %}
                 <li class="list-group-item"><a href="{% url 'player_profile' p.player.game_id %}">{{p.player.nick}}</a>
+                    {% if p.player.func == 'guar' %}
+                    <button class="badge bg-danger" title="Líder de Guarnição"><i
+                            class="fas fa-chess-rook fs-4"></i></button>
+                    {% elif p.player.func == 'rali' %}
+                    <button class="badge bg-warning" title="Líder de Rali"><i
+                            class="fas fa-chess-knight fs-4"></i></button>
+                    {% else %}
+                    <button class="badge bg-success" title="Openfield"><i class="fas fa-chess-pawn fs-4"></i></button>
+                    {% endif %}
+                    - {{p.power}}
                 </li>
                 {% endfor %}
             </ol>
@@ -30,6 +40,16 @@
             <ol class="list-group list-group-numbered">
                 {% for p in top10kp %}
                 <li class="list-group-item"><a href="{% url 'player_profile' p.player.game_id %}">{{p.player.nick}}</a>
+                    {% if p.player.func == 'guar' %}
+                    <button class="badge bg-danger" title="Líder de Guarnição"><i
+                            class="fas fa-chess-rook fs-4"></i></button>
+                    {% elif p.player.func == 'rali' %}
+                    <button class="badge bg-warning" title="Líder de Rali"><i
+                            class="fas fa-chess-knight fs-4"></i></button>
+                    {% else %}
+                    <button class="badge bg-success" title="Openfield"><i class="fas fa-chess-pawn fs-4"></i></button>
+                    {% endif %}
+                    - {{p.killpoints}}
                 </li>
                 {% endfor %}
             </ol>
@@ -39,6 +59,16 @@
             <ol class="list-group list-group-numbered">
                 {% for p in top10dt %}
                 <li class="list-group-item"><a href="{% url 'player_profile' p.player.game_id %}">{{p.player.nick}}</a>
+                    {% if p.player.func == 'guar' %}
+                    <button class="badge bg-danger" title="Líder de Guarnição"><i
+                            class="fas fa-chess-rook fs-4"></i></button>
+                    {% elif p.player.func == 'rali' %}
+                    <button class="badge bg-warning" title="Líder de Rali"><i
+                            class="fas fa-chess-knight fs-4"></i></button>
+                    {% else %}
+                    <button class="badge bg-success" title="Openfield"><i class="fas fa-chess-pawn fs-4"></i></button>
+                    {% endif %}
+                    - {{p.deaths}}
                 </li>
                 {% endfor %}
             </ol>
