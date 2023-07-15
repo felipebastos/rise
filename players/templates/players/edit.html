@@ -61,6 +61,18 @@
             </select>
         </div>
         <div class="form-group">
+            <label for="func">Função do jogador</label>
+            <select class="form-control" name="func" id="func">
+                {% for val, text in func_list %}
+                {% if val == player.func %}
+                <option value="{{val}}" selected>{{text}}</option>
+                {% else %}
+                <option value="{{val}}">{{text}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
             <label for="observacao">Observações</label>
             <textarea class="form-control" name="observacao" id="observacao" cols="50"
                 rows="10">{{player.observacao}}</textarea>

@@ -6,12 +6,20 @@
 {% load filters %}
 <div class="bg-light p-3 text-center">
     <div class="container">
-        <h1 class="display-4">{{player.game_id}} - {{player.nick}} <span class="badge bg-secondary">{{player.status}}
+        <h1 class="display-4">{{player.game_id}} - {{player.nick}}
+            {% if player.func == 'guar' %}
+            <button class="badge bg-danger" title="Líder de Guarnição"><i class="fas fa-chess-rook"></i></button>
+            {% elif player.func == 'rali' %}
+            <button class="badge bg-warning" title="Líder de Rali"><i class="fas fa-chess-knight"></i></button>
+            {% else %}
+            <button class="badge bg-success" title="Openfield"><i class="fas fa-chess-pawn"></i></button>
+            {% endif %} <span class="badge bg-secondary">{{player.status}}
                 {% if player.principal.count >= 1 %}
                 de <a
                     href="{% url 'player_profile' player.principal.first.game_id %}">{{player.principal.first.nick}}</a>
                 {% endif %}
-            </span></h1>
+            </span>
+        </h1>
         <div class="medalhas">
             {% for cargo in cargos %}
             <a href="{% url 'show_kvk' cargo.kvk.id %}">

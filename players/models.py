@@ -31,6 +31,12 @@ player_spec = (
     ("end", "Especialidade não definida"),
 )
 
+CARGO = (
+    ("open", "Openfield"),
+    ("rali", "Rali"),
+    ("guar", "Guarnição"),
+)
+
 
 class Alliance(models.Model):
     nome = models.CharField(max_length=100)
@@ -50,6 +56,8 @@ class Player(models.Model):
     alliance = models.ForeignKey(
         Alliance, on_delete=models.CASCADE, default=None, null=True
     )
+
+    func = models.CharField(max_length=4, choices=CARGO, default="open")
 
     farms = models.ManyToManyField("Player", related_name="principal")
 

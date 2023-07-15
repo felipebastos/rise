@@ -15,6 +15,7 @@ from kvk.models import Cargo, Etapas, Kvk, PontosDeMGE, Zerado, get_minha_faixa
 from mge.models import EventoDePoder, Punido
 from players.forms import AddFarmForm, UploadFileForm
 from players.models import (
+    CARGO,
     PLAYER_STATUS,
     Advertencia,
     Alliance,
@@ -101,6 +102,7 @@ def edit_player(request, game_id):
             "status_list": PLAYER_STATUS,
             "ranks_list": player_rank,
             "specialty_list": player_spec,
+            "func_list": CARGO,
             "alliances": allies,
         }
         return render(request, "players/edit.html", context=context)
@@ -109,6 +111,7 @@ def edit_player(request, game_id):
     player.status = request.POST["status"]
     player.rank = request.POST["rank"]
     player.specialty = request.POST["specialty"]
+    player.func = request.POST["func"]
     player.alliance = Alliance.objects.filter(tag=request.POST["ally"]).first()
     player.alterado_por = request.user
     player.save()
@@ -118,6 +121,7 @@ def edit_player(request, game_id):
         "status_list": PLAYER_STATUS,
         "ranks_list": player_rank,
         "specialty_list": player_spec,
+        "func_list": CARGO,
         "alliances": allies,
     }
     return render(request, "players/edit.html", context=context)
