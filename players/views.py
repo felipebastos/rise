@@ -387,8 +387,8 @@ def populate(request):
 
                 killpoints = killpoints + kills[i] * coeficientes[i]
 
-            death = row[10]
-            if row[10] == "":
+            death = row[11]
+            if row[11] == "":
                 death = 0
 
             statusnovo = PlayerStatus()
