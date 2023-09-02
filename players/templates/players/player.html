@@ -107,6 +107,49 @@
     <div class="accordion" id="accordionStatus">
         <div class="accordion-item">
             <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#item0" aria-expanded="false">
+                    Feitos históricos
+                </button>
+            </h2>
+            <div id="item0" class="accordion-collapse collapse" data-bs-parent="#accordionStatus">
+                <div class="accordion-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">KvK</th>
+                                <th scope="col">Killpoints</th>
+                                <th scope="col">Mortes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for kvk in kvks %}
+                            {% with cor=kvk.cor_dt %}
+                            {% if cor == 'GRA' %}
+                            <tr class="table-secondary">
+                                {% elif cor == 'GRE' %}
+                            <tr class="table-success">
+                                {% elif cor == 'YEL' %}
+                            <tr class="table-warning">
+                                {% elif cor == 'RED' %}
+                            <tr class="table-danger">
+                                {% endif %}
+                                <td scope="row"><a href="{% url 'show_kvk' kvk.kvk.id %}">Kvk iniciado em
+                                        {{kvk.kvk.inicio}}</a>
+                                </td>
+                                <td>{{kvk.kp}}</td>
+                                <td>{{kvk.dt}}</td>
+                            </tr>
+                            {% endwith %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <sub><b>A cor representa a cor no ranking de mortos do KvK.</b></sub>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#item1"
                     aria-expanded="true">
                     Status em gráfico

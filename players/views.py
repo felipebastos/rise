@@ -11,7 +11,15 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 
 from bank.models import Credito
-from kvk.models import Cargo, Etapas, Kvk, PontosDeMGE, Zerado, get_minha_faixa
+from kvk.models import (
+    Cargo,
+    Consolidado,
+    Etapas,
+    Kvk,
+    PontosDeMGE,
+    Zerado,
+    get_minha_faixa,
+)
 from mge.models import EventoDePoder, Punido
 from players.forms import AddFarmForm, UploadFileForm
 from players.models import (
@@ -67,6 +75,8 @@ def index(request, game_id):
 
         cargos = Cargo.objects.filter(player=player)
 
+        kvks = Consolidado.objects.filter(player=player).order_by("-kvk__inicio")
+
         farm_form = AddFarmForm()
 
         context = {
@@ -81,6 +91,7 @@ def index(request, game_id):
             "cargos": cargos,
             "farmform": farm_form,
             "grafico": grafico,
+            "kvks": kvks,
         }
     except Player.DoesNotExist:
         return render(request, "rise/404.html")
