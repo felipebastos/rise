@@ -20,7 +20,7 @@ from kvk.models import (
     Zerado,
     get_minha_faixa,
 )
-from mge.models import EventoDePoder, Punido
+from mge.models import EventoDePoder, Mge, Punido
 from players.forms import AddFarmForm, UploadFileForm
 from players.models import (
     CARGO,
@@ -726,8 +726,30 @@ def criar_advertencia(request):
     if player:
         adv = Advertencia()
         adv.player = player
-        adv.descricao = request.POST["descricao"]
         adv.duracao = request.POST["duracao"]
+
+        if request.POST["tipo"] == "mge":
+            limite = 7000000
+            faixa = (int(request.POST["pontuacao"]) - limite) // 1000000 or 1
+            adv.descricao = f"quebrou limite em MGE | Multa: {faixa*5}M comida,  {faixa*5}M madeira, {faixa*5}M pedra, {faixa*10}M ouro"
+
+            mge = Mge.objects.order_by("-id").first()
+
+            apunir = Punido()
+            apunir.mge = mge
+            apunir.player = player
+            apunir.save()
+            logger.debug(
+                "%s puniu %s no %s", request.user.username, player.game_id, mge
+            )
+        elif request.POST["tipo"] == "poder":
+            limite = 150000
+            faixa = (int(request.POST["pontuacao"]) - limite) // 50000 or 1
+            adv.descricao = f"quebrou limite em Evento de Poder | Multa: {faixa*25}M comida,  {faixa*25}M madeira, {faixa*25}M pedra, {faixa*50}M ouro"
+        else:
+            limite = 36000
+            faixa = (int(request.POST["pontuacao"]) - limite) // 10000 or 1
+            adv.descricao = f"quebrou limite em Evento de Acelerador | Multa: {faixa*25}M comida,  {faixa*25}M madeira, {faixa*25}M pedra, {faixa*50}M ouro"
 
         adv.save()
         logger.debug("%s advertiu %s", request.user.username, adv.player.game_id)

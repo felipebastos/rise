@@ -11,10 +11,22 @@
         {% csrf_token %}
         <label for="gameid">ID</label>
         <input class="form-control" type="text" name="game_id" id="gameid" pattern="^[0-9]*$" required>
-        <label for="descricao">Descrição</label>
-        <input class="form-control" type="text" name="descricao" id="descricao">
+        <label for="pontuacao">Pontuação</label>
+        <input class="form-control" type="text" name="pontuacao" id="pontuacao" pattern="^[0-9]*$" required>
         <label for="duracao">Duração em dias</label>
         <input class="form-control" type="number" name="duracao" id="duracao" min="1">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipo" id="mge" value="mge" required>
+            <label class="form-check-label" for="mge">MGE</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipo" id="poder" value="poder">
+            <label class="form-check-label" for="Poder">Poder</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipo" id="acc" value="acc">
+            <label class="form-check-label" for="acc">ACC</label>
+        </div>
         <button class="btn btn-primary" type="submit">Adicionar advertência</button>
         <button class="btn btn-warning" type="reset">Cancelar</button>
     </form>

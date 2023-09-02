@@ -47,8 +47,6 @@
             <div class="col"><b>Alterado em:</b> {{player.alterado_em}} <b>por</b> {{player.alterado_por}}</div>
             <div class="col"><a href="{% url 'edit_player' player.game_id %}" class="btn btn-warning"><i
                         class="fas fa-user-edit"></i></a>
-                <a href="{% url 'punir' player.game_id %}" class="btn btn-danger">Punir MGE</a>
-                <a href="{% url 'punirPoder' player.game_id %}" class="btn btn-warning">Punir Evento de Poder</a>
                 <a href="{% url 'banidoZerado' player.game_id %}" class="btn btn-warning">Registrar zeramento</a>
                 {% if showkvk %}
                 <a class="btn btn-danger" href="{% url 'add_zerado' player.game_id %}">Zerado no KvK</a>
