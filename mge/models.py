@@ -28,7 +28,7 @@ COMMANDER_CHOICES = (
 
 COMMANDERS = [
     ["Constantino", "Pakal", "Leônidas", "Zenobia", "Flavius", "Tariq"],
-    ["Chandra", "Attila", "Bertrand", "Gêngis Khan", "Jadwiga", "Zika"],
+    ["Chandra", "Attila", "Bertrand", "Gêngis Khan", "Jadwiga", "Zika", "Justiniano"],
     [
         "Tomirys",
         "Artemísia",
