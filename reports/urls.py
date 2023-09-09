@@ -11,4 +11,5 @@ urlpatterns = [
         views.analisedesempenho,
         name="analisedesempenho300",
     ),
+    path("hall/", views.hall_of_fame, name="hall_of_fame"),
 ]

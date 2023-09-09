@@ -1,0 +1,38 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Hall da Fama{% endblock %}
+{% block content %}
+<div class="container">
+    <p><b>Atenção</b>: O <i>hall da fama</i> representa apenas os jogadores presentes na última leitura feita no reino e
+        que não sejam banidos, farms, inativos ou que migraram.</p>
+    <div class="row">
+        <div class="col">
+            <h2>Hall de Killpoints</h2>
+            <table class="table table-striped">
+                <tbody>
+                    {% for p in kp %}
+                    <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{p.player.nick}}</td>
+                        <td>{{p.kp}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <h2>Hall de Mortes</h2>
+            <table class="table table-striped">
+                <tbody>
+                    {% for p in dt %}
+                    <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{p.player.nick}}</td>
+                        <td>{{p.dt}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

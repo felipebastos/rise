@@ -302,3 +302,43 @@ def analisedesempenho(request, cat):
         context["categorizados"] = categorizados
 
     return render(request, "reports/analise.html", context=context)
+
+
+def hall_of_fame(request):
+    ultima_leitura = PlayerStatus.objects.order_by("-data").first()
+    banidos_migrantes_farms_e_inativos = Player.objects.filter(
+        status__in=["BANIDO", "MIGROU", "FARM", "INATIVO"]
+    )
+
+    statuses = PlayerStatus.objects.exclude(
+        player__in=banidos_migrantes_farms_e_inativos
+    ).filter(
+        data__year=ultima_leitura.data.year,
+        data__month=ultima_leitura.data.month,
+        data__day=ultima_leitura.data.day,
+    )
+
+    hall_kp = []
+    hall_dt = []
+
+    for status in statuses:
+        mais_antigo = PlayerStatus.objects.filter(player=status.player).order_by(
+            "data"
+        )[0]
+
+        hall_kp.append(
+            {"player": status.player, "kp": status.killpoints - mais_antigo.killpoints}
+        )
+        hall_dt.append(
+            {"player": status.player, "dt": status.deaths - mais_antigo.deaths}
+        )
+
+    hall_kp.sort(key=lambda x: x["kp"] if (x is not None) else 0, reverse=True)
+    hall_dt.sort(key=lambda x: x["dt"] if (x is not None) else 0, reverse=True)
+
+    context = {
+        "kp": hall_kp,
+        "dt": hall_dt,
+    }
+
+    return render(request, "reports/hall.html", context=context)
