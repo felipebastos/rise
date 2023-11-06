@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "rise"
-version = "0.2.0"
+version = "0.3.0"
 description = "A project to manage a Rise of Kingdoms kingdom"
-authors = ["Felipe Bastos <felipe.bstosn@gmail.com>"]
+authors = ["Felipe Bastos <felipe.bastosn@gmail.com>"]
 license = "GPL-3.0"
 
 [tool.poetry.dependencies]
@@ -38,7 +38,7 @@ mkdocs-material = "^9.1.2"
 [tool.taskipy.tasks]
 audit = { cmd = 'pip-audit', help = 'Verifica falhas de segurança das dependências do projeto' }
 coverage = { cmd = 'pytest --cov', help = 'Verifica a cobertura de testes' }
-dev = { cmd = 'python manage.py runserver', help = 'Servidor de desenvolvimento'}
+dev = { cmd = 'python manage.py runserver', help = 'Servidor de desenvolvimento' }
 format = { cmd = 'black .', help = 'Formata o código' }
 imports = { cmd = 'isort .', help = 'Organiza os imports do projeto' }
 lint = { cmd = 'pylint -f text . > linter-report.txt', help = 'Checagem estática' }
