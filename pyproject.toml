@@ -46,7 +46,7 @@ makemigrations = { cmd = 'python manage.py makemigrations', help = 'Atualiza as 
 migrate = { cmd = 'python manage.py migrate', help = 'Aplica as migrações.' }
 onboard = { cmd = 'pre-commit install', help = 'Instala os hooks de pre-commit' }
 requirements = { cmd = 'poetry export -o requirements.txt', help = 'Exporta o requirements.txt' }
-secure = { cmd = 'bandit -r kvk api bank config equipments items mge osiris players reports rise tasks', help = 'Gera relatório de falhas de segurança no código.' }
+secure = { cmd = 'bandit -r kvk bank config equipments items mge osiris players reports rise tasks', help = 'Gera relatório de falhas de segurança no código.' }
 test = { cmd = 'python manage.py test', help = 'Executa os testes' }
 
 
