@@ -25,6 +25,7 @@ urlpatterns = [
     path("login/", views.logar, name="logar"),
     path("logout/", views.sair, name="sair"),
     path("players/", include("players.urls")),
+    path("admin/doc/", include("django.contrib.admindocs.urls")),
     path("admin/", admin.site.urls),
     path("bank/", include("bank.urls")),
     path("kvk/", include("kvk.urls")),
