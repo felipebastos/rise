@@ -1,0 +1,25 @@
+site_name: K32 Docs
+site_url: https://k32.pythonanywhere.com/
+site_description: Documentação do K32
+site_author: Felipe Bastos
+copyright: Copyright (c) 2023
+
+repo_url: https://github.com/felipebastos/rise/
+repo_name: Rise
+theme:
+  name: material
+  language: pt-BR
+  logo: assets/k32.png
+  favicon: assets/favicon.ico
+  features:
+    - search.suggest
+
+plugins:
+  - mkdocstrings
+  - search
+
+nav:
+  - Home: index.md
+  - Referencias:
+    - Players: players.md
+  - Sobre: about.md

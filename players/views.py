@@ -39,6 +39,21 @@ logger = logging.getLogger("k32")
 
 
 def index(request, game_id):
+    """
+    View responsável por exibir a página de perfil de um jogador.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição HTTP.
+
+        game_id (int): O ID do jogo do jogador.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que contém a resposta HTTP com a página renderizada.
+
+    Raises:
+        Player.DoesNotExist: Se o jogador com o ID do jogo especificado não existir.
+
+    """
     try:
         player = Player.objects.get(game_id=game_id)
         status = PlayerStatus.objects.filter(player__game_id=game_id).order_by("-data")
@@ -100,6 +115,19 @@ def index(request, game_id):
 
 @login_required
 def edit_player(request, game_id):
+    """
+    View responsável por editar um jogador.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os dados da requisição.
+        game_id (int): O ID do jogo do jogador a ser editado.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que representa a resposta da requisição.
+
+    Raises:
+        None
+    """
     player = Player.objects.filter(game_id=game_id).first()
 
     if not player:
@@ -141,6 +169,20 @@ def edit_player(request, game_id):
 
 @login_required
 def listspecs(request, spec):
+    """
+    View que lista os jogadores de uma especialidade específica.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que representa a requisição HTTP.
+        spec (str): A especialidade dos jogadores a serem listados.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que representa a resposta HTTP contendo a página renderizada com a lista de jogadores.
+
+    Raises:
+        Nenhum.
+
+    """
     players = Player.objects.filter(specialty=spec).order_by("alliance")
 
     specialty = None
@@ -159,6 +201,19 @@ def listspecs(request, spec):
 
 @login_required
 def review_players(request, ally_tag):
+    """
+    View que exibe e permite a revisão dos jogadores de uma aliança.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os dados da requisição.
+        ally_tag (str): A tag da aliança.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que contém a resposta da view.
+
+    Raises:
+        None
+    """
     if request.method == "GET":
         ally = Alliance.objects.filter(tag=ally_tag).first()
 
@@ -187,6 +242,19 @@ def review_players(request, ally_tag):
 
 
 def findplayer(request):
+    """
+    View responsável por buscar um jogador no sistema.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os dados da requisição.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que representa a resposta da view.
+
+    Raises:
+        None
+
+    """
     if request.method == "POST":
         form = SearchPlayerForm(request.POST)
         if form.is_valid():
@@ -211,6 +279,20 @@ def findplayer(request):
 
 @login_required
 def add_status(request, game_id):
+    """
+    View responsável por adicionar um novo status de jogador.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os dados da requisição.
+        game_id (int): O ID do jogo ao qual o jogador pertence.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que representa a resposta da view.
+
+    Raises:
+        KeyError: Se alguma chave não existir no dicionário request.POST.
+
+    """
     try:
         poder = ""
         if "." in request.POST["poder"]:
@@ -261,6 +343,16 @@ def add_status(request, game_id):
 
 @login_required
 def upload_csv(request):
+    """
+    View responsável por processar o upload de um arquivo CSV contendo dados dos jogadores.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest contendo os dados da requisição.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse redirecionando para a página de confirmação de população dos jogadores.
+
+    """
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -275,6 +367,19 @@ def upload_csv(request):
 
 @login_required
 def confirm_populate(request):
+    """
+    View que popula a comparação de jogadores a partir de um arquivo CSV.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os dados da requisição.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que representa a resposta da view.
+
+    Raises:
+        Nenhum.
+
+    """
     comparison = []
     with open("./dados.csv", encoding="utf-8") as dados_csv:
         reader = csv.reader(dados_csv)
@@ -315,6 +420,15 @@ def confirm_populate(request):
 
 @login_required
 def populate(request):
+    """
+    View Django responsável por popular o banco de dados com dados de um arquivo CSV.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que representa a requisição HTTP recebida.
+
+    Returns:
+        HttpResponseRedirect: Um objeto HttpResponseRedirect que redireciona para a página inicial após a conclusão do processo de população do banco de dados.
+    """
     with open("./dados.csv", encoding="utf-8") as dados_csv:
         reader = csv.reader(dados_csv)
         for row in reader:
@@ -420,6 +534,20 @@ def populate(request):
 
 @login_required
 def alliance(request, ally_id):
+    """
+    View responsável por exibir informações sobre uma aliança.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição HTTP.
+        ally_id (int): O ID da aliança a ser exibida.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que contém a resposta HTTP com o conteúdo da página.
+
+    Raises:
+        Alliance.DoesNotExist: Se a aliança com o ID fornecido não existir.
+
+    """
     ally = Alliance.objects.get(pk=ally_id)
 
     if ally:
@@ -461,6 +589,19 @@ def alliance(request, ally_id):
 
 @login_required
 def top300(request):
+    """
+    View que retorna os 300 jogadores com maior poder, excluindo aqueles da aliança "MIGR".
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição HTTP.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que representa a resposta HTTP com a lista dos 300 jogadores
+        e o poder total.
+
+    Raises:
+        None
+    """
     jogadores = []
     noreino = Player.objects.exclude(alliance__tag="MIGR")
     for jogador in noreino:
@@ -479,6 +620,16 @@ def top300(request):
 
 @login_required
 def falta_status(request, ally_id):
+    """
+    View que retorna os jogadores de uma aliança que não possuem status.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição.
+        ally_id (int): O ID da aliança.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que contém a resposta da view.
+    """
     status = PlayerStatus.objects.all()
     id_quem_tem = []
     for cada in status:
@@ -498,6 +649,16 @@ def falta_status(request, ally_id):
 
 @login_required
 def antigos(request, ally_id):
+    """
+    View que retorna os jogadores com status muito antigos de uma aliança.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição HTTP.
+        ally_id (int): O ID da aliança.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que contém a resposta HTTP com a página renderizada.
+    """
     status = PlayerStatus.objects.all()
     hoje = timezone.now()
     id_quem_tem = []
@@ -519,6 +680,20 @@ def antigos(request, ally_id):
 
 @login_required
 def edita_status(request, status_id):
+    """
+    View responsável por editar o status de um jogador.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os dados da requisição.
+        status_id (int): O ID do status a ser editado.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que representa a resposta da requisição.
+
+    Raises:
+        None
+
+    """
     if request.method == "POST":
         status = PlayerStatus.objects.all().filter(id=status_id).first()
         if status.editavel():
@@ -538,6 +713,19 @@ def edita_status(request, status_id):
 
 @login_required
 def delete_status(request, status_id):
+    """
+    View responsável por deletar um status de jogador.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição.
+        status_id (int): O ID do status a ser deletado.
+
+    Returns:
+        HttpResponseRedirect: Um redirecionamento para a página de detalhes do jogo do jogador.
+
+    Raises:
+        None
+    """
     status = PlayerStatus.objects.all().filter(id=status_id).first()
     if status.editavel():
         game_id = status.player.game_id
@@ -548,6 +736,18 @@ def delete_status(request, status_id):
 
 
 def como_estou(request):
+    """
+    View responsável por exibir informações sobre o status do jogador em uma partida.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os dados da requisição.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que contém a resposta da view.
+
+    Raises:
+        None
+    """
     if request.method == "POST":
         kvk = Kvk.objects.filter(ativo=True).first()
         if not kvk:
@@ -721,6 +921,18 @@ def como_estou(request):
 
 @login_required
 def criar_advertencia(request):
+    """
+    Cria uma advertência para um jogador com base nos dados recebidos via requisição POST.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest contendo os dados da requisição.
+
+    Returns:
+        HttpResponseRedirect: Redireciona para a página de advertências dos jogadores.
+
+    Raises:
+        None
+    """
     player = Player.objects.filter(game_id=request.POST["game_id"]).first()
 
     if player:
@@ -759,6 +971,15 @@ def criar_advertencia(request):
 
 
 def advertencias(request):
+    """
+    View que retorna a página de advertências.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse que representa a resposta da página de advertências.
+    """
     advs = Advertencia.objects.all().order_by("-inicio")
 
     validas = []
@@ -779,6 +1000,20 @@ def advertencias(request):
 
 @login_required
 def zerou_banido(request, player_id):
+    """
+    View que registra a ação de zerar um jogador banido.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição.
+        player_id (int): O ID do jogador a ser zerado.
+
+    Returns:
+        HttpResponseRedirect: Redireciona para a página de detalhes do jogador.
+
+    Raises:
+        Player.DoesNotExist: Se o jogador com o ID fornecido não existir.
+
+    """
     player = Player.objects.get(game_id=player_id)
 
     if player:
@@ -795,6 +1030,19 @@ def zerou_banido(request, player_id):
 
 @login_required
 def append_farm(request, principal_id):
+    """
+    View responsável por adicionar uma fazenda ao jogador principal.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest que contém os dados da requisição.
+        principal_id (int): O ID do jogador principal.
+
+    Returns:
+        HttpResponseRedirect: Redireciona para a página de detalhes do jogador principal.
+
+    Raises:
+        Player.DoesNotExist: Se o jogador principal não for encontrado.
+    """
     principal = Player.objects.get(game_id=principal_id)
     if request.method == "POST":
         form = AddFarmForm(request.POST)
@@ -810,6 +1058,17 @@ def append_farm(request, principal_id):
 
 
 def remove_farm(request, player_id, farm_id):
+    """
+    Remove uma fazenda de um jogador.
+
+    Args:
+        request (HttpRequest): O objeto de requisição HTTP.
+        player_id (int): O ID do jogador.
+        farm_id (int): O ID da fazenda a ser removida.
+
+    Returns:
+        HttpResponseRedirect: Um redirecionamento para a página de detalhes do jogador.
+    """
     player = Player.objects.get(game_id=player_id)
     farm = Player.objects.get(game_id=farm_id)
 
