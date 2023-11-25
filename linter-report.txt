@@ -22,6 +22,8 @@ mge\views.py:109:12: C0103: Attribute name "gh" doesn't conform to snake_case na
 mge\models.py:101:0: R0902: Too many instance attributes (9/7) (too-many-instance-attributes)
 ************* Module osiris.tests
 osiris\tests.py:1:0: W0611: Unused TestCase imported from django.test (unused-import)
+************* Module players.models
+players\models.py:43:0: C0301: Line too long (121/88) (line-too-long)
 ************* Module players.views
 players\views.py:734:0: C0301: Line too long (136/88) (line-too-long)
 players\views.py:748:0: C0301: Line too long (151/88) (line-too-long)
@@ -40,8 +42,8 @@ reports\views.py:16:0: R0912: Too many branches (16/12) (too-many-branches)
 reports\views.py:16:0: R0915: Too many statements (52/50) (too-many-statements)
 reports\views.py:215:0: R0914: Too many local variables (17/15) (too-many-locals)
 ************* Module rise.settings
-rise\settings.py:149:0: C0301: Line too long (95/88) (line-too-long)
-rise\settings.py:164:0: C0301: Line too long (91/88) (line-too-long)
+rise\settings.py:150:0: C0301: Line too long (95/88) (line-too-long)
+rise\settings.py:165:0: C0301: Line too long (91/88) (line-too-long)
 ************* Module tasks.admin
 tasks\admin.py:1:0: W0611: Unused admin imported from django.contrib (unused-import)
 ************* Module tasks.tests
@@ -75,12 +77,13 @@ tasks\views.py:1:0: R0801: Similar lines in 2 files
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==kvk.views:[198:206]
 ==players.views:[628:635]
-        ).order_by("data")
-        players_faixa_original = []
-        for stat in faixa_original:
-            if stat.player not in players_faixa_original:
-                if stat.data.hour == primeiro.data.hour:
-                    players_faixa_original.append(stat.player)
+            ).order_by("data")
+
+            players_faixa_original = []
+            for stat in faixa_original:
+                if stat.player not in players_faixa_original:
+                    if stat.data.hour == primeiro.data.hour:
+                        players_faixa_original.append(stat.player)
  (duplicate-code)
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==kvk.views:[146:154]
@@ -96,14 +99,14 @@ tasks\views.py:1:0: R0801: Similar lines in 2 files
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==kvk.views:[53:61]
 ==mge.views:[121:129]
-            inicio = kvk.inicio
-            if kvk.primeira_luta:
-                inicio = kvk.primeira_luta
+    inicio = kvk.inicio
+    if kvk.primeira_luta:
+        inicio = kvk.primeira_luta
 
-            final = kvk.final
-            if not final:
-                final = timezone.now()
+    final = kvk.final
+    if not final:
+        final = timezone.now()
  (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.80/10 (previous run: 9.82/10, -0.02)
+Your code has been rated at 9.79/10 (previous run: 9.80/10, -0.00)

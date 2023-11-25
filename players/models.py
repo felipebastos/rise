@@ -39,6 +39,10 @@ CARGO = (
 
 
 class Alliance(models.Model):
+    """
+    Armazena os dados básicos de uma aliança. Uma aliança é formada por um grupo de cerca de 150 :model:`players.Player`.
+    """
+
     nome = models.CharField(max_length=100)
     tag = models.CharField(max_length=4)
 

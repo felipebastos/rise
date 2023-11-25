@@ -796,7 +796,6 @@ def zerou_banido(request, player_id):
 @login_required
 def append_farm(request, principal_id):
     principal = Player.objects.get(game_id=principal_id)
-    # TODO: add farms e depois remove
     if request.method == "POST":
         form = AddFarmForm(request.POST)
         if form.is_valid():
