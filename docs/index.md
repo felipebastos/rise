@@ -7,6 +7,7 @@ Neste site você encontra a documentação do código do K32.
 Esta documentação é preparada a partir do código e os comentários no mesmo.
 
 1. [Players](players.md)
+2. [MGE](mge.md)
 
 ## Agradecimentos
 
