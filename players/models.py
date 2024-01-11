@@ -40,7 +40,11 @@ CARGO = (
 
 class Alliance(models.Model):
     """
-    Armazena os dados básicos de uma aliança. Uma aliança é formada por um grupo de cerca de 150 :model:`players.Player`.
+    Armazena os dados básicos de uma aliança. Uma aliança é formada por um grupo de cerca de 150 jogadores.
+
+    Fields:
+        - nome (str): Nome da aliança.
+        - tag (str): Tag da aliança.
     """
 
     nome = models.CharField(max_length=100)
@@ -51,6 +55,26 @@ class Alliance(models.Model):
 
 
 class Player(models.Model):
+    """
+    Armazena os dados de um jogador.
+
+    Fields:
+        - game_id (str): ID do jogo do jogador.
+        - nick (str): Apelido do jogador.
+        - rank (str): Classificação do jogador.
+        - specialty (str): Especialidade do jogador.
+        - status (str): Status do jogador.
+        - observacao (str): Observação sobre o jogador.
+        - alliance (Alliance): Aliança do jogador.
+        - func (str): Função do jogador.
+        - farms (QuerySet): Jogadores que são fazendas para este jogador.
+        - alterado_em (date): Data de alteração do jogador.
+        - alterado_por (User): Usuário que realizou a alteração do jogador.
+
+    Meta:
+        ordering (list): Lista de campos para ordenação dos jogadores.
+    """
+
     game_id = models.CharField(max_length=12, unique=True)
     nick = models.CharField(max_length=100)
     rank = models.CharField(max_length=2, choices=player_rank, default="R1")
@@ -78,6 +102,17 @@ class Player(models.Model):
 
 
 class PlayerStatus(models.Model):
+    """
+    Armazena o status de um jogador em um determinado momento.
+
+    Fields:
+        - player (Player): Jogador associado ao status.
+        - data (datetime): Data e hora do status.
+        - power (int): Poder do jogador.
+        - killpoints (int): Pontos de morte do jogador.
+        - deaths (int): Número de mortes do jogador.
+    """
+
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     data = models.DateTimeField(default=tz.now)
     power = models.IntegerField(null=True)
@@ -85,10 +120,25 @@ class PlayerStatus(models.Model):
     deaths = models.IntegerField()
 
     def editavel(self):
+        """
+        Verifica se o objeto é editável com base na diferença entre a data atual e a data do objeto.
+
+        Returns:
+            bool: True se o objeto for editável, False caso contrário.
+        """
         passou = datetime.now(timezone(-timedelta(hours=3))) - self.data
         return passou < timedelta(hours=1)
 
     def revisavel(self):
+        """
+        Verifica se o objeto é revisável.
+
+        Retorna True se o objeto não foi revisado nos últimos 2 dias,
+        caso contrário, retorna False.
+
+        Returns:
+            bool: True se o objeto for revisável, False caso contrário.
+        """
         passou = datetime.now(timezone(-timedelta(hours=3))) - self.data
         return not passou < timedelta(days=2)
 
@@ -100,13 +150,35 @@ class PlayerStatus(models.Model):
 
 
 class Advertencia(models.Model):
+    """
+    Armazena as advertências de um jogador.
+
+    Fields:
+        - player (Player): Jogador associado à advertência.
+        - inicio (datetime): Data e hora de início da advertência.
+        - duracao (int): Duração da advertência em dias.
+        - descricao (str): Descrição da advertência.
+    """
+
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     inicio = models.DateTimeField(default=tz.now)
     duracao = models.IntegerField(null=False, default=1)
     descricao = models.TextField(max_length=500)
 
     def final(self):
+        """
+        Retorna a data final da advertência somando a data de início com a duração.
+
+        Returns:
+            datetime.datetime: A data final calculada.
+        """
         return self.inicio + timedelta(days=self.duracao)
 
     def is_restrito(self):
+        """
+        Verifica se o objeto está restrito com base na data atual.
+
+        Returns:
+            bool: True se o objeto estiver restrito, False caso contrário.
+        """
         return tz.now() < self.final()
