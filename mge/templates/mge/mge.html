@@ -283,4 +283,50 @@
         </tbody>
     </table>
 </div>
+{% if user.is_authenticated %}
+<script>
+    function copiarJogo() {
+        let texto = document.querySelector("#jogo");
+        texto.select();
+        texto.setSelectionRange(0, 99999);
+        document.execCommand('copy');
+    }
+    function copiarWhats() {
+        let texto = document.querySelector("#whats");
+        texto.select();
+        texto.setSelectionRange(0, 99999);
+        document.execCommand('copy');
+    }
+</script>
+<div class="container">
+    <h2 class="text-center">Copiar anúncios</h2>
+    <div class="row">
+        <div class="col">
+            <textarea id="jogo" readonly>
+Boa noite, pessoal! Segue o rank do MGE.
+
+Ranking
+
+    {% for ranked in rank %}{{forloop.counter}}º - {{ranked.player.nick}}
+    {% endfor %}
+<b>Limite de 7M de pontos em todas as etapas somadas, vulgo ranking geral do MGE.</b>
+                </textarea>
+            <a onclick="copiarJogo()" class="btn btn-primary">Jogo</a>
+        </div>
+        <div class="col">
+            <textarea id="whats" readonly>
+Boa noite, pessoal! Segue o rank do MGE.
+
+Ranking
+
+    {% for ranked in rank %}{{forloop.counter}}º - {{ranked.player.nick}}
+    {% endfor %}
+*Limite de 7M de pontos em todas as etapas somadas, vulgo ranking geral do MGE.*
+                </textarea>
+            <a onclick="copiarWhats()" class="btn btn-primary">Whatsapp</a>
+        </div>
+    </div>
+</div>
+
+{% endif %}
 {% endblock %}
