@@ -102,6 +102,7 @@ def show_kvk(request, kvkid):
 def close_kvk(request, kvk_id):
     kvk = Kvk.objects.get(pk=kvk_id)
     kvk.ativo = not kvk.ativo
+    kvk.final = timezone.now()
     kvk.save()
     logger.debug("%s abriu/fechou %s", request.user.username, kvk)
     return redirect(f"/kvk/edit/{kvk_id}/")
