@@ -303,13 +303,26 @@
     <div class="row">
         <div class="col">
             <textarea id="jogo" readonly>
-Boa noite, pessoal! Segue o rank do MGE.
+<b><size=30px><color=#610B0B>                     ╭── ⋅ ⋅ ── ☆ ── ⋅ ⋅ ──╮</color></size></b>
+<size=40px><color=#610B0B><b>        【MGE!】</b></color></size><b><size=36px><color="#610B0B">G</color><color="#8A2908">RA</color><color="#B43104">NA</color><color="#B43104">DA</color></size></b><size=40px><color=#610B0B><b>【1032】</b></color></size>
+<b><size=30px><color=#610B0B>                     ╰── ⋅ ⋅ ── ✩ ── ⋅ ⋅ ──╯</color></size></b>
 
-Ranking
 
-    {% for ranked in rank %}{{forloop.counter}}º - {{ranked.player.nick}}
-    {% endfor %}
-<b>Limite de 7M de pontos em todas as etapas somadas, vulgo ranking geral do MGE.</b>
+<b>Boa noite, pessoal! Segue o rank do MGE. </b>
+
+<b>RANK</b>
+
+{% for ranked in rank %}{{forloop.counter}}º - {{ranked.player.nick}}
+{% endfor %}
+
+<b>{Versão PT} Limite de 7M de pontos em todas as etapas somadas, vulgo ranking geral do MGE. Em caso de dúvidas, procure a liderança.</b>
+
+<b>{Versão EN} Limit of 7M points in all stages combined, known as the MGE general ranking. If in doubt, ask leadership of 1032.</b>
+{PT} Se você ultrapassar a pontuação limite, você pagará a multa. {EN} if you exceed points pay RSS.
+
+{PT} A cada 1m de pontos ultrapassado = 25m rss ao banco (5m comida, 5m madeira, 5m pedra e 10m de ouro)
+
+{EN} For every 1m points exceeded = 25m rss to the bank (5m food, 5m wood, 5m stone and 10m gold)
                 </textarea>
             <a onclick="copiarJogo()" class="btn btn-primary">Jogo</a>
         </div>
