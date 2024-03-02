@@ -39,4 +39,113 @@
         </tbody>
     </table>
 </div>
+
+{% if user.is_authenticated %}
+<div class="container">
+    <script>
+        function copiarJogo() {
+            let texto = document.querySelector("#jogo");
+            texto.select();
+            texto.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+        }
+        function copiarWhats() {
+            let texto = document.querySelector("#whats");
+            texto.select();
+            texto.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+        }
+    </script>
+    <div class="container">
+        <h2 class="text-center">Copiar anúncios</h2>
+        <div class="row">
+            <div class="col">
+                <textarea id="jogo" readonly>
+<b><size=30px><color=#610B0B>                     ╭── ⋅ ⋅ ── ☆ ── ⋅ ⋅ ──╮</color></size></b>
+<size=40px><color=#610B0B><b>        【20GH!】</b></color></size><b><size=36px><color="#610B0B">G</color><color="#8A2908">RA</color><color="#B43104">NA</color><color="#B43104">DA</color></size></b><size=40px><color=#610B0B><b>【1032】</b></color></size>
+<b><size=30px><color=#610B0B>                     ╰── ⋅ ⋅ ── ✩ ── ⋅ ⋅ ──╯</color></size></b>
+
+<b>Querido reino,</b>
+
+<b>Gostaríamos de anunciar o ranking para o EVENTO 20 GOLD HEADS, Rankeamento de 1-10</b>
+
+<b>We would like to announce the rank for EVENT 20 GOLD HEADS, Ranking 1-10</b>
+
+<b>RANK</b>
+
+{% for inscrito in inscritos %}{{forloop.counter}}º - {{inscrito.player.nick}}
+{% endfor %}
+
+<size=30><color="red"><b>IMPORTANTE!</b></color></size>
+
+{% if event.tipo == "pow" %}
+<b>LIMITE DE PONTOS PARA QUEM NÃO ESTÁ RANKEADO 125k</b>
+
+
+{PT} Se você ultrapassar a pontuação limite, você pagará a multa. {EN} if you exceed points you need pay RSS.
+
+A cada 50k de pontos ultrapassados = 125m rss ao banco (25m comida, 25m madeira, 25m pedra e 50m de ouro)
+{% else %}
+<b>LIMITE DE PONTOS PARA QUEM NÃO ESTÁ RANKEADO 35.000!</b>
+
+
+
+{PT} Se você ultrapassar a pontuação limite, você pagará a multa. {EN} if you exceed points you need pay RSS.
+
+A cada 10k de minutos ultrapassados = 125m rss ao banco (25m comida,25m madeira, 25m pedra e 50m de ouro)
+{% endif %}
+
+
+
+<color="red"><b>TOLERÂNCIA ZERO PARA QUEBRA DE REGRAS NESTE EVENTO = VOCÊ SERÁ ZERO SE NÃO PAGAR A MULTA OU TENTAR ROUBAR POSIÇÕES DE TOPO</b></color>
+
+<color="red"><b>ZERO TOLERANCE FOR BREAK RULERS IN THIS EVENT = YOU WILL BE ZEROED IF NOT PAID THE FINE OR TRY TO STEAL TOP POSITIONS</b></color>
+                </textarea>
+                <a onclick="copiarJogo()" class="btn btn-primary">Jogo</a>
+            </div>
+            <div class="col">
+                <textarea id="whats" readonly>
+*Querido reino,*
+
+*Gostaríamos de anunciar o ranking para o EVENTO 20 GOLD HEADS, Rankeamento de 1-10*
+
+*We would like to announce the rank for EVENT 20 GOLD HEADS, Ranking 1-10*
+
+Ranking
+
+    {% for inscrito in inscritos %}{{forloop.counter}}º - {{inscrito.player.nick}}
+    {% endfor %}
+
+*IMPORTANTE!*
+
+{% if event.tipo == "pow" %}
+*LIMITE DE PONTOS PARA QUEM NÃO ESTÁ RANKEADO 125k*
+
+
+{PT} Se você ultrapassar a pontuação limite, você pagará a multa. {EN} if you exceed points you need pay RSS.
+
+A cada 50k de pontos ultrapassados = 125m rss ao banco (25m comida, 25m madeira, 25m pedra e 50m de ouro)
+{% else %}
+*LIMITE DE PONTOS PARA QUEM NÃO ESTÁ RANKEADO 35.000!*
+
+
+
+{PT} Se você ultrapassar a pontuação limite, você pagará a multa. {EN} if you exceed points you need pay RSS.
+
+A cada 10k de minutos ultrapassados = 125m rss ao banco (25m comida,25m madeira, 25m pedra e 50m de ouro)
+{% endif %}
+
+
+
+*TOLERÂNCIA ZERO PARA QUEBRA DE REGRAS NESTE EVENTO = VOCÊ SERÁ ZERO SE NÃO PAGAR A MULTA OU TENTAR ROUBAR POSIÇÕES DE TOPO*
+
+*ZERO TOLERANCE FOR BREAK RULERS IN THIS EVENT = YOU WILL BE ZEROED IF NOT PAID THE FINE OR TRY TO STEAL TOP POSITIONS*
+                </textarea>
+                <a onclick="copiarWhats()" class="btn btn-primary">Whatsapp</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}
