@@ -1,0 +1,30 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Evento de GH{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Eventos de Poder ou Aceleração</h1>
+</div>
+<div class="container">
+    {% if user.is_authenticated %}
+    <form action="{% url 'startnewgh' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-success" type="submit">Criar</button>
+    </form>
+    <hr>
+    {% endif %}
+    <div class="d-flex flex-wrap gap-1">
+        {% for evento in eventos %}
+        {% if forloop.counter == 1 %}
+        <a href="{% url 'ghevent' evento.id %}" class="btn btn-primary g-col-6" style="width: 20rem;">Evento de
+            {{evento.get_tipo_display}} em
+            {{evento.data_evento}}</a>
+        {% else %}
+        <a href="{% url 'ghevent' evento.id %}" class="btn btn-secondary g-col-6" style="width: 20rem;">Evento de
+            {{evento.get_tipo_display}} em
+            {{evento.data_evento}}</a>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'rise/base.html' %}
+{% block title %}- MGE{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Evento de {{event.get_tipo_display}} para o dia {{event.data_evento}}</h1>
+    {% if event.anotacao %}
+    <h2>{{event.anotacao}}</h2>
+    {% endif %}
+    {% if user.is_authenticated %}
+    <form action="{% url 'add_inscrito_gh' event.id %}" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="btn btn-primary" type="submit">Adicionar player</button>
+    </form>
+    {% endif %}
+    <h3 class="text-center">Lista de Inscritos</h3>
+    <table class='table table-striped'>
+        <thead>
+            <tr>
+                <th scope="col">Posição</th>
+                <th scope="col">Nick</th>
+
+                {% if user.is_authenticated %}
+                <th scope="col">Ações</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for inscrito in inscritos %}
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{inscrito.player.nick}}</td>
+                {% if user.is_authenticated %}
+                <td><a href="{% url 'remove_inscrito_gh' event.id inscrito.id %}" class="btn btn-danger">Remover
+                        do rank</a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
