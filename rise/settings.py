@@ -39,6 +39,7 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+    "ghevent.apps.GheventConfig",
     "config.apps.ConfigConfig",
     "players.apps.PlayersConfig",
     "equipments.apps.EquipmentsConfig",
