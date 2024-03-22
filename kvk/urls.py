@@ -31,4 +31,6 @@ urlpatterns = [
     path("removecargo/<cargoid>/", views.remove_cargo, name="remove_cargo"),
     path("config/<kvkid>/", views.config_kvk, name="config_kvk"),
     path("consolidar/<kvkid>/", views.consolidar_kvk, name="consolidar_kvk"),
+    path("dkp/<kvkid>/", views.dkp_view, name="dkp_view"),
+    path("dkp/<kvkid>/status/<player>/", views.status_dkp, name="status_dkp"),
 ]

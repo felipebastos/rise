@@ -119,6 +119,9 @@ class PlayerStatus(models.Model):
     killpoints = models.BigIntegerField()
     deaths = models.IntegerField()
 
+    killst4 = models.BigIntegerField(default=0)
+    killst5 = models.BigIntegerField(default=0)
+
     def editavel(self):
         """
         Verifica se o objeto é editável com base na diferença entre a data atual e a data do objeto.

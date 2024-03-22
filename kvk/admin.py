@@ -6,6 +6,7 @@ from .models import (
     Consolidado,
     Etapas,
     Kvk,
+    KvKStatus,
     PontosDeMGE,
     Zerado,
 )
@@ -19,3 +20,4 @@ admin.site.register(PontosDeMGE)
 admin.site.register(Etapas)
 admin.site.register(Cargo)
 admin.site.register(Consolidado)
+admin.site.register(KvKStatus)

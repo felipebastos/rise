@@ -121,3 +121,13 @@ class Consolidado(models.Model):
 
     def __str__(self) -> str:
         return f"{self.player.nick} no KvK {self.kvk.id}"
+
+
+class KvKStatus(models.Model):
+    kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+
+    deatht4 = models.IntegerField(default=0)
+    deatht5 = models.IntegerField(default=0)
+    honra = models.IntegerField(default=0)
+    marauders = models.IntegerField(default=0)
