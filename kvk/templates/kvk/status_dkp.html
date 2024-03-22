@@ -1,0 +1,14 @@
+{% extends 'rise/base.html' %}
+{% block title %}- KvK{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Dados para o cálculo do DKP</h1>
+    <a href="{% url 'dkp_view' kvk.id %}" class="btn btn-secondary">Voltar</a>
+    <h2>Altere os dados de {{ player.nick }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </form>
+</div>
+{% endblock %}

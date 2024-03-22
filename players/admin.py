@@ -18,7 +18,15 @@ class PlayerAdmin(admin.ModelAdmin):
 
 
 class PlayerStatusAdmin(admin.ModelAdmin):
-    list_display = ["player", "data", "power", "killpoints", "deaths"]
+    list_display = [
+        "player",
+        "data",
+        "power",
+        "killpoints",
+        "deaths",
+        "killst4",
+        "killst5",
+    ]
 
     ordering = ("player", "data", "power", "killpoints", "deaths")
 

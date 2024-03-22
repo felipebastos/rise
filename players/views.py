@@ -527,6 +527,10 @@ def populate(request):
                 statusnovo.deaths = death.replace(".", "")
             else:
                 statusnovo.deaths = death
+
+            statusnovo.killst4 = int(row[8].replace(".", ""))
+            statusnovo.killst5 = int(row[9].replace(".", ""))
+
             statusnovo.save()
 
     return HttpResponseRedirect("/")

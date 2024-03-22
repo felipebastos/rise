@@ -1,6 +1,6 @@
 from django import forms
 
-from kvk.models import Cargo, Kvk
+from kvk.models import Cargo, Kvk, KvKStatus
 
 
 class EtapaForm(forms.Form):
@@ -65,4 +65,17 @@ class KvkConfigForm(forms.ModelForm):
         }
         labels = {
             "primeira_luta": "Primeira luta",
+        }
+
+
+class KvKStatusForm(forms.ModelForm):
+    class Meta:
+        model = KvKStatus
+        fields = ["deatht4", "deatht5", "honra", "marauders"]
+
+        widgets = {
+            "deatht4": forms.NumberInput(attrs={"class": "form-control"}),
+            "deatht5": forms.NumberInput(attrs={"class": "form-control"}),
+            "honra": forms.NumberInput(attrs={"class": "form-control"}),
+            "marauders": forms.NumberInput(attrs={"class": "form-control"}),
         }

@@ -8,13 +8,20 @@ from django.db.models.aggregates import Max, Min
 from django.shortcuts import redirect, render
 from django.utils import timezone
 
-from kvk.forms import CargoForm, EtapaForm, KvkConfigForm, UploadEtapasFileForm
+from kvk.forms import (
+    CargoForm,
+    EtapaForm,
+    KvkConfigForm,
+    KvKStatusForm,
+    UploadEtapasFileForm,
+)
 from kvk.models import (
     AdicionalDeFarms,
     Cargo,
     Consolidado,
     Etapas,
     Kvk,
+    KvKStatus,
     PontosDeMGE,
     Zerado,
     faixas,
@@ -540,3 +547,108 @@ def config_kvk(request, kvkid):
     }
 
     return render(request, "kvk/config.html", context=context)
+
+
+@login_required
+def dkp_view(request, kvkid):
+    kvk = Kvk.objects.get(pk=kvkid)
+
+    context = {
+        "kvk": kvk,
+    }
+
+    inicio = kvk.inicio
+    if kvk.primeira_luta:
+        inicio = kvk.primeira_luta
+
+    final = kvk.final
+    if not final:
+        final = timezone.now()
+
+    primeiro = (
+        PlayerStatus.objects.filter(data__gte=kvk.inicio).order_by("data").first()
+    )
+
+    if not primeiro:
+        return redirect(f"/kvk/edit/{kvk.id}/")
+
+    status = (
+        PlayerStatus.objects.exclude(player__status__in=["BANIDO", "INATIVO", "FARM"])
+        .filter(data__gte=inicio)
+        .filter(data__lte=final)
+        .values(
+            "player",
+            "player__nick",
+            "player__game_id",
+            "player__alliance__tag",
+            "power",
+        )
+        .annotate(
+            killst4=Max("killst4") - Min("killst4"),
+            killst5=Max("killst5") - Min("killst5"),
+        )
+    )
+
+    dkps = []
+    for st in status:
+        player = Player.objects.get(pk=st["player"])
+        kvkstatus = KvKStatus.objects.filter(kvk=kvk, player=player).first()
+        if not kvkstatus:
+            kvkstatus = KvKStatus()
+
+        # DKP=(T4kill*1)+(T5kill*2)+(T4death*2)+(T5death*4)+(Honra)+(PointsOnMaraunders)-(combatpower*20%)
+        dkps.append(
+            {
+                "player": player.nick,
+                "game_id": player.game_id,
+                "dkp": int(
+                    (st["killst4"] * 1)
+                    + (st["killst5"] * 2)
+                    + ((kvkstatus.deatht4) * 2)  # deaths t4
+                    + ((kvkstatus.deatht5) * 4)  # deaths t5
+                    + (kvkstatus.honra)  # honra
+                    + (kvkstatus.marauders)  # pontos nos marauders
+                    - (st["power"] * 0.2)
+                ),
+            }
+        )
+
+    context["status"] = sorted(dkps, key=lambda k: k["dkp"], reverse=True)
+
+    return render(request, "kvk/dkp.html", context=context)
+
+
+@login_required
+def status_dkp(request, kvkid, player):
+    kvk = Kvk.objects.get(pk=kvkid)
+    player = Player.objects.get(game_id=player)
+
+    status, _ = KvKStatus.objects.get_or_create(kvk=kvk, player=player)
+
+    form = KvKStatusForm(
+        initial={
+            "kvk": kvk,
+            "player": player,
+            "deatht4": status.deatht4,
+            "deatht5": status.deatht5,
+            "honra": status.honra,
+            "marauders": status.marauders,
+        }
+    )
+    if request.method == "POST":
+        form = KvKStatusForm(request.POST or None)
+
+        if form.is_valid():
+            status.deatht4 = form.cleaned_data["deatht4"]
+            status.deatht5 = form.cleaned_data["deatht5"]
+            status.honra = form.cleaned_data["honra"]
+            status.marauders = form.cleaned_data["marauders"]
+            status.save()
+
+    context = {
+        "form": form,
+        "kvk": kvk,
+        "player": player,
+    }
+
+    return render(request, "kvk/status_dkp.html", context=context)

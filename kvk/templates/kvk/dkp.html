@@ -1,0 +1,30 @@
+{% extends 'rise/base.html' %}
+{% block title %}- KvK{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="display-4">DKP</h1>
+    <a href="{% url 'show_kvk' kvk.id %}" class="btn btn-secondary">Voltar</a>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Posição</th>
+                <th scope="col">Nick</th>
+                <th scope="col">DKP</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for st in status %}
+            <tr>
+                <th scope="col">{{forloop.counter}}</th>
+                <td><a href="{% url 'player_profile' st.game_id %}">{{st.player}}</a></td>
+                <td>{{st.dkp}}</td>
+                <td>
+                    <a href="{% url 'status_dkp' kvk.id st.game_id %}" class="btn btn-primary">Adicionar status</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
