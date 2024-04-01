@@ -165,7 +165,10 @@ def calcular(kvk, cat):
         "kvk": kvk.id,
     }
 
-    context = cache.get(f"context_{cat}_{kvk.id}") or context
+    contexto = cache.get(f"context_{cat}_{kvk.id}")
+
+    if contexto:
+        return contexto
 
     if "zerados" not in context:
         banidos_e_inativos = Player.objects.filter(status__in=["BANIDO", "INATIVO"])
