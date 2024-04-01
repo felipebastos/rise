@@ -311,7 +311,7 @@ def analisedesempenho(request, kvkid, cat):
 
     context = calcular(kvk, cat)
 
-    cache.set(f"context_{cat}_{kvk.id}", context, 60)
+    cache.set(f"context_{cat}_{kvk.id}", context, 60 * 60)
 
     return render(request, "kvk/analise.html", context=context)
 
