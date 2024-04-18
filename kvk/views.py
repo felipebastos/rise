@@ -591,6 +591,7 @@ def dkp_view(request, kvkid):
             killst4=Max("killst4") - Min("killst4"),
             killst5=Max("killst5") - Min("killst5"),
         )
+        .order_by("-data")
     )
 
     jafoi = []
