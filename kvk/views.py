@@ -585,6 +585,7 @@ def dkp_view(request, kvkid):
             "player__game_id",
             "player__alliance__tag",
             "power",
+            "data",
         )
         .annotate(
             killst4=Max("killst4") - Min("killst4"),
@@ -592,8 +593,12 @@ def dkp_view(request, kvkid):
         )
     )
 
+    jafoi = []
     dkps = []
     for st in status:
+        if st["player"] in jafoi:
+            continue
+        jafoi.append(st["player"])
         player = Player.objects.get(pk=st["player"])
         kvkstatus = KvKStatus.objects.filter(kvk=kvk, player=player).first()
         if not kvkstatus:
