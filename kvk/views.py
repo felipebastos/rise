@@ -617,7 +617,7 @@ def dkp_view(request, kvkid):
                     + ((kvkstatus.deatht5) * 4)  # deaths t5
                     + (kvkstatus.honra)  # honra
                     + (kvkstatus.marauders)  # pontos nos marauders
-                    - (st["power"] * 0.2)
+                    - (st["power"] * 0.05)
                 ),
             }
         )
