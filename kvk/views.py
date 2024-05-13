@@ -606,20 +606,32 @@ def dkp_view(request, kvkid):
         if not kvkstatus:
             kvkstatus = KvKStatus()
 
+        poder = st["power"]
+        coef = 0.05
+        desconto_poder = 0
+        if poder <= 50000000:
+            desconto_poder = poder * coef
+        elif poder > 50000000:
+            desconto_poder = 50000000 * coef + (poder - 50000000) * 0.2
+
         # DKP=(T4kill*1)+(T5kill*2)+(T4death*2)+(T5death*4)+(Honra)+(PointsOnMaraunders)-(combatpower*20%)
         dkps.append(
             {
                 "player": player.nick,
                 "game_id": player.game_id,
                 "dkp": int(
-                    (st["killst4"] * 1)
-                    + (st["killst5"] * 2)
-                    + ((kvkstatus.deatht4) * 2)  # deaths t4
-                    + ((kvkstatus.deatht5) * 4)  # deaths t5
+                    (st["killst4"] * 2)
+                    + (st["killst5"] * 4)
+                    + ((kvkstatus.deatht4) * 5)  # deaths t4
+                    + ((kvkstatus.deatht5) * 10)  # deaths t5
                     + (kvkstatus.honra)  # honra
                     + (kvkstatus.marauders)  # pontos nos marauders
-                    - (st["power"] * 0.05)
+                    - desconto_poder  # desconto de poder
                 ),
+                "killst4": st["killst4"],
+                "killst5": st["killst5"],
+                "deatht4": kvkstatus.deatht4,
+                "deatht5": kvkstatus.deatht5,
             }
         )
 
