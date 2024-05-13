@@ -5,7 +5,7 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.db.models.aggregates import Max, Min
-from django.shortcuts import redirect, render
+from django.shortcuts import HttpResponseRedirect, redirect, render
 from django.utils import timezone
 
 from kvk.forms import (
@@ -26,6 +26,7 @@ from kvk.models import (
     Zerado,
     faixas,
 )
+from players.forms import UploadFileForm
 from players.models import Player, PlayerStatus
 
 # Create your views here.
@@ -661,3 +662,46 @@ def status_dkp(request, kvkid, player):
     }
 
     return render(request, "kvk/status_dkp.html", context=context)
+
+
+@login_required
+def upload_hoh_csv(request, kvkid):
+    """
+    View responsável por processar o upload de um arquivo CSV contendo dados dos jogadores.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest contendo os dados da requisição.
+
+    Returns:
+        HttpResponse: O objeto HttpResponse redirecionando para a página de confirmação de população dos jogadores.
+
+    """
+    if request.method == "POST":
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            with open("hoh.csv", "wb") as destination:
+                for chunk in request.FILES["file"].chunks():
+                    destination.write(chunk)
+            with open("./hoh.csv", encoding="utf-8") as dados_csv:
+                reader = csv.reader(dados_csv)
+                for row in reader:
+                    # jump header
+                    if row[0] == "ID":
+                        continue
+                    player = Player.objects.filter(game_id=row[0]).first()
+                    if player:
+                        kvk = Kvk.objects.get(pk=kvkid)
+                        status, _ = KvKStatus.objects.get_or_create(
+                            kvk=kvk, player=player
+                        )
+                        status.deatht4 = int(row[6]) + int(row[7]) + int(row[8])
+                        status.deatht5 = int(row[2]) + int(row[3]) + int(row[4])
+                        status.save()
+                    else:
+                        logger.debug(
+                            "Não foi possível criar KvKStatus para o ID: %s", row[0]
+                        )
+            return HttpResponseRedirect(f"/kvk/dkp/{kvkid}/")
+    else:
+        form = UploadFileForm()
+    return render(request, "kvk/upload.html", {"form": form, "kvkid": kvkid})
