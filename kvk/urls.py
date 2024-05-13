@@ -33,4 +33,5 @@ urlpatterns = [
     path("consolidar/<kvkid>/", views.consolidar_kvk, name="consolidar_kvk"),
     path("dkp/<kvkid>/", views.dkp_view, name="dkp_view"),
     path("dkp/<kvkid>/status/<player>/", views.status_dkp, name="status_dkp"),
+    path("dkp/<kvkid>/upload/", views.upload_hoh_csv, name="upload_hoh"),
 ]

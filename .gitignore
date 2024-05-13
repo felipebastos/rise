@@ -1,6 +1,7 @@
 backup.sql
 dados.csv
 etapas.csv
+hoh.csv
 .venv
 static/
 media/
