@@ -612,6 +612,10 @@ def dkp_view(request, kvkid):
             .first()
         )
 
+        if not status_final:
+            logger.debug("Não foi possível calcular o DKP de: %s", st["player"])
+            continue
+
         kvkstatus = KvKStatus.objects.filter(kvk=kvk, player=player).first()
         if not kvkstatus:
             kvkstatus = KvKStatus()
