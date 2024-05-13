@@ -175,6 +175,8 @@
                                 <th scope="col">Poder</th>
                                 <th scope="col">Killpoints</th>
                                 <th scope="col">Mortes</th>
+                                <th scope="col">Abates Tier 4</th>
+                                <th scope="col">Abates Tier 5</th>
                                 {% if user.is_authenticated %}
                                 <th scope="col">Ações</th>
                                 {% endif %}
@@ -190,7 +192,8 @@
                                 <td>{{item.power}}</td>
                                 <td>{{item.killpoints}}</td>
                                 <td>{{item.deaths}}</td>
-
+                                <td>{{item.killst4}}</td>
+                                <td>{{item.killst5}}</td>
                                 <td>
                                     {% if item.editavel %}
                                     <a class="btn btn-warning" href="{% url 'edit_status' item.get_id %}">Editar</a>
@@ -206,6 +209,8 @@
                                 <td>{{item.descricao}}</td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             {% endif %}
                             {% endfor %}
@@ -217,6 +222,8 @@
                                 <td>{{item.power}}</td>
                                 <td>{{item.killpoints}}</td>
                                 <td>{{item.deaths}}</td>
+                                <td>{{item.killst4}}</td>
+                                <td>{{item.killst5}}</td>
                             </tr>
                             {% endfor %}
                             {% endif %}

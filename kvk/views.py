@@ -578,8 +578,11 @@ def dkp_view(request, kvkid):
 
     status = (
         PlayerStatus.objects.exclude(player__status__in=["BANIDO", "INATIVO", "FARM"])
-        .filter(data__gte=inicio)
-        .filter(data__lte=final)
+        .filter(
+            data__year=primeiro.data.year,
+            data__month=primeiro.data.month,
+            data__day=primeiro.data.day,
+        )
         .values(
             "player",
             "player__nick",
@@ -587,10 +590,8 @@ def dkp_view(request, kvkid):
             "player__alliance__tag",
             "power",
             "data",
-        )
-        .annotate(
-            killst4=Max("killst4") - Min("killst4"),
-            killst5=Max("killst5") - Min("killst5"),
+            "killst4",
+            "killst5",
         )
         .order_by("-data")
     )
@@ -602,17 +603,26 @@ def dkp_view(request, kvkid):
             continue
         jafoi.append(st["player"])
         player = Player.objects.get(pk=st["player"])
+
+        status_final = (
+            PlayerStatus.objects.filter(
+                data__gte=inicio, data__lte=final, player=st["player"]
+            )
+            .order_by("-data")
+            .first()
+        )
+
         kvkstatus = KvKStatus.objects.filter(kvk=kvk, player=player).first()
         if not kvkstatus:
             kvkstatus = KvKStatus()
 
         poder = st["power"]
-        coef = 0.05
+        coef = 0.2
         desconto_poder = 0
         if poder <= 50000000:
             desconto_poder = poder * coef
         elif poder > 50000000:
-            desconto_poder = 50000000 * coef + (poder - 50000000) * 0.2
+            desconto_poder = 50000000 * coef + (poder - 50000000) * 0.5
 
         # DKP=(T4kill*1)+(T5kill*2)+(T4death*2)+(T5death*4)+(Honra)+(PointsOnMaraunders)-(combatpower*20%)
         dkps.append(
@@ -620,18 +630,19 @@ def dkp_view(request, kvkid):
                 "player": player.nick,
                 "game_id": player.game_id,
                 "dkp": int(
-                    (st["killst4"] * 2)
-                    + (st["killst5"] * 4)
+                    ((status_final.killst4 - st["killst4"]) * 2)
+                    + ((status_final.killst5 - st["killst5"]) * 4)
                     + ((kvkstatus.deatht4) * 5)  # deaths t4
                     + ((kvkstatus.deatht5) * 10)  # deaths t5
                     + (kvkstatus.honra)  # honra
                     + (kvkstatus.marauders)  # pontos nos marauders
                     - desconto_poder  # desconto de poder
                 ),
-                "killst4": st["killst4"],
-                "killst5": st["killst5"],
+                "killst4": status_final.killst4 - st["killst4"],
+                "killst5": status_final.killst5 - st["killst5"],
                 "deatht4": kvkstatus.deatht4,
                 "deatht5": kvkstatus.deatht5,
+                "desconto": desconto_poder,
             }
         )
 
