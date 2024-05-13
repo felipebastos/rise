@@ -19,7 +19,10 @@
             <tr>
                 <th scope="col">{{forloop.counter}}</th>
                 <td><a href="{% url 'player_profile' st.game_id %}">{{st.player}}</a></td>
-                <td>{{st.dkp}}</td>
+                <td>{{st.dkp}} <button type="button" class="btn btn-info" data-bs-container="body"
+                        data-bs-toggle="popover" data-bs-placement="top"
+                        data-bs-content="Abates t4: {{st.killst4}}; Abates t5: {{st.killst5}}; Mortes t4: {{st.deatht4}}; Mortes t5: {{st.deatht5}}">Detalhes</button>
+                </td>
                 <td>
                     <a href="{% url 'status_dkp' kvk.id st.game_id %}" class="btn btn-primary">Adicionar status</a>
                 </td>
