@@ -5,63 +5,103 @@ equipments\tests.py:1:0: W0611: Unused TestCase imported from django.test (unuse
 ************* Module equipments.views
 equipments\views.py:28:0: R0914: Too many local variables (17/15) (too-many-locals)
 equipments\views.py:28:0: R0912: Too many branches (14/12) (too-many-branches)
+************* Module ghevent.forms
+ghevent\forms.py:3:0: W0611: Unused InscritoGH imported from ghevent.models (unused-import)
+************* Module ghevent.tests
+ghevent\tests.py:1:0: W0611: Unused TestCase imported from django.test (unused-import)
+************* Module ghevent.views
+ghevent\views.py:20:19: C0103: Argument name "id" doesn't conform to snake_case naming style (invalid-name)
+ghevent\views.py:20:19: W0622: Redefining built-in 'id' (redefined-builtin)
+ghevent\views.py:22:4: W0621: Redefining name 'event' from outer scope (line 20) (redefined-outer-name)
+ghevent\views.py:43:29: C0103: Argument name "id" doesn't conform to snake_case naming style (invalid-name)
+ghevent\views.py:43:29: W0622: Redefining built-in 'id' (redefined-builtin)
+ghevent\views.py:59:32: C0103: Argument name "id" doesn't conform to snake_case naming style (invalid-name)
+ghevent\views.py:59:32: W0622: Redefining built-in 'id' (redefined-builtin)
 ************* Module kvk.views
-kvk\views.py:329:12: C0103: Attribute name "kp" doesn't conform to snake_case naming style (invalid-name)
-kvk\views.py:330:12: C0103: Attribute name "dt" doesn't conform to snake_case naming style (invalid-name)
-kvk\views.py:144:0: R0914: Too many local variables (34/15) (too-many-locals)
-kvk\views.py:144:0: R0912: Too many branches (22/12) (too-many-branches)
-kvk\views.py:144:0: R0915: Too many statements (68/50) (too-many-statements)
-kvk\views.py:302:4: W0612: Unused variable 'consolidado' (unused-variable)
+kvk\views.py:341:12: C0103: Attribute name "kp" doesn't conform to snake_case naming style (invalid-name)
+kvk\views.py:342:12: C0103: Attribute name "dt" doesn't conform to snake_case naming style (invalid-name)
+kvk\views.py:631:0: C0301: Line too long (106/88) (line-too-long)
+kvk\views.py:697:0: C0301: Line too long (91/88) (line-too-long)
+kvk\views.py:703:0: C0301: Line too long (115/88) (line-too-long)
+kvk\views.py:153:0: R0914: Too many local variables (35/15) (too-many-locals)
+kvk\views.py:153:0: R0912: Too many branches (23/12) (too-many-branches)
+kvk\views.py:153:0: R0915: Too many statements (69/50) (too-many-statements)
+kvk\views.py:314:4: W0612: Unused variable 'consolidado' (unused-variable)
+kvk\views.py:557:0: R0914: Too many local variables (17/15) (too-many-locals)
+kvk\views.py:601:8: C0103: Variable name "st" doesn't conform to snake_case naming style (invalid-name)
 ************* Module mge.models
-mge\models.py:70:0: C0325: Unnecessary parens after '=' keyword (superfluous-parens)
-mge\models.py:74:0: C0325: Unnecessary parens after '=' keyword (superfluous-parens)
-mge\models.py:80:0: C0301: Line too long (145/88) (line-too-long)
-mge\models.py:81:0: C0301: Line too long (140/88) (line-too-long)
+mge\models.py:71:0: C0325: Unnecessary parens after '=' keyword (superfluous-parens)
+mge\models.py:75:0: C0325: Unnecessary parens after '=' keyword (superfluous-parens)
+mge\models.py:81:0: C0301: Line too long (145/88) (line-too-long)
+mge\models.py:82:0: C0301: Line too long (140/88) (line-too-long)
 ************* Module mge.views
 mge\views.py:109:12: C0103: Attribute name "gh" doesn't conform to snake_case naming style (invalid-name)
-mge\models.py:101:0: R0902: Too many instance attributes (9/7) (too-many-instance-attributes)
+mge\models.py:102:0: R0902: Too many instance attributes (9/7) (too-many-instance-attributes)
 ************* Module osiris.tests
 osiris\tests.py:1:0: W0611: Unused TestCase imported from django.test (unused-import)
 ************* Module players.models
-players\models.py:43:0: C0301: Line too long (121/88) (line-too-long)
+players\models.py:43:0: C0301: Line too long (107/88) (line-too-long)
+players\models.py:127:0: C0301: Line too long (100/88) (line-too-long)
 ************* Module players.views
-players\views.py:734:0: C0301: Line too long (136/88) (line-too-long)
-players\views.py:748:0: C0301: Line too long (151/88) (line-too-long)
-players\views.py:752:0: C0301: Line too long (156/88) (line-too-long)
-players\views.py:799:5: W0511: TODO: add farms e depois remove (fixme)
+players\views.py:46:0: C0301: Line too long (94/88) (line-too-long)
+players\views.py:51:0: C0301: Line too long (96/88) (line-too-long)
+players\views.py:180:0: C0301: Line too long (130/88) (line-too-long)
+players\views.py:347:0: C0301: Line too long (91/88) (line-too-long)
+players\views.py:353:0: C0301: Line too long (115/88) (line-too-long)
+players\views.py:427:0: C0301: Line too long (94/88) (line-too-long)
+players\views.py:430:0: C0301: Line too long (159/88) (line-too-long)
+players\views.py:545:0: C0301: Line too long (94/88) (line-too-long)
+players\views.py:549:0: C0301: Line too long (96/88) (line-too-long)
+players\views.py:597:0: C0301: Line too long (91/88) (line-too-long)
+players\views.py:600:0: C0301: Line too long (94/88) (line-too-long)
+players\views.py:603:0: C0301: Line too long (104/88) (line-too-long)
+players\views.py:631:0: C0301: Line too long (89/88) (line-too-long)
+players\views.py:660:0: C0301: Line too long (94/88) (line-too-long)
+players\views.py:664:0: C0301: Line too long (96/88) (line-too-long)
+players\views.py:724:0: C0301: Line too long (89/88) (line-too-long)
+players\views.py:728:0: C0301: Line too long (95/88) (line-too-long)
+players\views.py:929:0: C0301: Line too long (90/88) (line-too-long)
+players\views.py:950:0: C0301: Line too long (136/88) (line-too-long)
+players\views.py:964:0: C0301: Line too long (151/88) (line-too-long)
+players\views.py:968:0: C0301: Line too long (156/88) (line-too-long)
+players\views.py:982:0: C0301: Line too long (89/88) (line-too-long)
+players\views.py:985:0: C0301: Line too long (96/88) (line-too-long)
+players\views.py:1011:0: C0301: Line too long (89/88) (line-too-long)
+players\views.py:1045:0: C0301: Line too long (89/88) (line-too-long)
+players\views.py:1:0: C0302: Too many lines in module (1082/1000) (too-many-lines)
 players\views.py:41:0: R0914: Too many local variables (22/15) (too-many-locals)
-players\views.py:317:0: R0914: Too many local variables (22/15) (too-many-locals)
-players\views.py:317:0: R0912: Too many branches (28/12) (too-many-branches)
-players\views.py:317:0: R0915: Too many statements (83/50) (too-many-statements)
-players\views.py:550:0: R0914: Too many local variables (37/15) (too-many-locals)
-players\views.py:550:0: R0912: Too many branches (24/12) (too-many-branches)
-players\views.py:550:0: R0915: Too many statements (70/50) (too-many-statements)
+players\views.py:422:0: R0914: Too many local variables (22/15) (too-many-locals)
+players\views.py:422:0: R0912: Too many branches (28/12) (too-many-branches)
+players\views.py:422:0: R0915: Too many statements (85/50) (too-many-statements)
+players\views.py:742:0: R0914: Too many local variables (37/15) (too-many-locals)
+players\views.py:742:0: R0912: Too many branches (24/12) (too-many-branches)
+players\views.py:742:0: R0915: Too many statements (70/50) (too-many-statements)
 ************* Module reports.views
 reports\views.py:16:0: R0914: Too many local variables (20/15) (too-many-locals)
 reports\views.py:16:0: R0912: Too many branches (16/12) (too-many-branches)
 reports\views.py:16:0: R0915: Too many statements (52/50) (too-many-statements)
 reports\views.py:215:0: R0914: Too many local variables (17/15) (too-many-locals)
 ************* Module rise.settings
-rise\settings.py:150:0: C0301: Line too long (95/88) (line-too-long)
-rise\settings.py:165:0: C0301: Line too long (91/88) (line-too-long)
+rise\settings.py:151:0: C0301: Line too long (95/88) (line-too-long)
+rise\settings.py:166:0: C0301: Line too long (91/88) (line-too-long)
 ************* Module tasks.admin
 tasks\admin.py:1:0: W0611: Unused admin imported from django.contrib (unused-import)
 ************* Module tasks.tests
 tasks\tests.py:1:0: W0611: Unused TestCase imported from django.test (unused-import)
 ************* Module tasks.views
 tasks\views.py:1:0: R0801: Similar lines in 2 files
-==kvk.views:[278:289]
+==kvk.views:[290:301]
 ==reports.views:[292:303]
-        categorizados.append(
-            {
-                "faixa0": faixa[0],
-                "faixa1": faixa[1],
-                "media": media,
-                "meiamedia": media * 0.5,
-                "membros": status,
-            }
-        )
-        context["categorizados"] = categorizados
+            categorizados.append(
+                {
+                    "faixa0": faixa[0],
+                    "faixa1": faixa[1],
+                    "media": media,
+                    "meiamedia": media * 0.5,
+                    "membros": status,
+                }
+            )
+            context["categorizados"] = categorizados
  (duplicate-code)
 tasks\views.py:1:0: R0801: Similar lines in 2 files
 ==reports.views:[171:179]
@@ -75,8 +115,8 @@ tasks\views.py:1:0: R0801: Similar lines in 2 files
     )
  (duplicate-code)
 tasks\views.py:1:0: R0801: Similar lines in 2 files
-==kvk.views:[198:206]
-==players.views:[628:635]
+==kvk.views:[210:218]
+==players.views:[832:839]
             ).order_by("data")
 
             players_faixa_original = []
@@ -86,27 +126,27 @@ tasks\views.py:1:0: R0801: Similar lines in 2 files
                         players_faixa_original.append(stat.player)
  (duplicate-code)
 tasks\views.py:1:0: R0801: Similar lines in 2 files
-==kvk.views:[146:154]
-==players.views:[555:563]
-    inicio = kvk.inicio
-    if kvk.primeira_luta:
-        inicio = kvk.primeira_luta
+==kvk.views:[155:163]
+==players.views:[759:767]
+        inicio = kvk.inicio
+        if kvk.primeira_luta:
+            inicio = kvk.primeira_luta
 
-    final = kvk.final
-    if not final:
-        final = timezone.now()
+        final = kvk.final
+        if not final:
+            final = timezone.now()
  (duplicate-code)
 tasks\views.py:1:0: R0801: Similar lines in 2 files
-==kvk.views:[53:61]
+==kvk.views:[61:69]
 ==mge.views:[121:129]
-    inicio = kvk.inicio
-    if kvk.primeira_luta:
-        inicio = kvk.primeira_luta
+            inicio = kvk.inicio
+            if kvk.primeira_luta:
+                inicio = kvk.primeira_luta
 
-    final = kvk.final
-    if not final:
-        final = timezone.now()
+            final = kvk.final
+            if not final:
+                final = timezone.now()
  (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.79/10 (previous run: 9.80/10, -0.00)
+Your code has been rated at 9.64/10 (previous run: 9.79/10, -0.15)
