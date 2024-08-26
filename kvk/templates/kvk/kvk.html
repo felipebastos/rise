@@ -12,9 +12,9 @@
     {% else %}
     <a class="btn btn-success" href="{% url 'close_kvk' kvk.id %}">Abrir registros</a>
     {% endif %}
-    <a class="btn btn-primary" href="{% url 'dkp_view' kvk.id %}">DKP</a>
     {% endif %}
     <a href="{% url 'registrarEtapa' kvk.id %}" class="btn btn-primary">Etapas</a>
+    <a class="btn btn-primary" href="{% url 'dkp_view' kvk.id %}">DKP</a>
     <a class="btn btn-primary" href="{% url 'analisedesempenho' kvk.id 'kp' %}">Análise de desempenho por Killpoints</a>
     <a class="btn btn-primary" href="{% url 'analisedesempenho' kvk.id 'dt' %}">Análise de desempenho por Mortes</a>
     <a class="btn btn-primary" href="{% url 'cargos_view' kvk.id %}">Configurar cargos</a>

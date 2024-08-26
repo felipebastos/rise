@@ -553,7 +553,6 @@ def config_kvk(request, kvkid):
     return render(request, "kvk/config.html", context=context)
 
 
-@login_required
 def dkp_view(request, kvkid):
     kvk = Kvk.objects.get(pk=kvkid)
 
@@ -628,7 +627,7 @@ def dkp_view(request, kvkid):
         elif poder > 50000000:
             desconto_poder = 50000000 * coef + (poder - 50000000) * 0.5
 
-        # DKP=(T4kill*1)+(T5kill*2)+(T4death*2)+(T5death*4)+(Honra)+(PointsOnMaraunders)-(combatpower*20%)
+        # DKP=(T4kill*2)+(T5kill*4)+(T4death*5)+(T5death*10)+(Honra)+(PointsOnMaraunders)-(combatpower*20%)
         dkps.append(
             {
                 "player": player.nick,
