@@ -553,7 +553,6 @@ def config_kvk(request, kvkid):
     return render(request, "kvk/config.html", context=context)
 
 
-@login_required
 def dkp_view(request, kvkid):
     kvk = Kvk.objects.get(pk=kvkid)
 
