@@ -6,8 +6,8 @@ authors = ["Felipe Bastos <felipe.bastosn@gmail.com>"]
 license = "GPL-3.0"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-Django = "^4.0.1"
+python = "^3.10"
+Django = "^5.1.0"
 django-simple-captcha = "^0.5.14"
 python-dotenv = "^0.19.2"
 gunicorn = "^20.1.0"

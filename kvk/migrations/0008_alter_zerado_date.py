@@ -3,7 +3,6 @@
 import datetime
 
 from django.db import migrations, models
-from django.utils.timezone import utc
 
 
 class Migration(migrations.Migration):
@@ -16,7 +15,9 @@ class Migration(migrations.Migration):
             model_name="zerado",
             name="date",
             field=models.DateField(
-                default=datetime.datetime(2022, 8, 10, 13, 50, 16, 124923, tzinfo=utc)
+                default=datetime.datetime(
+                    2022, 8, 10, 13, 50, 16, 124923, tzinfo=datetime.timezone.utc
+                ),
             ),
         ),
     ]
