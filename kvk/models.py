@@ -46,6 +46,25 @@ class Kvk(models.Model):
         return f"KvK iniciado em {self.inicio}"
 
 
+ZONA = (
+    ("ND", "Não definido"),
+    ("Z5", "Zona 5"),
+    ("Z6", "Zona 6"),
+    ("KL", "Kingsland"),
+    ("DK", "Altar da Escuridão"),
+)
+
+
+class Batalha(models.Model):
+    kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
+    data_inicio = models.DateField()
+    data_fim = models.DateField()
+    descricao = models.CharField(max_length=2, choices=ZONA, default="ND")
+
+    def __str__(self):
+        return f"Batalha {self.descricao} do {self.kvk}"
+
+
 class Zerado(models.Model):
     kvk = models.ForeignKey(Kvk, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)

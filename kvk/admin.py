@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import (
     AdicionalDeFarms,
+    Batalha,
     Cargo,
     Consolidado,
     Etapas,
@@ -21,3 +22,4 @@ admin.site.register(Etapas)
 admin.site.register(Cargo)
 admin.site.register(Consolidado)
 admin.site.register(KvKStatus)
+admin.site.register(Batalha)
