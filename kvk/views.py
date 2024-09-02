@@ -669,13 +669,13 @@ def dkp_view(request, kvkid):
                 "player": player.nick,
                 "game_id": player.game_id,
                 "dkp": int(
-                    ((status_final.killst4 - st["killst4"]) * 2)
-                    + ((status_final.killst5 - st["killst5"]) * 4)
+                    ((status_final.killst4 - st["killst4"]) * 0.4)
+                    + ((status_final.killst5 - st["killst5"]) * 1)
                     + ((kvkstatus.deatht4) * 5)  # deaths t4
                     + ((kvkstatus.deatht5) * 10)  # deaths t5
-                    + (kvkstatus.honra)  # honra
-                    + (kvkstatus.marauders)  # pontos nos marauders
-                    - desconto_poder  # desconto de poder
+                    # + (kvkstatus.honra)  # honra
+                    # + (kvkstatus.marauders)  # pontos nos marauders
+                    # - desconto_poder  # desconto de poder
                 ),
                 "killst4": status_final.killst4 - st["killst4"],
                 "killst5": status_final.killst5 - st["killst5"],
