@@ -17,6 +17,7 @@ from kvk.forms import (
 )
 from kvk.models import (
     AdicionalDeFarms,
+    Batalha,
     Cargo,
     Consolidado,
     Etapas,
@@ -216,22 +217,57 @@ def calcular(kvk, cat):
                     if stat.data.hour == primeiro.data.hour:
                         players_faixa_original.append(stat.player)
 
-            status = (
-                PlayerStatus.objects.filter(player__in=players_faixa_original)
-                .filter(data__gte=inicio)
-                .filter(data__lte=final)
-                .values(
-                    "player",
-                    "player__nick",
-                    "player__game_id",
-                    "player__alliance__tag",
+            batalhas = Batalha.objects.filter(kvk=kvk)
+
+            status = None
+            if batalhas:
+                acumulado = []
+                for batalha in batalhas:
+                    por_batalha = (
+                        PlayerStatus.objects.filter(player__in=players_faixa_original)
+                        .filter(data__gte=batalha.data_inicio)
+                        .filter(data__lte=batalha.data_fim)
+                        .values(
+                            "player",
+                            "player__nick",
+                            "player__game_id",
+                            "player__alliance__tag",
+                        )
+                        .annotate(
+                            kp=Max("killpoints") - Min("killpoints"),
+                            dt=Max("deaths") - Min("deaths"),
+                        )
+                        .order_by(f"-{cat}")
+                    )
+                    if not acumulado:
+                        acumulado = por_batalha
+                    else:
+                        for stat in por_batalha:
+                            if stat["player"] not in [ac["player"] for ac in acumulado]:
+                                acumulado.append(stat)
+                            else:
+                                for ac in acumulado:
+                                    if ac["player"] == stat["player"]:
+                                        ac["kp"] = ac["kp"] + stat["kp"]
+                                        ac["dt"] = ac["dt"] + stat["dt"]
+                    status = acumulado
+            else:
+                status = (
+                    PlayerStatus.objects.filter(player__in=players_faixa_original)
+                    .filter(data__gte=inicio)
+                    .filter(data__lte=final)
+                    .values(
+                        "player",
+                        "player__nick",
+                        "player__game_id",
+                        "player__alliance__tag",
+                    )
+                    .annotate(
+                        kp=Max("killpoints") - Min("killpoints"),
+                        dt=Max("deaths") - Min("deaths"),
+                    )
+                    .order_by(f"-{cat}")
                 )
-                .annotate(
-                    kp=Max("killpoints") - Min("killpoints"),
-                    dt=Max("deaths") - Min("deaths"),
-                )
-                .order_by(f"-{cat}")
-            )
 
             media = 0
             contabilizar = 0
