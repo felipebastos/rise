@@ -3,6 +3,7 @@ import logging
 from datetime import date
 
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.db.models.aggregates import Max, Min
@@ -356,6 +357,7 @@ def upload_csv(request):
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
+            cache.set("upload_date", form.cleaned_data["dia"], 20)
             with open("dados.csv", "wb") as destination:
                 for chunk in request.FILES["file"].chunks():
                     destination.write(chunk)
@@ -518,6 +520,7 @@ def populate(request):
 
             statusnovo = PlayerStatus()
             statusnovo.player = jogador
+            statusnovo.data = cache.get("upload_date")
             if isinstance(poder, str):
                 statusnovo.power = poder.replace(".", "")
             else:
