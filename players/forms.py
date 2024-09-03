@@ -10,6 +10,11 @@ class UploadFileForm(forms.Form):
     """
 
     file = forms.FileField()
+    dia = forms.DateField(
+        label="Dia",
+        required=True,
+        widget=forms.DateInput(attrs={"class": "form-control", "type": "date"}),
+    )
 
 
 class AddFarmForm(forms.Form):
