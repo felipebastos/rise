@@ -248,6 +248,7 @@ def calcular(kvk, cat):
                                     ac["kp"] = ac["kp"] + stat["kp"]
                                     ac["dt"] = ac["dt"] + stat["dt"]
                     status = acumulado
+                    status = sorted(status, key=lambda k: k[cat], reverse=True)
             else:
                 status = (
                     PlayerStatus.objects.filter(player__in=players_faixa_original)
