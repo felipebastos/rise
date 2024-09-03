@@ -240,7 +240,8 @@ def calcular(kvk, cat):
                         .order_by(f"-{cat}")
                     )
                     if not acumulado:
-                        acumulado = por_batalha
+                        for b in batalha:
+                            acumulado.append(b)
                     else:
                         for stat in por_batalha:
                             if stat["player"] not in [ac["player"] for ac in acumulado]:
