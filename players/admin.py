@@ -29,6 +29,7 @@ class PlayerStatusAdmin(admin.ModelAdmin):
     ]
 
     ordering = ("player", "data", "power", "killpoints", "deaths")
+    search_fields = ["player__nick", "player__game_id"]
 
 
 admin.site.register(Alliance)
