@@ -610,36 +610,34 @@ def dkp_view(request, kvkid):
         final = timezone.now()
 
     batalhas = Batalha.objects.filter(kvk=kvk)
+
     status = None
     acumulado = []
     for b in batalhas:
-        por_batalha = (
-            PlayerStatus.objects.filter(data__gte=b.data_inicio, data__lte=b.data_fim)
-            .values(
-                "player",
-                "player__nick",
-                "player__game_id",
-                "player__alliance__tag",
-                "power",
-                "killst4",
-                "killst5",
-            )
-            .annotate(
-                k4=Max("killst4") - Min("killst4"),
-                k5=Max("killst5") - Min("killst5"),
-            )
+        por_batalha = PlayerStatus.objects.filter(
+            data__range=(b.data_inicio, b.data_fim)
+        ).values(
+            "player",
+            "player__nick",
+            "player__game_id",
+            "player__alliance__tag",
+            "power",
+            "killst4",
+            "killst5",
         )
 
         for st in por_batalha:
             if st["player"] not in [ac["player"] for ac in acumulado]:
                 if st["player__game_id"] == "29722921":
                     print(st)
+                st["k4"] = st["killst4"]
+                st["k5"] = st["killst5"]
                 acumulado.append(st)
             else:
                 for ac in acumulado:
                     if ac["player"] == st["player"]:
-                        ac["k4"] = ac["k4"] + st["k4"]
-                        ac["k5"] = ac["k5"] + st["k5"]
+                        ac["k4"] = abs(ac["k4"] - st["killst4"])
+                        ac["k5"] = abs(ac["k5"] - st["killst5"])
         status = acumulado
 
     """primeiro = (
