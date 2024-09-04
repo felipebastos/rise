@@ -167,10 +167,10 @@ def calcular(kvk, cat):
         "kvk": kvk.id,
     }
 
-    contexto = cache.get(f"context_{cat}_{kvk.id}")
+    # contexto = cache.get(f"context_{cat}_{kvk.id}")
 
-    if contexto:
-        return contexto
+    # if contexto:
+    # return contexto
 
     if "zerados" not in context:
         banidos_e_inativos = Player.objects.filter(status__in=["BANIDO", "INATIVO"])
@@ -218,7 +218,9 @@ def calcular(kvk, cat):
                         players_faixa_original.append(stat.player)
 
             batalhas = Batalha.objects.filter(kvk=kvk)
-
+            print(len(batalhas))
+            for b in batalhas:
+                print(b)
             status = None
             if batalhas:
                 acumulado = []
@@ -240,11 +242,16 @@ def calcular(kvk, cat):
                         .order_by(f"-{cat}")
                     )
                     for stat in por_batalha:
+                        if stat["player__game_id"] == "29722921":
+                            print(stat)
                         if stat["player"] not in [ac["player"] for ac in acumulado]:
                             acumulado.append(stat)
                         else:
                             for ac in acumulado:
                                 if ac["player"] == stat["player"]:
+                                    print(
+                                        f'Era {ac["kp"]} e agora será adicionado {stat["kp"]}'
+                                    )
                                     ac["kp"] = ac["kp"] + stat["kp"]
                                     ac["dt"] = ac["dt"] + stat["dt"]
                     status = acumulado
@@ -349,7 +356,7 @@ def analisedesempenho(request, kvkid, cat):
 
     context = calcular(kvk, cat)
 
-    cache.set(f"context_{cat}_{kvk.id}", context, 60 * 60)
+    # cache.set(f"context_{cat}_{kvk.id}", context, 60 * 60)
 
     return render(request, "kvk/analise.html", context=context)
 
@@ -602,7 +609,38 @@ def dkp_view(request, kvkid):
     if not final:
         final = timezone.now()
 
-    primeiro = (
+    batalhas = Batalha.objects.filter(kvk=kvk)
+
+    status = None
+    acumulado = []
+    for b in batalhas:
+        por_batalha = PlayerStatus.objects.filter(
+            data__range=(b.data_inicio, b.data_fim)
+        ).values(
+            "player",
+            "player__nick",
+            "player__game_id",
+            "player__alliance__tag",
+            "power",
+            "killst4",
+            "killst5",
+        )
+
+        for st in por_batalha:
+            if st["player"] not in [ac["player"] for ac in acumulado]:
+                if st["player__game_id"] == "29722921":
+                    print(st)
+                st["k4"] = st["killst4"]
+                st["k5"] = st["killst5"]
+                acumulado.append(st)
+            else:
+                for ac in acumulado:
+                    if ac["player"] == st["player"]:
+                        ac["k4"] = abs(ac["k4"] - st["killst4"])
+                        ac["k5"] = abs(ac["k5"] - st["killst5"])
+        status = acumulado
+
+    """primeiro = (
         PlayerStatus.objects.filter(data__gte=kvk.inicio).order_by("data").first()
     )
 
@@ -627,7 +665,7 @@ def dkp_view(request, kvkid):
             "killst5",
         )
         .order_by("-data")
-    )
+    )"""
 
     jafoi = []
     dkps = []
@@ -637,7 +675,7 @@ def dkp_view(request, kvkid):
         jafoi.append(st["player"])
         player = Player.objects.get(pk=st["player"])
 
-        status_final = (
+        """status_final = (
             PlayerStatus.objects.filter(
                 data__gte=inicio, data__lte=final, player=st["player"]
             )
@@ -648,7 +686,7 @@ def dkp_view(request, kvkid):
         if not status_final:
             logger.debug("Não foi possível calcular o DKP de: %s", st["player"])
             continue
-
+        """
         kvkstatus = KvKStatus.objects.filter(kvk=kvk, player=player).first()
         if not kvkstatus:
             kvkstatus = KvKStatus()
@@ -667,16 +705,16 @@ def dkp_view(request, kvkid):
                 "player": player.nick,
                 "game_id": player.game_id,
                 "dkp": int(
-                    ((status_final.killst4 - st["killst4"]) * 0.4)
-                    + ((status_final.killst5 - st["killst5"]) * 1)
+                    ((st["k4"]) * 0.4)
+                    + ((st["k5"]) * 1)
                     + ((kvkstatus.deatht4) * 5)  # deaths t4
                     + ((kvkstatus.deatht5) * 10)  # deaths t5
                     # + (kvkstatus.honra)  # honra
                     # + (kvkstatus.marauders)  # pontos nos marauders
                     # - desconto_poder  # desconto de poder
                 ),
-                "killst4": status_final.killst4 - st["killst4"],
-                "killst5": status_final.killst5 - st["killst5"],
+                "killst4": st["k4"],
+                "killst5": st["k5"],
                 "deatht4": kvkstatus.deatht4,
                 "deatht5": kvkstatus.deatht5,
                 "desconto": desconto_poder,
