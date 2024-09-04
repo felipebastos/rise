@@ -3,6 +3,11 @@ from django.contrib import admin
 # Register your models here.
 from .models import Advertencia, Alliance, Player, PlayerStatus
 
+from rangefilter.filters import (
+    DateRangeFilterBuilder,
+    DateRangeQuickSelectListFilterBuilder,
+)
+
 
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ["nick", "game_id", "specialty", "status"]
@@ -30,6 +35,8 @@ class PlayerStatusAdmin(admin.ModelAdmin):
 
     ordering = ("player", "data", "power", "killpoints", "deaths")
     search_fields = ["player__nick", "player__game_id"]
+
+    list_filter = (("data", DateRangeQuickSelectListFilterBuilder()),)
 
 
 admin.site.register(Alliance)
