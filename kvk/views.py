@@ -624,11 +624,14 @@ def dkp_view(request, kvkid):
             "power",
             "killst4",
             "killst5",
+            "deaths",
         )
 
         for st in por_batalha:
             if st["player"] not in [ac["player"] for ac in acumulado]:
-                if st["player__game_id"] == "29722921":
+                if (
+                    st["player__game_id"] == "29722921"
+                ):  # esse sou eu, só pra testar alguns detalhes mais rápido
                     print(st)
                 st["k4"] = st["killst4"]
                 st["k5"] = st["killst5"]
@@ -638,34 +641,8 @@ def dkp_view(request, kvkid):
                     if ac["player"] == st["player"]:
                         ac["k4"] = abs(ac["k4"] - st["killst4"])
                         ac["k5"] = abs(ac["k5"] - st["killst5"])
+                        ac["deaths"] = abs(ac["deaths"] - st["deaths"])
         status = acumulado
-
-    """primeiro = (
-        PlayerStatus.objects.filter(data__gte=kvk.inicio).order_by("data").first()
-    )
-
-    if not primeiro:
-        return redirect(f"/kvk/edit/{kvk.id}/")
-
-    status = (
-        PlayerStatus.objects.exclude(player__status__in=["BANIDO", "INATIVO", "FARM"])
-        .filter(
-            data__year=primeiro.data.year,
-            data__month=primeiro.data.month,
-            data__day=primeiro.data.day,
-        )
-        .values(
-            "player",
-            "player__nick",
-            "player__game_id",
-            "player__alliance__tag",
-            "power",
-            "data",
-            "killst4",
-            "killst5",
-        )
-        .order_by("-data")
-    )"""
 
     jafoi = []
     dkps = []
@@ -691,13 +668,24 @@ def dkp_view(request, kvkid):
         if not kvkstatus:
             kvkstatus = KvKStatus()
 
-        poder = st["power"]
-        coef = 0.2
-        desconto_poder = 0
-        if poder <= 50000000:
-            desconto_poder = poder * coef
-        elif poder > 50000000:
-            desconto_poder = 50000000 * coef + (poder - 50000000) * 0.5
+        # Calculando as mortes melhor:
+        # Algoritmo do Infernal
+        # Mortes dos status estão em "deaths" e as do HoH estão em "deatht4" e "deatht5"
+        totalAvailableDeads = kvkstatus.deatht4 + kvkstatus.deatht5
+        effectiveDeadTroops = (
+            st["deaths"] if st["deaths"] <= totalAvailableDeads else totalAvailableDeads
+        )
+        resultT5 = (
+            kvkstatus.deatht5
+            if effectiveDeadTroops >= kvkstatus.deatht5
+            else effectiveDeadTroops
+        )
+        remainingTroops = effectiveDeadTroops - resultT5
+        resultT4 = (
+            kvkstatus.deatht4
+            if remainingTroops >= kvkstatus.deatht4
+            else remainingTroops
+        )
 
         # DKP=(T4kill*2)+(T5kill*4)+(T4death*5)+(T5death*10)+(Honra)+(PointsOnMaraunders)-(combatpower*20%)
         dkps.append(
@@ -707,17 +695,14 @@ def dkp_view(request, kvkid):
                 "dkp": int(
                     ((st["k4"]) * 0.4)
                     + ((st["k5"]) * 1)
-                    + ((kvkstatus.deatht4) * 5)  # deaths t4
-                    + ((kvkstatus.deatht5) * 10)  # deaths t5
-                    # + (kvkstatus.honra)  # honra
-                    # + (kvkstatus.marauders)  # pontos nos marauders
-                    # - desconto_poder  # desconto de poder
+                    + ((resultT4) * 5)  # deaths t4
+                    + ((resultT5) * 10)  # deaths t5
                 ),
                 "killst4": st["k4"],
                 "killst5": st["k5"],
                 "deatht4": kvkstatus.deatht4,
                 "deatht5": kvkstatus.deatht5,
-                "desconto": desconto_poder,
+                "mortes_totais": st["deaths"],
             }
         )
 

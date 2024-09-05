@@ -30,6 +30,7 @@ repos:
             - "pylint_django"
             - "python-dotenv"
             - "django-simple-captcha"
+            - "django-admin-rangefilter"
 -   repo: https://github.com/PyCQA/bandit
     rev: 1.7.4
     hooks:
