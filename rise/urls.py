@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 
 from rise import views
 
@@ -32,13 +32,14 @@ urlpatterns = [
     path("kvk/", include("kvk.urls")),
     path("mge/", include("mge.urls")),
     path("gh/", include("ghevent.urls")),
-    # path("items/", include("items.urls")),
     path("reports/", include("reports.urls")),
-    # path("osiris/", include("osiris.urls")),
-    # path("equips/", include("equipments.urls")),
     path("config/", include("config.urls")),
     path("tasks/", include("tasks.urls")),
     path("captcha/", include("captcha.urls")),
+    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    re_path(r"^auth/", include("djoser.urls")),
+    re_path(r"^auth/", include("djoser.urls.jwt")),
+    path("api/", include("api.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_header = "K32 Admin"

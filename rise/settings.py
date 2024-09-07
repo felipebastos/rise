@@ -42,13 +42,10 @@ INSTALLED_APPS = [
     "ghevent.apps.GheventConfig",
     "config.apps.ConfigConfig",
     "players.apps.PlayersConfig",
-    # "equipments.apps.EquipmentsConfig",
     "bank.apps.BankConfig",
     "kvk.apps.KvkConfig",
     "mge.apps.MgeConfig",
     "reports.apps.ReportsConfig",
-    # "items.apps.ItemsConfig",
-    # "osiris.apps.OsirisConfig",
     "tasks.apps.TasksConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -59,6 +56,10 @@ INSTALLED_APPS = [
     "captcha",
     "django.contrib.admindocs",
     "rangefilter",
+    "rest_framework",
+    "django_filters",
+    "djoser",
+    "api.apps.ApiConfig",
 ]
 
 MIDDLEWARE = [
@@ -218,3 +219,41 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_URL = "/login/"
 LOGOUT_REDIRECT_URL = "/"
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10,
+}
+
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
+DJOSER = {
+    "SEND_ACTIVATION_EMAIL": True,
+    "PASSWORD_RESET_CONFIRM_URL": "/password/reset/confirm/{uid}/{token}",
+    "USERNAME_RESET_CONFIRM_URL": "/username/reset/confirm/{uid}/{token}",
+    "ACTIVATION_URL": "activate/{uid}/{token}/",
+    "EMAIl": {
+        "activation": "rise.email.ActivationEmail",
+    },
+}
+
+# E-MAIL Configuration
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
