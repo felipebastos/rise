@@ -2,18 +2,6 @@
 {% block title %}- Home{% endblock %}
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <h1 class="display-5 text-center">Verifique seu desempenho no kvk atualmente aberto</h1>
-            <form action="{% url 'como_estou' %}" method="post">
-                {% csrf_token %}
-                <input class="form-control" id="game_id" name="game_id" type="text" placeholder="ID" pattern="^[0-9]*$"
-                    required>
-                <input class="form-control btn btn-primary" type="submit" value="Analisar">
-            </form>
-        </div>
-    </div>
-    <hr>
     <h1 class="display-4 text-center">Top 10 do Reino</h1>
     <div class="row">
         <div class="col-sm-4">
