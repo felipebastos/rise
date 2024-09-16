@@ -62,5 +62,7 @@ class Credito(models.Model):
     timestamp = models.DateTimeField(default=timezone.now)
     quantidade = models.FloatField("Quantidade em milhões", blank=False)
 
+    diferenca = models.FloatField("Diferença", blank=True, default=0)
+
     def __str__(self) -> str:
         return f"[{self.ally.tag}] tem {self.quantidade}"

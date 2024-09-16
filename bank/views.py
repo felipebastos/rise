@@ -93,7 +93,10 @@ def add_credits(request):
     form = CreditoForm(request.POST or None)
 
     if form.is_valid():
-        form.save()
+        credito = form.save()
+        anterior = Credito.objects.filter(ally=credito.ally).order_by("-timestamp")[1]
+        credito.diferenca = credito.quantidade - anterior.quantidade
+        credito.save()
 
     form = CreditoForm()
 
@@ -104,6 +107,8 @@ def add_credits(request):
     for credito in creditos:
         if credito.ally.id not in ultimos:
             ultimos[credito.ally.id] = credito
+            print(credito)
+            print(credito.diferenca)
 
     context = {
         "form": form,
