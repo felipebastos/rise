@@ -1,30 +1,31 @@
-{% load i18n %}
-
 {% block subject %}
-{% blocktrans %}Account activation on {{ site_name }}{% endblocktrans %}
+Account activation on {{ site_name }}
 {% endblock subject %}
 
 {% block text_body %}
-{% blocktrans %}You're receiving this email because you need to finish activation process on {{ site_name }}.{%
-endblocktrans %}
+You're receiving this email because you need to finish activation process on {{ site_name }}.
 
-{% trans "Please go to the following page to activate account:" %}
+Please go to the following page to activate account:
+
 {{ protocol }}://{{ domain }}/{{ url|safe }}
 
-{% trans "Thanks for using our site!" %}
+Thanks for registering!
 
-{% blocktrans %}The {{ site_name }} team{% endblocktrans %}
+The {{ site_name }} team
 {% endblock text_body %}
 
 {% block html_body %}
-<p>{% blocktrans %}You're receiving this email because you need to finish activation process on {{ site_name }}.{%
-    endblocktrans %}</p>
+<div style="background-color: black; color: white;">
+    <img src="https://k32.pythonanywhere.com/static/k32.png" alt="K32"
+        style="display:bock; margin-left:auto; margin-right:auto; width: 20%;">
 
-<p>{% trans "Please go to the following page to activate account:" %}</p>
-<p><a href="{{ protocol }}://{{ domain }}/{{ url|safe }}">{{ protocol }}://{{ domain }}/{{ url|safe }}</a></p>
+    <p>}You're receiving this email because you need to finish activation process on {{ site_name }}.</p>
 
-<p>{% trans "Thanks for using our site!" %}</p>
+    <p>Please go to the following page to activate account:</p>
+    <p><a href="{{ protocol }}://{{ domain }}/{{ url|safe }}">{{ protocol }}://{{ domain }}/{{ url|safe }}</a></p>
 
-<p>{% blocktrans %}The {{ site_name }} team{% endblocktrans %}</p>
+    <p>Thanks for registering!</p>
 
+    <p>The {{ site_name }} team</p>
+</div>
 {% endblock html_body %}

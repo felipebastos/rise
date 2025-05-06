@@ -218,44 +218,49 @@ def calcular(kvk, cat):
                         players_faixa_original.append(stat.player)
 
             batalhas = Batalha.objects.filter(kvk=kvk)
-            print(len(batalhas))
-            for b in batalhas:
-                print(b)
+
+            # TODO: A mudança começa aqui
+
             status = None
-            if batalhas:
-                acumulado = []
-                for batalha in batalhas:
-                    por_batalha = (
-                        PlayerStatus.objects.filter(player__in=players_faixa_original)
-                        .filter(data__gte=batalha.data_inicio)
-                        .filter(data__lte=batalha.data_fim)
-                        .values(
-                            "player",
-                            "player__nick",
-                            "player__game_id",
-                            "player__alliance__tag",
-                        )
-                        .annotate(
-                            kp=Max("killpoints") - Min("killpoints"),
-                            dt=Max("deaths") - Min("deaths"),
-                        )
-                        .order_by(f"-{cat}")
-                    )
-                    for stat in por_batalha:
-                        if stat["player__game_id"] == "29722921":
-                            print(stat)
-                        if stat["player"] not in [ac["player"] for ac in acumulado]:
-                            acumulado.append(stat)
-                        else:
-                            for ac in acumulado:
-                                if ac["player"] == stat["player"]:
-                                    print(
-                                        f'Era {ac["kp"]} e agora será adicionado {stat["kp"]}'
-                                    )
-                                    ac["kp"] = ac["kp"] + stat["kp"]
-                                    ac["dt"] = ac["dt"] + stat["dt"]
-                    status = acumulado
-                    status = sorted(status, key=lambda k: k[cat], reverse=True)
+            acumulado = []
+            for b in batalhas:
+                por_batalha = PlayerStatus.objects.filter(
+                    data__range=(b.data_inicio, b.data_fim)
+                ).values(
+                    "player",
+                    "player__nick",
+                    "player__game_id",
+                    "player__alliance__tag",
+                    "power",
+                    "killst4",
+                    "killst5",
+                    "killpoints",
+                    "deaths",
+                )
+
+                for st in por_batalha:
+                    if st["player"] not in [ac["player"] for ac in acumulado]:
+                        if (
+                            st["player__game_id"] == "29722921"
+                        ):  # esse sou eu, só pra testar alguns detalhes mais rápido
+                            print(st)
+                        st["k4"] = st["killst4"]
+                        st["k5"] = st["killst5"]
+                        st["kp"] = st["killpoints"]
+                        st["dt"] = st["deaths"]
+                        acumulado.append(st)
+                    else:
+                        for ac in acumulado:
+                            if ac["player"] == st["player"]:
+                                ac["k4"] = abs(ac["k4"] - st["killst4"])
+                                ac["k5"] = abs(ac["k5"] - st["killst5"])
+                                ac["kp"] = abs(ac["kp"] - st["killpoints"])
+                                ac["dt"] = abs(ac["dt"] - st["deaths"])
+                status = acumulado
+
+                # TODO: Estou mudando o cálculo para ignorar fora de batalhas
+
+                status = sorted(status, key=lambda k: k[cat], reverse=True)
             else:
                 status = (
                     PlayerStatus.objects.filter(player__in=players_faixa_original)
@@ -381,6 +386,8 @@ def consolidar_kvk(request, kvkid):
             novo.player = player
             novo.kp = status["kp"]
             novo.dt = status["dt"]
+            novo.t4_kill = status["k4"]
+            novo.t5_kill = status["k5"]
             novo.posicao_dt = posicao
             if player.pk in zerados:
                 novo.cor_dt = "GRA"
