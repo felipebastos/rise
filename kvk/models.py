@@ -136,6 +136,9 @@ class Consolidado(models.Model):
     kp = models.BigIntegerField()
     dt = models.IntegerField()
 
+    t5_kill = models.IntegerField(default=0)
+    t4_kill = models.IntegerField(default=0)
+
     zerado = models.BooleanField(default=False)
 
     def __str__(self) -> str:

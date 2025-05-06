@@ -1,0 +1,23 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en" data-critters-container>
+
+<head>
+    <meta charset="utf-8">
+    <title>Django-ng</title>
+    <base href="/ang/">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{% static 'browser/favicon.ico' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'browser/styles.css' %}">
+</head>
+
+<body>
+    <app-root></app-root>
+    <script type="module" src="{% static 'browser/polyfills.mjs' %}"></script>
+    <script type="module" src="{% static 'browser/main.mjs' %}"></script>
+</body>
+
+</html>

@@ -4,17 +4,17 @@ from api.serializers import AllianceSerializer, PlayerSerializer, PlayerStatusSe
 from players.models import Alliance, Player, PlayerStatus
 
 
-class PlayerViewSet(viewsets.ModelViewSet):
+class PlayerViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
 
 
-class AllianceViewSet(viewsets.ModelViewSet):
+class AllianceViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Alliance.objects.all()
     serializer_class = AllianceSerializer
 
 
-class PlayerStatusViewSet(viewsets.ModelViewSet):
+class PlayerStatusViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PlayerStatusSerializer
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ["power", "killpoints", "deaths"]
