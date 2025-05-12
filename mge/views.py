@@ -19,6 +19,7 @@ from mge.models import (
     Ranking,
 )
 from players.models import Advertencia, Player, PlayerStatus
+from utils.datas import get_datas
 
 # Create your views here.
 logger = logging.getLogger("k32")
@@ -119,13 +120,7 @@ def inscrever(request, mge_id):
             inscrito.kills = consolidado.kp
             inscrito.deaths = consolidado.dt
         else:
-            inicio = kvk.inicio
-            if kvk.primeira_luta:
-                inicio = kvk.primeira_luta
-
-            final = kvk.final
-            if not final:
-                final = timezone.now()
+            inicio, final = get_datas(kvk)
 
             status = (
                 PlayerStatus.objects.all()

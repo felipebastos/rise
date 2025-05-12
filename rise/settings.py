@@ -246,7 +246,7 @@ DJOSER = {
     "USERNAME_RESET_CONFIRM_URL": "/username/reset/confirm/{uid}/{token}",
     "ACTIVATION_URL": "activate/{uid}/{token}/",
     "EMAIl": {
-        "activation": "rise.email.ActivationEmail",
+        "activation": "rise.email.MyActivationEmail",
     },
 }
 

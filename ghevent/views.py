@@ -17,13 +17,13 @@ def home(request):
     return render(request, "ghevent/index.html", context=context)
 
 
-def event(request, id):
+def event(request, idi):
     form = InscritoGHForm()
-    event = EventoGH.objects.get(pk=id)
-    inscritos = InscritoGH.objects.filter(evento=event)
+    evento = EventoGH.objects.get(pk=idi)
+    inscritos = InscritoGH.objects.filter(evento=evento)
     context = {
         "form": form,
-        "event": event,
+        "event": evento,
         "inscritos": inscritos,
     }
     return render(request, "ghevent/ghevent.html", context=context)
@@ -40,23 +40,23 @@ def startnewgh(request):
 
 
 @login_required
-def add_inscrito_gh(request, id):
+def add_inscrito_gh(request, idi):
     if request.method == "POST":
         form = InscritoGHForm(request.POST)
         if form.is_valid():
             novo_inscrito_id = form.cleaned_data.get("busca")
             inscrito = Player.objects.get(game_id=novo_inscrito_id)
-            evento = EventoGH.objects.get(pk=id)
+            evento = EventoGH.objects.get(pk=idi)
             inscricao = InscritoGH()
             inscricao.player = inscrito
             inscricao.evento = evento
             inscricao.save()
-            return redirect(f"/gh/{id}/")
+            return redirect(f"/gh/{idi}/")
     return redirect("/gh/")
 
 
 @login_required
-def remove_inscrito_gh(request, id, eid):
+def remove_inscrito_gh(request, idi, eid):
     inscrito = InscritoGH.objects.get(pk=eid)
     inscrito.delete()
-    return redirect(f"/gh/{id}/")
+    return redirect(f"/gh/{idi}/")

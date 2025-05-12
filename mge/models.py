@@ -78,11 +78,11 @@ class Mge(models.Model):
         domingo = None
         if not self.inicio_das_inscricoes:
             dia_da_semana = self.criado_em.weekday() + 1
-            diferenca = timedelta(days=(7 - dia_da_semana))
+            diferenca = timedelta(days=7 - dia_da_semana)
             domingo = self.criado_em + diferenca
         else:
             dia_da_semana = self.inicio_das_inscricoes.weekday() + 1
-            diferenca = timedelta(days=(7 - dia_da_semana))
+            diferenca = timedelta(days=7 - dia_da_semana)
             domingo = self.inicio_das_inscricoes + diferenca
         return domingo
 

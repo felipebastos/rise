@@ -1,12 +1,10 @@
 from django.contrib import admin
+from rangefilter.filters import (
+    DateRangeQuickSelectListFilterBuilder,
+)
 
 # Register your models here.
 from .models import Advertencia, Alliance, Player, PlayerStatus
-
-from rangefilter.filters import (
-    DateRangeFilterBuilder,
-    DateRangeQuickSelectListFilterBuilder,
-)
 
 
 class PlayerAdmin(admin.ModelAdmin):

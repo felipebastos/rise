@@ -29,6 +29,7 @@ from kvk.models import (
 )
 from players.forms import UploadFileForm
 from players.models import Player, PlayerStatus
+from utils.datas import get_datas
 
 # Create your views here.
 logger = logging.getLogger("k32")
@@ -60,13 +61,7 @@ def show_kvk(request, kvkid):
     for zerado in zerados:
         zerados_lista.append(zerado.player)
 
-    inicio = kvk.inicio
-    if kvk.primeira_luta:
-        inicio = kvk.primeira_luta
-
-    final = kvk.final
-    if not final:
-        final = timezone.now()
+    inicio, final = get_datas(kvk)
 
     farms_banidos_e_inativos = Player.objects.filter(
         status__in=["BANIDO", "FARM", "MIGROU", "INATIVO"]
@@ -154,13 +149,7 @@ def removezerado(request, kvk, zerado_id):
 def calcular(kvk, cat):
     abates_de_zerado = {}
 
-    inicio = kvk.inicio
-    if kvk.primeira_luta:
-        inicio = kvk.primeira_luta
-
-    final = kvk.final
-    if not final:
-        final = timezone.now()
+    inicio, final = get_datas(kvk)
 
     context = {
         "tipo": cat,
@@ -219,8 +208,6 @@ def calcular(kvk, cat):
 
             batalhas = Batalha.objects.filter(kvk=kvk)
 
-            # TODO: A mudança começa aqui
-
             status = None
             acumulado = []
             for b in batalhas:
@@ -258,26 +245,23 @@ def calcular(kvk, cat):
                                 ac["dt"] = abs(ac["dt"] - st["deaths"])
                 status = acumulado
 
-                # TODO: Estou mudando o cálculo para ignorar fora de batalhas
-
                 status = sorted(status, key=lambda k: k[cat], reverse=True)
-            else:
-                status = (
-                    PlayerStatus.objects.filter(player__in=players_faixa_original)
-                    .filter(data__gte=inicio)
-                    .filter(data__lte=final)
-                    .values(
-                        "player",
-                        "player__nick",
-                        "player__game_id",
-                        "player__alliance__tag",
-                    )
-                    .annotate(
-                        kp=Max("killpoints") - Min("killpoints"),
-                        dt=Max("deaths") - Min("deaths"),
-                    )
-                    .order_by(f"-{cat}")
+            status = (
+                PlayerStatus.objects.filter(player__in=players_faixa_original)
+                .filter(data__gte=inicio)
+                .filter(data__lte=final)
+                .values(
+                    "player",
+                    "player__nick",
+                    "player__game_id",
+                    "player__alliance__tag",
                 )
+                .annotate(
+                    kp=Max("killpoints") - Min("killpoints"),
+                    dt=Max("deaths") - Min("deaths"),
+                )
+                .order_by(f"-{cat}")
+            )
 
             media = 0
             contabilizar = 0
@@ -356,8 +340,6 @@ def analisedesempenho(request, kvkid, cat):
 
     if kvk.id == 4:
         return render(request, "rise/404.html")
-
-    consolidado = Consolidado.objects.filter(kvk=kvk)
 
     context = calcular(kvk, cat)
 
@@ -608,14 +590,6 @@ def dkp_view(request, kvkid):
         "kvk": kvk,
     }
 
-    inicio = kvk.inicio
-    if kvk.primeira_luta:
-        inicio = kvk.primeira_luta
-
-    final = kvk.final
-    if not final:
-        final = timezone.now()
-
     batalhas = Batalha.objects.filter(kvk=kvk)
 
     status = None
@@ -659,18 +633,6 @@ def dkp_view(request, kvkid):
         jafoi.append(st["player"])
         player = Player.objects.get(pk=st["player"])
 
-        """status_final = (
-            PlayerStatus.objects.filter(
-                data__gte=inicio, data__lte=final, player=st["player"]
-            )
-            .order_by("-data")
-            .first()
-        )
-
-        if not status_final:
-            logger.debug("Não foi possível calcular o DKP de: %s", st["player"])
-            continue
-        """
         kvkstatus = KvKStatus.objects.filter(kvk=kvk, player=player).first()
         if not kvkstatus:
             kvkstatus = KvKStatus()
@@ -678,20 +640,22 @@ def dkp_view(request, kvkid):
         # Calculando as mortes melhor:
         # Algoritmo do Infernal
         # Mortes dos status estão em "deaths" e as do HoH estão em "deatht4" e "deatht5"
-        totalAvailableDeads = kvkstatus.deatht4 + kvkstatus.deatht5
-        effectiveDeadTroops = (
-            st["deaths"] if st["deaths"] <= totalAvailableDeads else totalAvailableDeads
+        total_available_deads = kvkstatus.deatht4 + kvkstatus.deatht5
+        effective_dead_troops = (
+            st["deaths"]
+            if st["deaths"] <= total_available_deads
+            else total_available_deads
         )
-        resultT5 = (
+        result_t5 = (
             kvkstatus.deatht5
-            if effectiveDeadTroops >= kvkstatus.deatht5
-            else effectiveDeadTroops
+            if effective_dead_troops >= kvkstatus.deatht5
+            else effective_dead_troops
         )
-        remainingTroops = effectiveDeadTroops - resultT5
-        resultT4 = (
+        remaining_troops = effective_dead_troops - result_t5
+        result_t4 = (
             kvkstatus.deatht4
-            if remainingTroops >= kvkstatus.deatht4
-            else remainingTroops
+            if remaining_troops >= kvkstatus.deatht4
+            else remaining_troops
         )
 
         # DKP=(T4kill*2)+(T5kill*4)+(T4death*5)+(T5death*10)+(Honra)+(PointsOnMaraunders)-(combatpower*20%)
@@ -702,8 +666,8 @@ def dkp_view(request, kvkid):
                 "dkp": int(
                     ((st["k4"]) * 0.4)
                     + ((st["k5"]) * 1)
-                    + ((resultT4) * 5)  # deaths t4
-                    + ((resultT5) * 10)  # deaths t5
+                    + ((result_t4) * 5)  # deaths t4
+                    + ((result_t5) * 10)  # deaths t5
                 ),
                 "killst4": st["k4"],
                 "killst5": st["k5"],

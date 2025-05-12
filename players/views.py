@@ -34,6 +34,7 @@ from players.models import (
     player_spec,
 )
 from rise.forms import SearchPlayerForm
+from utils.datas import get_datas
 
 # Create your views here.
 logger = logging.getLogger("k32")
@@ -760,13 +761,7 @@ def como_estou(request):
         if not kvk:
             kvk = Kvk.objects.all().order_by("-inicio").first()
 
-        inicio = kvk.inicio
-        if kvk.primeira_luta:
-            inicio = kvk.primeira_luta
-
-        final = kvk.final
-        if not final:
-            final = timezone.now()
+        inicio, final = get_datas(kvk)
 
         player_id = request.POST["game_id"]
         o_player = Player.objects.filter(game_id=player_id).first()

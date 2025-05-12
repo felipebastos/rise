@@ -6,4 +6,4 @@ class PlayersConfig(AppConfig):
     name = "players"
 
     def ready(self):
-        import players.signals.handlers  # noqa
+        import players.signals.handlers  # pylint: disable=import-outside-toplevel
