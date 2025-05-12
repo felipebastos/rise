@@ -7,40 +7,40 @@ license = "GPL-3.0"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-Django = "^5.1.0"
-django-simple-captcha = "^0.5.14"
-python-dotenv = "^0.19.2"
-gunicorn = "^22.0.0"
-mysqlclient = "^2.1.1"
-docutils = "^0.20.1"
+Django = "^5.2.0"
+django-simple-captcha = "^0.6.2"
+python-dotenv = "^1.1.0"
+gunicorn = "^23.0.0"
+mysqlclient = "^2.2.7"
+docutils = "^0.21.2"
 django-admin-rangefilter = "^0.13.2"
-djangorestframework = "^3.15.2"
-markdown = "^3.7"
-django-filter = "^24.3"
-djoser = "^2.2.3"
-djangorestframework-simplejwt = "^5.3.1"
+djangorestframework = "^3.16.0"
+markdown = "^3.8"
+django-filter = "^25.1"
+djoser = "^2.3.1"
+djangorestframework-simplejwt = "^5.5.0"
 
 
 [tool.poetry.group.dev.dependencies]
-pylint = "^2.9.2"
-pytest = "^6.2.4"
-autopep8 = "^1.5.7"
-black = "^22.3"
-requests = "^2.32.0"
-pylint-django = "^2.5.3"
-pytest-cov = "^4.0.0"
-isort = "^5.12.0"
-taskipy = "^1.10.3"
-bandit = "^1.7.4"
-pre-commit = "^3.1.1"
-pip-audit = "^2.5.4"
-prospector = "^1.9.0"
+pylint = "^3.3.7"
+pytest = "^8.3.5"
+autopep8 = "^2.3.2"
+black = "^25.1.0"
+requests = "^2.32.3"
+pylint-django = "^2.6.1"
+pytest-cov = "^6.1.1"
+isort = "^6.0.1"
+taskipy = "^1.14.1"
+bandit = "^1.8.3"
+pre-commit = "^4.2.0"
+pip-audit = "^2.9.0"
+prospector = "^1.16.1"
 
 
 [tool.poetry.group.doc.dependencies]
-mkdocs = "^1.4.2"
-mkdocs-material = "^9.1.2"
-mkdocstrings = {extras = ["python"], version = "^0.24.0"}
+mkdocs = "^1.6.1"
+mkdocs-material = "^9.6.13"
+mkdocstrings = {extras = ["python"], version = "^0.29.1"}
 
 
 [tool.taskipy.tasks]
