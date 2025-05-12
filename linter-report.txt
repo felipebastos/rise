@@ -1,60 +1,3 @@
-************* Module kvk.views
-kvk\views.py:661:0: C0301: Line too long (107/88) (line-too-long)
-kvk\views.py:724:0: C0301: Line too long (91/88) (line-too-long)
-kvk\views.py:730:0: C0301: Line too long (115/88) (line-too-long)
-kvk\views.py:149:0: R0914: Too many local variables (40/15) (too-many-locals)
-kvk\views.py:164:4: R1702: Too many nested blocks (7/5) (too-many-nested-blocks)
-kvk\views.py:149:0: R0912: Too many branches (27/12) (too-many-branches)
-kvk\views.py:149:0: R0915: Too many statements (82/50) (too-many-statements)
-kvk\views.py:586:0: R0914: Too many local variables (20/15) (too-many-locals)
-************* Module mge.models
-mge\models.py:91:0: C0301: Line too long (145/88) (line-too-long)
-mge\models.py:92:0: C0301: Line too long (140/88) (line-too-long)
-************* Module players.models
-players\models.py:43:0: C0301: Line too long (107/88) (line-too-long)
-players\models.py:127:0: C0301: Line too long (100/88) (line-too-long)
-************* Module players.views
-players\views.py:48:0: C0301: Line too long (94/88) (line-too-long)
-players\views.py:53:0: C0301: Line too long (96/88) (line-too-long)
-players\views.py:182:0: C0301: Line too long (130/88) (line-too-long)
-players\views.py:349:0: C0301: Line too long (91/88) (line-too-long)
-players\views.py:355:0: C0301: Line too long (115/88) (line-too-long)
-players\views.py:430:0: C0301: Line too long (94/88) (line-too-long)
-players\views.py:433:0: C0301: Line too long (159/88) (line-too-long)
-players\views.py:549:0: C0301: Line too long (94/88) (line-too-long)
-players\views.py:553:0: C0301: Line too long (96/88) (line-too-long)
-players\views.py:601:0: C0301: Line too long (91/88) (line-too-long)
-players\views.py:604:0: C0301: Line too long (94/88) (line-too-long)
-players\views.py:607:0: C0301: Line too long (104/88) (line-too-long)
-players\views.py:635:0: C0301: Line too long (89/88) (line-too-long)
-players\views.py:664:0: C0301: Line too long (94/88) (line-too-long)
-players\views.py:668:0: C0301: Line too long (96/88) (line-too-long)
-players\views.py:728:0: C0301: Line too long (89/88) (line-too-long)
-players\views.py:732:0: C0301: Line too long (95/88) (line-too-long)
-players\views.py:927:0: C0301: Line too long (90/88) (line-too-long)
-players\views.py:948:0: C0301: Line too long (136/88) (line-too-long)
-players\views.py:962:0: C0301: Line too long (151/88) (line-too-long)
-players\views.py:966:0: C0301: Line too long (156/88) (line-too-long)
-players\views.py:980:0: C0301: Line too long (89/88) (line-too-long)
-players\views.py:983:0: C0301: Line too long (96/88) (line-too-long)
-players\views.py:1009:0: C0301: Line too long (89/88) (line-too-long)
-players\views.py:1043:0: C0301: Line too long (89/88) (line-too-long)
-players\views.py:1:0: C0302: Too many lines in module (1080/1000) (too-many-lines)
-players\views.py:43:0: R0914: Too many local variables (22/15) (too-many-locals)
-players\views.py:425:0: R0914: Too many local variables (22/15) (too-many-locals)
-players\views.py:425:0: R0912: Too many branches (28/12) (too-many-branches)
-players\views.py:425:0: R0915: Too many statements (86/50) (too-many-statements)
-players\views.py:746:0: R0914: Too many local variables (37/15) (too-many-locals)
-players\views.py:746:0: R0912: Too many branches (22/12) (too-many-branches)
-players\views.py:746:0: R0915: Too many statements (65/50) (too-many-statements)
-************* Module reports.views
-reports\views.py:16:0: R0914: Too many local variables (20/15) (too-many-locals)
-reports\views.py:16:0: R0912: Too many branches (16/12) (too-many-branches)
-reports\views.py:16:0: R0915: Too many statements (52/50) (too-many-statements)
-reports\views.py:215:0: R0914: Too many local variables (17/15) (too-many-locals)
-************* Module rise.settings
-rise\settings.py:153:0: C0301: Line too long (95/88) (line-too-long)
-rise\settings.py:168:0: C0301: Line too long (91/88) (line-too-long)
 ************* Module utils.datas
 utils\datas.py:1:0: R0801: Similar lines in 2 files
 ==kvk.views:[320:331]
@@ -94,14 +37,15 @@ utils\datas.py:1:0: R0801: Similar lines in 2 files
  (duplicate-code)
 utils\datas.py:1:0: R0801: Similar lines in 2 files
 ==kvk.views:[200:208]
-==players.views:[830:837]
-        ).order_by("data")
-        players_faixa_original = []
-        for stat in faixa_original:
-            if stat.player not in players_faixa_original:
-                if stat.data.hour == primeiro.data.hour:
-                    players_faixa_original.append(stat.player)
+==players.views:[854:861]
+            ).order_by("data")
+
+            players_faixa_original = []
+            for stat in faixa_original:
+                if stat.player not in players_faixa_original:
+                    if stat.data.hour == primeiro.data.hour:
+                        players_faixa_original.append(stat.player)
  (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.72/10 (previous run: 9.60/10, +0.12)
+Your code has been rated at 9.98/10 (previous run: 9.95/10, +0.03)

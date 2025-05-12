@@ -40,7 +40,8 @@ CARGO = (
 
 class Alliance(models.Model):
     """
-    Armazena os dados básicos de uma aliança. Uma aliança é formada por um grupo de cerca de 150 jogadores.
+    Armazena os dados básicos de uma aliança.
+    Uma aliança é formada por um grupo de cerca de 150 jogadores.
 
     Fields:
         - nome (str): Nome da aliança.
@@ -124,7 +125,8 @@ class PlayerStatus(models.Model):
 
     def editavel(self):
         """
-        Verifica se o objeto é editável com base na diferença entre a data atual e a data do objeto.
+        Verifica se o objeto é editável com base
+        na diferença entre a data atual e a data do objeto.
 
         Returns:
             bool: True se o objeto for editável, False caso contrário.

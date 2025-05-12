@@ -45,12 +45,14 @@ def index(request, game_id):
     View responsável por exibir a página de perfil de um jogador.
 
     Args:
-        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição HTTP.
+        request (HttpRequest): O objeto HttpRequest que contém os
+                                             detalhes da requisição HTTP.
 
         game_id (int): O ID do jogo do jogador.
 
     Returns:
-        HttpResponse: O objeto HttpResponse que contém a resposta HTTP com a página renderizada.
+        HttpResponse: O objeto HttpResponse que contém a
+                                 resposta HTTP com a página renderizada.
 
     Raises:
         Player.DoesNotExist: Se o jogador com o ID do jogo especificado não existir.
@@ -179,7 +181,9 @@ def listspecs(request, spec):
         spec (str): A especialidade dos jogadores a serem listados.
 
     Returns:
-        HttpResponse: O objeto HttpResponse que representa a resposta HTTP contendo a página renderizada com a lista de jogadores.
+        HttpResponse: O objeto HttpResponse que representa a
+                                resposta HTTP contendo a página renderizada
+                                com a lista de jogadores.
 
     Raises:
         Nenhum.
@@ -346,13 +350,15 @@ def add_status(request, game_id):
 @login_required
 def upload_csv(request):
     """
-    View responsável por processar o upload de um arquivo CSV contendo dados dos jogadores.
+    View responsável por processar o upload de um arquivo
+    CSV contendo dados dos jogadores.
 
     Args:
         request (HttpRequest): O objeto HttpRequest contendo os dados da requisição.
 
     Returns:
-        HttpResponse: O objeto HttpResponse redirecionando para a página de confirmação de população dos jogadores.
+        HttpResponse: O objeto HttpResponse redirecionando para a página de
+                                confirmação de população dos jogadores.
 
     """
     if request.method == "POST":
@@ -424,13 +430,18 @@ def confirm_populate(request):
 @login_required
 def populate(request):
     """
-    View Django responsável por popular o banco de dados com dados de um arquivo CSV.
+    View Django responsável por popular o banco de dados
+    com dados de um arquivo CSV.
 
     Args:
-        request (HttpRequest): O objeto HttpRequest que representa a requisição HTTP recebida.
+        request (HttpRequest): O objeto HttpRequest que representa
+                                             a requisição HTTP recebida.
 
     Returns:
-        HttpResponseRedirect: Um objeto HttpResponseRedirect que redireciona para a página inicial após a conclusão do processo de população do banco de dados.
+        HttpResponseRedirect: Um objeto HttpResponseRedirect que
+                                              redireciona para a página inicial após a
+                                              conclusão do processo de população do
+                                              banco de dados.
     """
     with open("./dados.csv", encoding="utf-8") as dados_csv:
         reader = csv.reader(dados_csv)
@@ -546,11 +557,13 @@ def alliance(request, ally_id):
     View responsável por exibir informações sobre uma aliança.
 
     Args:
-        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição HTTP.
+        request (HttpRequest): O objeto HttpRequest que contém os
+                                             detalhes da requisição HTTP.
         ally_id (int): O ID da aliança a ser exibida.
 
     Returns:
-        HttpResponse: O objeto HttpResponse que contém a resposta HTTP com o conteúdo da página.
+        HttpResponse: O objeto HttpResponse que contém a resposta
+                                HTTP com o conteúdo da página.
 
     Raises:
         Alliance.DoesNotExist: Se a aliança com o ID fornecido não existir.
@@ -598,14 +611,16 @@ def alliance(request, ally_id):
 @login_required
 def top300(request):
     """
-    View que retorna os 300 jogadores com maior poder, excluindo aqueles da aliança "MIGR".
+    View que retorna os 300 jogadores com maior poder,
+    excluindo aqueles da aliança "MIGR".
 
     Args:
-        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição HTTP.
+        request (HttpRequest): O objeto HttpRequest que contém os
+                                             detalhes da requisição HTTP.
 
     Returns:
-        HttpResponse: O objeto HttpResponse que representa a resposta HTTP com a lista dos 300 jogadores
-        e o poder total.
+        HttpResponse: O objeto HttpResponse que representa a resposta
+                                HTTP com a lista dos 300 jogadores e o poder total.
 
     Raises:
         None
@@ -629,10 +644,12 @@ def top300(request):
 @login_required
 def falta_status(request, ally_id):
     """
-    View que retorna os jogadores de uma aliança que não possuem status.
+    View que retorna os jogadores de uma aliança que não
+    possuem status.
 
     Args:
-        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição.
+        request (HttpRequest): O objeto HttpRequest que contém
+                                             os detalhes da requisição.
         ally_id (int): O ID da aliança.
 
     Returns:
@@ -658,14 +675,17 @@ def falta_status(request, ally_id):
 @login_required
 def antigos(request, ally_id):
     """
-    View que retorna os jogadores com status muito antigos de uma aliança.
+    View que retorna os jogadores com status muito antigos
+    de uma aliança.
 
     Args:
-        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição HTTP.
+        request (HttpRequest): O objeto HttpRequest que contém
+                                             os detalhes da requisição HTTP.
         ally_id (int): O ID da aliança.
 
     Returns:
-        HttpResponse: O objeto HttpResponse que contém a resposta HTTP com a página renderizada.
+        HttpResponse: O objeto HttpResponse que contém a resposta
+                                HTTP com a página renderizada.
     """
     status = PlayerStatus.objects.all()
     hoje = timezone.now()
@@ -692,11 +712,13 @@ def edita_status(request, status_id):
     View responsável por editar o status de um jogador.
 
     Args:
-        request (HttpRequest): O objeto HttpRequest que contém os dados da requisição.
+        request (HttpRequest): O objeto HttpRequest que contém
+                                             os dados da requisição.
         status_id (int): O ID do status a ser editado.
 
     Returns:
-        HttpResponse: O objeto HttpResponse que representa a resposta da requisição.
+        HttpResponse: O objeto HttpResponse que representa a
+                                resposta da requisição.
 
     Raises:
         None
@@ -725,11 +747,13 @@ def delete_status(request, status_id):
     View responsável por deletar um status de jogador.
 
     Args:
-        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição.
+        request (HttpRequest): O objeto HttpRequest que contém
+                                             os detalhes da requisição.
         status_id (int): O ID do status a ser deletado.
 
     Returns:
-        HttpResponseRedirect: Um redirecionamento para a página de detalhes do jogo do jogador.
+        HttpResponseRedirect: Um redirecionamento para a página
+                                             de detalhes do jogo do jogador.
 
     Raises:
         None
@@ -924,13 +948,16 @@ def como_estou(request):
 @login_required
 def criar_advertencia(request):
     """
-    Cria uma advertência para um jogador com base nos dados recebidos via requisição POST.
+    Cria uma advertência para um jogador com base
+    nos dados recebidos via requisição POST.
 
     Args:
-        request (HttpRequest): O objeto HttpRequest contendo os dados da requisição.
+        request (HttpRequest): O objeto HttpRequest contendo
+                                             os dados da requisição.
 
     Returns:
-        HttpResponseRedirect: Redireciona para a página de advertências dos jogadores.
+        HttpResponseRedirect: Redireciona para a página de advertências
+                                             dos jogadores.
 
     Raises:
         None
@@ -945,7 +972,10 @@ def criar_advertencia(request):
         if request.POST["tipo"] == "mge":
             limite = 7000000
             faixa = (int(request.POST["pontuacao"]) - limite) // 1000000 or 1
-            adv.descricao = f"quebrou limite em MGE | Multa: {faixa*5}M comida,  {faixa*5}M madeira, {faixa*5}M pedra, {faixa*10}M ouro"
+            adv.descricao = (
+                f"quebrou limite em MGE | Multa: {faixa*5}M comida,  "
+                f"{faixa*5}M madeira, {faixa*5}M pedra, {faixa*10}M ouro"
+            )
 
             mge = Mge.objects.order_by("-id").first()
 
@@ -959,11 +989,17 @@ def criar_advertencia(request):
         elif request.POST["tipo"] == "poder":
             limite = 150000
             faixa = (int(request.POST["pontuacao"]) - limite) // 50000 or 1
-            adv.descricao = f"quebrou limite em Evento de Poder | Multa: {faixa*25}M comida,  {faixa*25}M madeira, {faixa*25}M pedra, {faixa*50}M ouro"
+            adv.descricao = (
+                f"quebrou limite em Evento de Poder | Multa: {faixa*25}M comida,  "
+                f"{faixa*25}M madeira, {faixa*25}M pedra, {faixa*50}M ouro"
+            )
         else:
             limite = 36000
             faixa = (int(request.POST["pontuacao"]) - limite) // 10000 or 1
-            adv.descricao = f"quebrou limite em Evento de Acelerador | Multa: {faixa*25}M comida,  {faixa*25}M madeira, {faixa*25}M pedra, {faixa*50}M ouro"
+            adv.descricao = (
+                f"quebrou limite em Evento de Acelerador | Multa: {faixa*25}"
+                f"M comida,  {faixa*25}M madeira, {faixa*25}M pedra, {faixa*50}M ouro"
+            )
 
         adv.save()
         logger.debug("%s advertiu %s", request.user.username, adv.player.game_id)
@@ -977,10 +1013,12 @@ def advertencias(request):
     View que retorna a página de advertências.
 
     Args:
-        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição.
+        request (HttpRequest): O objeto HttpRequest que contém
+                                             os detalhes da requisição.
 
     Returns:
-        HttpResponse: O objeto HttpResponse que representa a resposta da página de advertências.
+        HttpResponse: O objeto HttpResponse que representa a resposta
+                                da página de advertências.
     """
     advs = Advertencia.objects.all().order_by("-inicio")
 
@@ -1006,7 +1044,8 @@ def zerou_banido(request, player_id):
     View que registra a ação de zerar um jogador banido.
 
     Args:
-        request (HttpRequest): O objeto HttpRequest que contém os detalhes da requisição.
+        request (HttpRequest): O objeto HttpRequest que contém os
+                                             detalhes da requisição.
         player_id (int): O ID do jogador a ser zerado.
 
     Returns:
@@ -1040,7 +1079,8 @@ def append_farm(request, principal_id):
         principal_id (int): O ID do jogador principal.
 
     Returns:
-        HttpResponseRedirect: Redireciona para a página de detalhes do jogador principal.
+        HttpResponseRedirect: Redireciona para a página de
+                                             detalhes do jogador principal.
 
     Raises:
         Player.DoesNotExist: Se o jogador principal não for encontrado.
@@ -1069,7 +1109,8 @@ def remove_farm(request, player_id, farm_id):
         farm_id (int): O ID da fazenda a ser removida.
 
     Returns:
-        HttpResponseRedirect: Um redirecionamento para a página de detalhes do jogador.
+        HttpResponseRedirect: Um redirecionamento para a página de
+                                             detalhes do jogador.
     """
     player = Player.objects.get(game_id=player_id)
     farm = Player.objects.get(game_id=farm_id)

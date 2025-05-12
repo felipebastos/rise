@@ -150,7 +150,7 @@ LOGGING = {
     },
     "formatters": {
         "verbose": {
-            "format": "{name} {levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "format": "{name} {levelname} {asctime} {module} {process:d} {thread:d} {message}",  # pylint: disable=line-too-long
             "style": "{",
         },
         "simple": {
@@ -165,7 +165,7 @@ LOGGING = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # pylint: disable=line-too-long
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",

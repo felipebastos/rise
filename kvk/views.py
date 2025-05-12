@@ -658,7 +658,8 @@ def dkp_view(request, kvkid):
             else remaining_troops
         )
 
-        # DKP=(T4kill*2)+(T5kill*4)+(T4death*5)+(T5death*10)+(Honra)+(PointsOnMaraunders)-(combatpower*20%)
+        # DKP=(T4kill*2)+(T5kill*4)+(T4death*5)+(T5death*10)
+        # +(Honra)+(PointsOnMaraunders)-(combatpower*20%)
         dkps.append(
             {
                 "player": player.nick,
@@ -721,13 +722,15 @@ def status_dkp(request, kvkid, player):
 @login_required
 def upload_hoh_csv(request, kvkid):
     """
-    View responsável por processar o upload de um arquivo CSV contendo dados dos jogadores.
+    View responsável por processar o upload de um arquivo CSV
+    contendo dados dos jogadores.
 
     Args:
         request (HttpRequest): O objeto HttpRequest contendo os dados da requisição.
 
     Returns:
-        HttpResponse: O objeto HttpResponse redirecionando para a página de confirmação de população dos jogadores.
+        HttpResponse: O objeto HttpResponse redirecionando para a página de
+                                confirmação de população dos jogadores.
 
     """
     if request.method == "POST":
