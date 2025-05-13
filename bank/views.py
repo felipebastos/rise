@@ -107,8 +107,6 @@ def add_credits(request):
     for credito in creditos:
         if credito.ally.id not in ultimos:
             ultimos[credito.ally.id] = credito
-            print(credito)
-            print(credito.diferenca)
 
     context = {
         "form": form,

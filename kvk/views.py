@@ -227,10 +227,6 @@ def calcular(kvk, cat):
 
                 for st in por_batalha:
                     if st["player"] not in [ac["player"] for ac in acumulado]:
-                        if (
-                            st["player__game_id"] == "29722921"
-                        ):  # esse sou eu, só pra testar alguns detalhes mais rápido
-                            print(st)
                         st["k4"] = st["killst4"]
                         st["k5"] = st["killst5"]
                         st["kp"] = st["killpoints"]
@@ -610,10 +606,6 @@ def dkp_view(request, kvkid):
 
         for st in por_batalha:
             if st["player"] not in [ac["player"] for ac in acumulado]:
-                if (
-                    st["player__game_id"] == "29722921"
-                ):  # esse sou eu, só pra testar alguns detalhes mais rápido
-                    print(st)
                 st["k4"] = st["killst4"]
                 st["k5"] = st["killst5"]
                 acumulado.append(st)
