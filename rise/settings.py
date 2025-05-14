@@ -60,6 +60,9 @@ INSTALLED_APPS = [
     "django_filters",
     "djoser",
     "api.apps.ApiConfig",
+    "items.apps.ItemsConfig",
+    "osiris.apps.OsirisConfig",
+    "equipments.apps.EquipmentsConfig",
 ]
 
 MIDDLEWARE = [

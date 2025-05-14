@@ -41,6 +41,9 @@ urlpatterns = [
     re_path(r"^auth/", include("djoser.urls")),
     re_path(r"^auth/", include("djoser.urls.jwt")),
     path("api/", include("api.urls")),
+    path("items/", include("items.urls")),
+    path("osiris/", include("osiris.urls")),
+    path("equips/", include("equipments.urls")),
     re_path(r"^ang/", TemplateView.as_view(template_name="rise/ang.html"), name="next"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

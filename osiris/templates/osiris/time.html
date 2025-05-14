@@ -1,0 +1,133 @@
+{% extends 'rise/base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+    <h2>Adicione jogadores a Arca</h2>
+    <form method="post" class="form-inline">
+        {% csrf_token %}
+        {{ timeform.as_p }}
+
+        <button type="submit" class="btn btn-primary">Adicionar no time</button>
+    </form>
+</div>
+<hr>
+{% endif %}
+<div class="container">
+    <h1>Times</h1>
+    <h2>Time A</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Player</th>
+                <th>Marcha 1</th>
+                <th>Marcha 2</th>
+                <th>Marcha 3</th>
+                <th>Marcha 4</th>
+                <th>Marcha 5</th>
+                {% if user.is_authenticated %}
+                <th>Ações</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for funcao in time_a %}
+            <tr>
+                <td>{{funcao.player}}</td>
+                {% for marcha in funcao.marchas.all %}
+                <td>
+                    <ul>
+                        <li>Tipo: {{marcha.get_tipo_display}}</li>
+                        <li>Tarefa: {{marcha.get_tarefa_display}}</li>
+                        <li>Estrutura: {{marcha.get_estrutura_display}}</li>
+                        <li>Tarefa especial: {{marcha.get_tarefa_especial_display}}</li>
+                    </ul>
+                </td>
+                {% empty %}
+                <td></td>
+                <td></td>
+                <td>Marchas ainda não configuradas</td>
+                <td></td>
+                <td></td>
+                {% endfor %}
+                {% if user.is_authenticated %}
+                <td>
+                    <a href="{% url 'configurar_marchas' funcao.id %}" class="btn btn-warning">Configurar marchas</a>
+                    <a href="{% url 'remove_do_time' funcao.id %}" class="btn btn-danger">Remover do time</a>
+                </td>
+                {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Time ainda não tem jogadores.</td>
+                <td></td>
+                <td></td>
+                {% if user.is_authenticated %}
+                <td></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Time B</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Player</th>
+                <th>Marcha 1</th>
+                <th>Marcha 2</th>
+                <th>Marcha 3</th>
+                <th>Marcha 4</th>
+                <th>Marcha 5</th>
+                {% if user.is_authenticated %}
+                <th>Ações</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for funcao in time_b %}
+            <tr>
+                <td>{{funcao.player}}</td>
+                {% for marcha in funcao.marchas.all %}
+                <td>
+                    <ul>
+                        <li>Tipo: {{marcha.get_tipo_display}}</li>
+                        <li>Tarefa: {{marcha.get_tarefa_display}}</li>
+                        <li>Estrutura: {{marcha.get_estrutura_display}}</li>
+                        <li>Tarefa especial: {{marcha.get_tarefa_especial_display}}</li>
+                    </ul>
+                </td>
+                {% empty %}
+                <td></td>
+                <td></td>
+                <td>Marchas ainda não configuradas</td>
+                <td></td>
+                <td></td>
+                {% endfor %}
+                {% if user.is_authenticated %}
+                <td>
+                    <a href="{% url 'configurar_marchas' funcao.id %}" class="btn btn-warning">Configurar marchas</a>
+                    <a href="{% url 'remove_do_time' funcao.id %}" class="btn btn-danger">Remover do time</a>
+                </td>
+                {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Time ainda não tem jogadores.</td>
+                <td></td>
+                <td></td>
+                {% if user.is_authenticated %}
+                <td></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

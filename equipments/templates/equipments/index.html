@@ -1,0 +1,294 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Equipamentos{% endblock %}
+{% block extracss %}
+<style>
+    .armor-grid {
+        display: grid;
+        column-gap: 5px;
+        grid-template-columns: auto auto auto;
+        grid-template-rows: auto auto auto auto;
+        justify-content: center;
+    }
+
+    div>img {
+        width: 64px;
+        height: 64px;
+    }
+
+    .box {
+        padding: 3px;
+        border: 1px solid black;
+        background-color: lightgray;
+        width: 70px;
+        height: 70px;
+    }
+
+    .capacete {
+        grid-column: 2 / 2;
+    }
+
+    .arma {
+        grid-column: 1 / 1;
+        grid-row: 2 / 2;
+    }
+
+    .peito {
+        grid-column: 2 / 2;
+        grid-row: 2 / 2;
+    }
+
+    .luva {
+        grid-column: 3 / 3;
+        grid-row: 2 / 2;
+    }
+
+    .ace {
+        grid-column: 1 / 1;
+        grid-row: 3 / 3;
+    }
+
+    .saia {
+        grid-column: 2 / 2;
+        grid-row: 3 / 3;
+    }
+
+    .acd {
+        grid-column: 3 / 3;
+        grid-row: 3 / 3;
+    }
+
+    .bota {
+        grid-column: 2 / 2;
+        grid-row: 4 / 4;
+    }
+
+    .equipform {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .item {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+    }
+</style>
+{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+    <a href="{% url 'equip_add' %}" class="btn btn-primary">Adicione novos equipamentos</a>
+    <a href="{% url 'conjunto_add' %}" class="btn btn-primary">Configure conjuntos</a>
+</div>
+{% endif %}
+<div class="container">
+    <h1 class="text-center">Configure um conjunto de equipamentos</h1>
+    <div class="row">
+        <div class="col-sm-4">
+            <h3 class="text-center">Escolha os equipamentos</h3>
+            <form method="get" onchange="submit()">
+                <div class="equipform">
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.capacete.label}} {{capform.capacete}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.cap_spec}}
+                                {{capform.cap_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.cap_icon}}
+                                {{capform.cap_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.peitoral.label}} {{capform.peitoral}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.pei_spec}}
+                                {{capform.pei_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.pei_icon}}
+                                {{capform.pei_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.armamento.label}} {{capform.armamento}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.arm_spec}}
+                                {{capform.arm_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.arm_icon}}
+                                {{capform.arm_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.luva.label}} {{capform.luva}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.luv_spec}}
+                                {{capform.luv_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.luv_icon}}
+                                {{capform.luv_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.calca.label}} {{capform.calca}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.cal_spec}}
+                                {{capform.cal_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.cal_icon}}
+                                {{capform.cal_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.ace.label}} {{capform.ace}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.ace_spec}}
+                                {{capform.ace_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.ace_icon}}
+                                {{capform.ace_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.botas.label}} {{capform.botas}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.bot_spec}}
+                                {{capform.bot_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.bot_icon}}
+                                {{capform.bot_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row item">
+                        <div class="col-sm-8">{{capform.acd.label}} {{capform.acd}}</div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.acd_spec}}
+                                {{capform.acd_spec.label}}
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                {{capform.acd_icon}}
+                                {{capform.acd_icon.label}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <h3 class="text-center">Montagem</h3>
+            <div class="armor-grid">
+                <div class="box capacete">
+                    <img src="{{montagem.capacete.miniatura.url}}" alt="">
+                </div>
+                <div class="box arma">
+                    <img src="{{montagem.armamento.miniatura.url}}" alt="">
+                </div>
+                <div class="box peito">
+                    <img src="{{montagem.peitoral.miniatura.url}}" alt="">
+                </div>
+                <div class="box luva">
+                    <img src="{{montagem.luva.miniatura.url}}" alt="">
+                </div>
+                <div class="box ace">
+                    <img src="{{montagem.ace.miniatura.url}}" alt="">
+                </div>
+                <div class="box saia">
+                    <img src="{{montagem.calca.miniatura.url}}" alt="">
+                </div>
+                <div class="box acd">
+                    <img src="{{montagem.acd.miniatura.url}}" alt="">
+                </div>
+                <div class="box bota">
+                    <img src="{{montagem.botas.miniatura.url}}" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <h3 class="text-center">Status</h3>
+            <table class="table table-striped">
+                <tbody>
+                    {% for key, item in status.items %}
+                    <tr>
+                        <td>{{key}}</td>
+                        <td>+ {{item|floatformat:0}}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td>Nenhum status calculado</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h3 class="text-center">Buffs</h3>
+            <table class="table table-striped">
+                <tbody>
+                    {% for key, item in buffs.items %}
+                    <tr>
+                        <td>{{key}}</td>
+                        <td>{{item|floatformat:2}}%</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td>Nenhum buff calculado</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h3 class="text-center">Buffs de conjuntos</h3>
+            <table class="table table-striped">
+                <tbody>
+                    {% for key, item in conjuntos.items %}
+                    {% for buff in item %}
+                    <tr>
+                        <td>{{key}} ({{buff.pecas}} peças)</td>
+                        <td>{{buff.get_status_display}} de {{buff.get_spec_display}} {{buff.valor|floatformat:2}}%</td>
+                    </tr>
+                    {% endfor %}
+                    {% empty %}
+                    <tr>
+                        <td>Nenhum buff de conjunto presente</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

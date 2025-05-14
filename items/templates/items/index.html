@@ -1,0 +1,85 @@
+{% extends 'rise/base.html' %}
+{% block title %}- Pedido de Itens{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Faça seu pedido</h2>
+    <form action="{% url 'itemshome' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Pedir</button>
+    </form>
+    {% if confirma %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Obrigado!</strong> Seu pedido foi registrado com sucesso.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+</div>
+{% if user.is_authenticated %}
+<div class="container">
+    <h2>Avalie os pedidos pendentes abaixo</h2>
+    <table class="table table-stripped">
+        <thead>
+            <tr>
+                <th scope="col">Player</th>
+                <th scope="col">Pedido</th>
+                <th scope="col">Data do pedido</th>
+                <th scope="col">Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in pendentes %}
+            <tr>
+                <td>[{{ pedido.player.alliance.tag }}] {{ pedido.player }}</td>
+                <td>{{ pedido.quantidade }} {{ pedido.item }}(s)</td>
+                <td>{{ pedido.pedido_em }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{% url 'aprovarpedido' pedido.id %}">Aprovar</a>
+                    <a class="btn btn-warning" href="{% url 'reprovarpedido' pedido.id %}">Reprovar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+<div class="container">
+    <h2>Registro de pedidos</h2>
+    <table class="table table-stripped">
+        <thead>
+            <tr>
+                <th scope="col">Player</th>
+                <th scope="col">Pedido</th>
+                <th scope="col">Data do pedido</th>
+                <th scope="col">Status</th>
+                {% if user.is_authenticated %}
+                <th scope="col">Ações</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in avaliados %}
+            {% if pedido.aprovado %}
+            <tr class="table-success">
+                {% else %}
+            <tr class="table-danger">
+                {% endif %}
+                <td>[{{ pedido.player.alliance.tag }}] {{ pedido.player }}</td>
+                <td>{{ pedido.quantidade }} {{ pedido.item }}(s)</td>
+                <td>{{ pedido.pedido_em }}</td>
+                {% if pedido.aprovado %}
+                <td>Aprovado</td>
+                {% else %}
+                <td>Reprovado</td>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <td>
+                    <a href="{% url 'cancelaravaliacao' pedido.id%}" class="btn btn-danger">Reavaliar</a>
+                    </th>
+                    {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

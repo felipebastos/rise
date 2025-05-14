@@ -1,0 +1,28 @@
+{% extends 'rise/base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Configurando as marchas de {{funcao.player}}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{marchaform.as_p}}
+        <button type="submit" class="btn btn-primary">Adicionar marcha</button>
+        <a href="{% url 'editar_time' time %}" class="btn btn-secondary">Voltar para o time</a>
+    </form>
+</div>
+<div class="container">
+    <h2>Marchas configuradas</h2>
+    <ol>
+        {% for marcha in funcao.marchas.all %}
+        <li>
+            <ul>
+                <li>Tipo: {{marcha.get_tipo_display}}</li>
+                <li>Tarefa: {{marcha.get_tarefa_display}}</li>
+                <li>Estrutura: {{marcha.get_estrutura_display}}</li>
+                <li>Tarefa especial: {{marcha.get_tarefa_especial_display}}</li>
+                <li><a href="{% url 'marcha_remove' marcha.id %}" class="btn btn-danger">Remover esta marcha</a></li>
+            </ul>
+        </li>
+        {% endfor %}
+    </ol>
+</div>
+{% endblock %}
