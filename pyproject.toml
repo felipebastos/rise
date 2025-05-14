@@ -4,6 +4,7 @@ version = "0.3.0"
 description = "A project to manage a Rise of Kingdoms kingdom"
 authors = ["Felipe Bastos <felipe.bastosn@gmail.com>"]
 license = "GPL-3.0"
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
