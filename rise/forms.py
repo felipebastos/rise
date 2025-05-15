@@ -10,7 +10,7 @@ class LoginForm(forms.Form):
     )
     password = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"class": "form-control", "placeholder": "nome de usuário"}
+            attrs={"class": "form-control", "placeholder": "senha"}
         )
     )
     captcha = CaptchaField()
