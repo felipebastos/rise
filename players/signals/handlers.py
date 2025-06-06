@@ -1,10 +1,9 @@
 import os
-from django.dispatch import receiver
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-
 from django.core.mail import send_mail
-
+from django.dispatch import receiver
 from djoser.signals import user_activated
 
 

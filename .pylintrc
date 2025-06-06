@@ -35,7 +35,7 @@ extension-pkg-whitelist=
 fail-on=
 
 # Specify a score threshold to be exceeded before program exits with error.
-fail-under=7
+fail-under=9
 
 # Interpret the stdin as a python script, whose filename needs to be passed as
 # the module_or_package argument.
@@ -189,7 +189,8 @@ bad-names=foo,
           baz,
           toto,
           tutu,
-          tata
+          tata,
+          luvadepedreiro
 
 # Bad variable names regexes, separated by a comma. If names match any regex,
 # they will always be refused
