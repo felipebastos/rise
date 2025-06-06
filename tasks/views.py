@@ -12,7 +12,8 @@ from tasks.scripts.script import RiseTask
 @login_required
 def home(request):
     tasks = Task.objects.all()
-
+    x = 2
+    print(x)
     if request.method == "POST":
         form = ConfiguraTask(request.POST)
         if form.is_valid():
