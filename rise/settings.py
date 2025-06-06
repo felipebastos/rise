@@ -107,14 +107,6 @@ if DEBUG:
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
         },
-        "kingdom": {
-            "ENGINE": "django.db.backends.mysql",
-            "NAME": f"{os.getenv('user')}${os.getenv('database')}",
-            "USER": os.getenv("user"),
-            "PASSWORD": os.getenv("password"),
-            "HOST": os.getenv("host"),
-            "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
-        },
     }
 else:
     DATABASES = {
